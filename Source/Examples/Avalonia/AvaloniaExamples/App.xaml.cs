@@ -21,10 +21,9 @@ namespace AvaloniaExamples
 
         static void Main(string[] args)
         {
+            OxyPlotModule.EnsureLoaded();
             InitializeLogging();
-            AppBuilder.Configure<App>()
-                .UseWin32()
-                .UseSkia()
+            AppBuilder.Configure<App>().UsePlatformDetect()
                 .BeforeStarting(_ => OxyPlotModule.Initialize())
                 .Start<MainWindow>();
         }

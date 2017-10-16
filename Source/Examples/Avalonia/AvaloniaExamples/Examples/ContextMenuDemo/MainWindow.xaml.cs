@@ -18,7 +18,6 @@ namespace AvaloniaExamples.Examples.ContextMenuDemo
 
     using AvaloniaExamples;
 
-    using DelegateCommand = PropertyTools.Wpf.DelegateCommand;
     using ICommand = System.Windows.Input.ICommand;
 
     /// <summary>

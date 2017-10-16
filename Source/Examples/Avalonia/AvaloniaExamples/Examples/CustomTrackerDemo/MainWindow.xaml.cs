@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Portable.Xaml.Markup;
+
 namespace AvaloniaExamples.Examples.CustomTrackerDemo
 {
     using System.Collections.Generic;
@@ -17,7 +19,6 @@ namespace AvaloniaExamples.Examples.CustomTrackerDemo
 
     using AvaloniaExamples;
     using OxyPlot.Avalonia.Converters;
-    using OmniXaml;
     using System;
 
     /// <summary>
@@ -57,6 +58,6 @@ namespace AvaloniaExamples.Examples.CustomTrackerDemo
 
     public class NullExtension : MarkupExtension
     {
-        public override object ProvideValue(MarkupExtensionContext markupExtensionContext) => null;
+        public override object ProvideValue(IServiceProvider markupExtensionContext) => null;
     }
 }

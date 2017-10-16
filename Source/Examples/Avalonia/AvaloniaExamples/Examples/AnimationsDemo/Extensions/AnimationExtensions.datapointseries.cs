@@ -4,6 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia.Threading;
+
 namespace AvaloniaExamples.Examples.AnimationsDemo
 {
     using System;

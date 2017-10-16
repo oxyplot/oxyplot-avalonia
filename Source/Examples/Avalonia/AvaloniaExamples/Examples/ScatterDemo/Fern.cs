@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia;
+using Avalonia.Media;
+
 namespace AvaloniaExamples.Examples.ScatterDemo
 {
     using System;
     using System.Collections.Generic;
-    using System.Windows;
-    using System.Windows.Media;
 
     /// <summary>
     /// Barnesley fern point generator
@@ -43,15 +44,15 @@ namespace AvaloniaExamples.Examples.ScatterDemo
                 var r = random.NextDouble();
 
                 if (r < p[0])
-                    point = a1.Transform(point);
+                    point *= a1.Matrix;
                 else if (r < p[1])
-                    point = a2.Transform(point);
+                    point *= a2.Matrix;
                 else if (r < p[2])
-                    point = a3.Transform(point);
+                    point *= a3.Matrix;
                 else
-                    point = a4.Transform(point);
+                    point *= a4.Matrix;
 
-                points.Add(T.Transform(point));
+                points.Add(point * T.Matrix);
             }
 
             return points;

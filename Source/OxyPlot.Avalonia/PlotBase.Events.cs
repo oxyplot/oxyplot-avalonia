@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia.Controls;
+
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia.Input;
@@ -108,7 +110,7 @@ namespace OxyPlot.Avalonia
             }
 
             Focus();
-            MouseDevice.Instance.Capture(this);
+            ((TopLevel)this.VisualRoot).PlatformImpl.MouseDevice.Capture(this);
 
             // store the mouse down point, check it when mouse button is released to determine if the context menu should be shown
             mouseDownPoint = e.GetPosition(this).ToScreenPoint();
@@ -135,7 +137,7 @@ namespace OxyPlot.Avalonia
         /// Invoked when an unhandled MouseUp routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. The event data reports that the mouse button was released.</param>
-        protected override void OnPointerReleased(PointerEventArgs e)
+        protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             base.OnPointerReleased(e);
             if (e.Handled)
@@ -145,7 +147,7 @@ namespace OxyPlot.Avalonia
 
             var releasedArgs = (PointerReleasedEventArgs)e;
 
-            MouseDevice.Instance.Capture(null);
+            ((TopLevel)this.VisualRoot).PlatformImpl.MouseDevice.Capture(null);
 
             e.Handled = ActualController.HandleMouseUp(this, releasedArgs.ToMouseReleasedEventArgs(this));
 

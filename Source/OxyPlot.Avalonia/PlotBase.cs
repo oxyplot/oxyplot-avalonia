@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia.Media;
+
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia;
@@ -247,6 +249,7 @@ namespace OxyPlot.Avalonia
                 // After the invalidation, the element will have its layout updated,
                 // which will occur asynchronously unless subsequently forced by UpdateLayout.
                 BeginInvoke(InvalidateArrange);
+                BeginInvoke(InvalidateVisual);
             }
         }
 

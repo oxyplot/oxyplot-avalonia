@@ -89,7 +89,7 @@ namespace AvaloniaExamples.Examples.RealtimeDemo
                 this.Update();
             }
 
-            Dispatcher.UIThread.InvokeAsync(() => this.PlotModel.InvalidatePlot(true));
+            Dispatcher.UIThread.InvokeAsync(() => this.PlotModel.InvalidatePlot(true), DispatcherPriority.Background);
         }
 
         private void Update()

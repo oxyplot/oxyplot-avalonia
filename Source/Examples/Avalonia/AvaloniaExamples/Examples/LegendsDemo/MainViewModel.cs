@@ -4,6 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.ComponentModel;
+
 namespace AvaloniaExamples.Examples.LegendsDemo
 {
     using System;
@@ -14,9 +16,8 @@ namespace AvaloniaExamples.Examples.LegendsDemo
     using AvaloniaExamples;
 
     using HorizontalAlignment = OxyPlot.HorizontalAlignment;
-    using PropertyTools.DataAnnotations;
 
-    public class MainViewModel : Observable
+    public class MainViewModel : NotifyPropertyChangedBase
     {
         private HorizontalAlignment legendItemAlignment = HorizontalAlignment.Left;
         private LegendItemOrder legendItemOrder;
@@ -100,7 +101,7 @@ namespace AvaloniaExamples.Examples.LegendsDemo
             }
         }
 
-        [DisplayName("MaxWidth"), Optional]
+        [DisplayName("MaxWidth")]
         public double LegendMaxWidth
         {
             get { return this.maxWidth; }
@@ -111,7 +112,7 @@ namespace AvaloniaExamples.Examples.LegendsDemo
             }
         }
 
-        [DisplayName("MaxHeight"), Optional]
+        [DisplayName("MaxHeight")]
         public double LegendMaxHeight
         {
             get { return this.maxHeight; }
@@ -122,7 +123,7 @@ namespace AvaloniaExamples.Examples.LegendsDemo
             }
         }
 
-        [DisplayName("Curves"), Slidable(1, 32)]
+        [DisplayName("Curves")]
         public int NumberOfSeries
         {
             get { return this.numberOfSeries; }

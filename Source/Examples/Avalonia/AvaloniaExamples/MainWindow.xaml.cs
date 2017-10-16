@@ -52,21 +52,6 @@ namespace AvaloniaExamples
         /// <value>The examples.</value>
         public IList<Example> Examples { get; private set; }
 
-        /// <summary>
-        /// Creates a thumbnail of the specified window.
-        /// </summary>
-        /// <param name="window">The window.</param>
-        /// <param name="width">The width of the thumbnail.</param>
-        /// <param name="path">The output path.</param>
-        private static void CreateThumbnail(Avalonia.Controls.Window window, int width, string path)
-        {
-            var bitmap = ScreenCapture.Capture(
-                (int)window.Bounds.TopLeft.X,
-                (int)window.Bounds.TopLeft.Y,
-                (int)window.Bounds.Width,
-                (int)window.Bounds.Height);
-            var newHeight = width * bitmap.Height / bitmap.Width;
-        }
 
         /// <summary>
         /// Handles the MouseDoubleClick event of the ListBox control.
