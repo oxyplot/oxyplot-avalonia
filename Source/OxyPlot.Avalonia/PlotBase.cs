@@ -97,7 +97,7 @@ namespace OxyPlot.Avalonia
         {
             DisconnectCanvasWhileUpdating = true;
             trackerDefinitions = new ObservableCollection<TrackerDefinition>();
-            new BoundsTracker().Track(this).Subscribe(bounds => OnSizeChanged(this, bounds?.Bounds.Size ?? new Size()));
+            this.GetObservable(TransformedBoundsProperty).Subscribe(bounds => OnSizeChanged(this, bounds?.Bounds.Size ?? new Size()));
         }
         
         /// <summary>
@@ -419,7 +419,7 @@ namespace OxyPlot.Avalonia
         /// <returns><c>true</c> if if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
         private static bool IsUserVisible(Control element)
         {
-            return element.IsEffectivelyVisible && BoundsTracker.GetTransformedBounds(element).HasValue;
+            return element.IsEffectivelyVisible && element.TransformedBounds.HasValue;
         }
 
         /// <summary>
