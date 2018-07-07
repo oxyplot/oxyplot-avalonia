@@ -19,7 +19,7 @@ namespace AvaloniaExamples
         public Example(Type mainWindowType, string title = null, string description = null)
         {
             this.MainWindowType = mainWindowType;
-            this.Title = title ?? mainWindowType.Namespace;
+            this.Title = title ?? mainWindowType.Namespace.Split('.').Last();
             this.Description = description;
             try
             {
@@ -44,7 +44,7 @@ namespace AvaloniaExamples
         {
             get
             {
-                return this.MainWindowType.Namespace.Split('.').Last() + ".png";
+                return this.Title + ".png";
             }
         }
 
