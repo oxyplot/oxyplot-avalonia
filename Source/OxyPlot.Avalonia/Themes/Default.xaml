@@ -28,7 +28,7 @@
                   StrokeDashArray="{TemplateBinding LineDashArray}" />
                         <Panel Name="PART_ContentContainer" ClipToBounds="False">
                             <Path Name="PART_Path" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}"
-                    StrokeThickness="{TemplateBinding BorderThickness, Converter={Static converters:ThicknessConverter.Instance}}" />
+                    StrokeThickness="{TemplateBinding BorderThickness, Converter={x:Static converters:ThicknessConverter.Instance}}" />
                             <ContentPresenter Name="PART_Content" Content="{TemplateBinding Content}" HorizontalAlignment="Center" />
                         </Panel>
                     </Panel>
