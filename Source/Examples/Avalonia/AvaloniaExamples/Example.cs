@@ -4,6 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+using Avalonia;
+using Avalonia.Platform;
+
 namespace AvaloniaExamples
 {
     using Avalonia.Media.Imaging;
@@ -19,7 +23,10 @@ namespace AvaloniaExamples
             this.Description = description;
             try
             {
-                this.Thumbnail = new Bitmap("resm:Images/" + this.ThumbnailFileName);
+                var uri = new Uri("resm:AvaloniaExamples.Images." + this.ThumbnailFileName);
+                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+                var stream = assets.Open(uri);
+                this.Thumbnail = new Bitmap(stream);
             }
             catch (Exception e)
             {
@@ -37,7 +44,7 @@ namespace AvaloniaExamples
         {
             get
             {
-                return this.MainWindowType.Namespace + ".png";
+                return this.MainWindowType.Namespace.Split('.').Last() + ".png";
             }
         }
 
