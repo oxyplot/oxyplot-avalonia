@@ -76,7 +76,7 @@
                 <ControlTemplate>
                     <local:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
                         <local:TrackerControl.Content>
-                            <TextBlock Text="{Binding Text}" />
+                            <TextBlock Text="{Binding Text}" Margin="7" />
                         </local:TrackerControl.Content>
                     </local:TrackerControl>
                 </ControlTemplate>
