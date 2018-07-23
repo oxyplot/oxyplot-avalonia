@@ -4,6 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+using Avalonia;
+using Avalonia.Platform;
+
 namespace AvaloniaExamples
 {
     using Avalonia.Media.Imaging;
@@ -15,11 +19,14 @@ namespace AvaloniaExamples
         public Example(Type mainWindowType, string title = null, string description = null)
         {
             this.MainWindowType = mainWindowType;
-            this.Title = title ?? mainWindowType.Namespace;
+            this.Title = title ?? mainWindowType.Namespace.Split('.').Last();
             this.Description = description;
             try
             {
-                this.Thumbnail = new Bitmap("resm:Images/" + this.ThumbnailFileName);
+                var uri = new Uri("resm:AvaloniaExamples.Images." + this.ThumbnailFileName);
+                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+                var stream = assets.Open(uri);
+                this.Thumbnail = new Bitmap(stream);
             }
             catch (Exception e)
             {
@@ -37,7 +44,7 @@ namespace AvaloniaExamples
         {
             get
             {
-                return this.MainWindowType.Namespace + ".png";
+                return this.Title + ".png";
             }
         }
 

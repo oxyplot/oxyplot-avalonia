@@ -410,7 +410,7 @@ namespace OxyPlot.Avalonia
             {
                 Position = e.GetPosition(relativeTo).ToScreenPoint(),
                 ModifierKeys = Keyboard.Instance.GetModifierKeys(),
-                Delta = (int)e.Delta.Length
+                Delta = (int)(e.Delta.Y + e.Delta.X) * 120
             };
         }
 
