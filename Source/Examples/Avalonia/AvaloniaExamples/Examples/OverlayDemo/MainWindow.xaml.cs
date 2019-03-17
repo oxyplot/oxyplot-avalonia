@@ -55,7 +55,7 @@ namespace AvaloniaExamples.Examples.OverlayDemo
             {
                 Fill = new LinearGradientBrush
                 {
-                    GradientStops = new System.Collections.Generic.List<GradientStop>
+                    GradientStops = new GradientStops
                     {
                         new GradientStop(Colors.Black, 0),
                         new GradientStop(Colors.Red, 1)

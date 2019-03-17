@@ -16,7 +16,6 @@ namespace OxyPlot.Avalonia
     using global::Avalonia.Controls.Primitives;
     using global::Avalonia.Controls.Shapes;
     using global::Avalonia.Layout;
-    using global::Avalonia.Markup.Xaml.Data;
     using global::Avalonia.Media;
     using global::Avalonia.VisualTree;
     using System.Collections.Generic;

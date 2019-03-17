@@ -118,7 +118,7 @@ namespace OxyPlot.Avalonia
             canvas.Measure(new Size(canvas.Width, canvas.Height));
             canvas.Arrange(new Rect(0, 0, canvas.Width, canvas.Height));
 
-            var bmp = new RenderTargetBitmap(Width, Height);
+            var bmp = new RenderTargetBitmap(new PixelSize(Width, Height));
             bmp.Render(canvas);
             return bmp;
         }

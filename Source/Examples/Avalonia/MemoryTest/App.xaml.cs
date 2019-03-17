@@ -21,6 +21,7 @@ namespace MemoryTest
 
         static void Main(string[] args)
         {
+            OxyPlotModule.EnsureLoaded();
             InitializeLogging();
             AppBuilder.Configure<App>()
                 .UsePlatformDetect()

@@ -605,7 +605,7 @@ namespace OxyPlot.Avalonia
             var bitmapChain = GetImageSource(source);
 
             // ReSharper disable CompareOfFloatsByEqualityOperator
-            if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelWidth && srcHeight == bitmapChain.PixelHeight)
+            if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelSize.Width && srcHeight == bitmapChain.PixelSize.Height)
             // ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 // do not crop

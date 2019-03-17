@@ -20,7 +20,7 @@ namespace AvaloniaExamples.Examples.DataTemplateDemo
     using AvaloniaExamples;
     using Avalonia.Controls.Templates;
     using Avalonia.Controls;
-    using Avalonia.Markup.Xaml.Data;
+    using Avalonia.Data;
 
     /// <summary>
     /// Interaction logic for PlotViewDataTemplateWindow.xaml
