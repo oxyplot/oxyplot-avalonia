@@ -9,6 +9,7 @@
 
 namespace OxyPlot.Avalonia.Converters
 {
+    using global::Avalonia.Data.Converters;
     using global::Avalonia.Markup;
     using global::Avalonia.Media;
     using System;
