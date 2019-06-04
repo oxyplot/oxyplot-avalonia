@@ -828,9 +828,8 @@ namespace OxyPlot.Avalonia
                     // The default StrokeLineJoin is Miter
                 }
 
-                if (Math.Abs(thickness - 1) > double.Epsilon)
+                if (thickness > 0)
                 {
-                    // only set if different from the default value (1)
                     shape.StrokeThickness = thickness;
                 }
 
