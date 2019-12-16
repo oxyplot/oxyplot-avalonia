@@ -1,7 +1,10 @@
 ﻿<Window  
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
-    xmlns:local="clr-namespace:AvaloniaExamples.Examples.CustomTrackerDemo;assembly=AvaloniaExamples"    
-    Title="CustomTrackerDemo" Height="480" Width="640">
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
+        xmlns:local="clr-namespace:AvaloniaExamples.Examples.CustomTrackerDemo;assembly=AvaloniaExamples"  
+        x:Class="AvaloniaExamples.Examples.CustomTrackerDemo.MainWindow"  
+        Title="CustomTrackerDemo" Height="480" Width="640">
     <TabControl Margin="4">
         <TabItem Header="Custom background brush">
             <oxy:PlotView Model="{Binding Model}">
@@ -26,7 +29,7 @@
             <oxy:PlotView Model="{Binding Model}">
                 <oxy:PlotView.DefaultTrackerTemplate>
                     <ControlTemplate>
-                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" BorderBrush="{Binding Series.ActualColor, Converter={Static local:MainWindow.OxyColorConverter}}" BorderThickness="3">
+                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" BorderBrush="{Binding Series.ActualColor, Converter={x:Static local:MainWindow.OxyColorConverter}}" BorderThickness="3">
                             <oxy:TrackerControl.Content>
                                 <TextBlock Text="{Binding}" Margin="7" />
                             </oxy:TrackerControl.Content>

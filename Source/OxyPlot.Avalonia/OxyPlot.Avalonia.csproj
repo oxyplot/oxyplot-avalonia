@@ -14,7 +14,7 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="**\*.xaml;Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
-    <PackageReference Include="Avalonia" Version="0.8.0" />
-    <PackageReference Include="OxyPlot.Core" Version="2.0.0-unstable1035" />
+    <PackageReference Include="Avalonia" Version="0.9.0" />
+    <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
   </ItemGroup>
 </Project>

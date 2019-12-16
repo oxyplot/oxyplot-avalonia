@@ -7,7 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Portable.Xaml.Markup;
 
 namespace AvaloniaExamples.Examples.CustomTrackerDemo
 {
@@ -20,6 +19,7 @@ namespace AvaloniaExamples.Examples.CustomTrackerDemo
     using AvaloniaExamples;
     using OxyPlot.Avalonia.Converters;
     using System;
+    using Avalonia.Markup.Xaml;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

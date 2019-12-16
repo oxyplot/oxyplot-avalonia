@@ -152,8 +152,9 @@ namespace OxyPlot.Avalonia
                 }
 
                 if (Model != null)
-                {
-                    ((IPlotModel)Model).AttachPlotView(this);
+				{
+					((IPlotModel)Model).AttachPlotView(null); // detach so we can re-attach
+					((IPlotModel)Model).AttachPlotView(this);
                     currentModel = Model;
                 }
             }

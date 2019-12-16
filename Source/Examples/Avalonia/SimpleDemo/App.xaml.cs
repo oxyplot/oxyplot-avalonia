@@ -28,7 +28,6 @@ namespace SimpleDemo
             OxyPlotModule.EnsureLoaded();
             AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .BeforeStarting(_ => OxyPlotModule.Initialize())
                 .Start<MainWindow>();
         }
     }

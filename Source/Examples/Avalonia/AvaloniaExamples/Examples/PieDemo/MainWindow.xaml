@@ -1,6 +1,9 @@
 ﻿<Window 
         xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" Title="PieDemo" Height="480" Width="640">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
+        x:Class="AvaloniaExamples.Examples.PieDemo.MainWindow"
+        Title="PieDemo" Height="480" Width="640">
     <TabControl>
         <TabItem Header="Binding to PlotModel">
             <oxy:PlotView Model="{Binding PieModel}"/>

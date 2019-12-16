@@ -157,7 +157,7 @@ namespace OxyPlot.Avalonia
 
             if (ContextMenu != null)
             {
-                if (Math.Abs(d) < 1e-8 && releasedArgs.MouseButton == MouseButton.Right)
+                if (Math.Abs(d) < 1e-8 && releasedArgs.InitialPressMouseButton == MouseButton.Right)
                 {
                     ContextMenu.DataContext = DataContext;
                     ContextMenu.IsVisible = true;
