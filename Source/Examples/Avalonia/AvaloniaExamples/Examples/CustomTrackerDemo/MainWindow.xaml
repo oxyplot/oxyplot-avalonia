@@ -39,7 +39,7 @@
             </oxy:PlotView>
         </TabItem>
         <TabItem Header="No tracker">
-            <oxy:PlotView Model="{Binding Model}" DefaultTrackerTemplate="{local:Null}" />
+            <oxy:PlotView Model="{Binding Model}" DefaultTrackerTemplate="{x:Null}" />
         </TabItem>
         <TabItem Header="Rounded box">
             <oxy:PlotView Model="{Binding Model}">
