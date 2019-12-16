@@ -15,7 +15,7 @@
                         <ColumnDefinition Width="128"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="{Binding Thumbnail}" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Image Source="{Binding Thumbnail}" Width="120" Height="90"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <StackPanel Grid.Column="1" VerticalAlignment="Top">
                         <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
                         <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
