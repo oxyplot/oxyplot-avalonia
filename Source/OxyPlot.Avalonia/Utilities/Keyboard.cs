@@ -20,7 +20,7 @@ namespace OxyPlot.Avalonia
     {
         public static Keyboard Instance { get; } = new Keyboard();
 
-        private InputModifiers currentModifiers;
+        private RawInputModifiers currentModifiers;
 
         public Keyboard()
         {
@@ -35,22 +35,22 @@ namespace OxyPlot.Avalonia
         {
 
             var modifiers = OxyModifierKeys.None;
-            if ((currentModifiers & InputModifiers.Shift) != 0)
+            if ((currentModifiers & RawInputModifiers.Shift) != 0)
             {
                 modifiers |= OxyModifierKeys.Shift;
             }
 
-            if ((currentModifiers & InputModifiers.Control) != 0)
+            if ((currentModifiers & RawInputModifiers.Control) != 0)
             {
                 modifiers |= OxyModifierKeys.Control;
             }
 
-            if ((currentModifiers & InputModifiers.Alt) != 0)
+            if ((currentModifiers & RawInputModifiers.Alt) != 0)
             {
                 modifiers |= OxyModifierKeys.Alt;
             }
 
-            if ((currentModifiers & InputModifiers.Windows) != 0)
+            if ((currentModifiers & RawInputModifiers.Meta) != 0)
             {
                 modifiers |= OxyModifierKeys.Windows;
             }

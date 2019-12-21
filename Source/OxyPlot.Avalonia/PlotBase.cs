@@ -339,8 +339,8 @@ namespace OxyPlot.Avalonia
             if (!object.ReferenceEquals(tracker, currentTracker))
             {
                 HideTracker();
-                overlays.Children.Add(tracker);
-                currentTracker = tracker;
+                overlays.Children.Add(tracker.Control);
+                currentTracker = tracker.Control;
             }
 
             if (currentTracker != null)

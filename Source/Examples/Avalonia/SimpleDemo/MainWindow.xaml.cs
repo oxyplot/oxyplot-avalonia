@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Diagnostics;
 using Avalonia.Markup.Xaml;
@@ -24,7 +25,7 @@ namespace SimpleDemo
         public MainWindow()
         {
             InitializeComponent();
-            DevTools.Attach(this);
+			DevToolsExtensions.AttachDevTools(this);
         }
 
         private void InitializeComponent()

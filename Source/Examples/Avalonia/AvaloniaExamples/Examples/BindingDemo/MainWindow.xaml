@@ -2,6 +2,7 @@
         xmlns="https://github.com/avaloniaui" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        x:Class="AvaloniaExamples.Examples.BindingDemo.MainWindow"
         Title="BindingDemo" Width="640"
         Height="480">
   <Grid>

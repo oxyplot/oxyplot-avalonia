@@ -2,6 +2,7 @@
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:oxy="http://oxyplot.org/avalonia"
+        x:Class="AvaloniaExamples.Examples.AlignedAxesDemo.MainWindow"
         Title="AlignedAxesDemo" Height="480" Width="640">
     <Grid>
         <Grid.RowDefinitions>
