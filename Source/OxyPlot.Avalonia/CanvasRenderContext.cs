@@ -605,7 +605,7 @@ namespace OxyPlot.Avalonia
             var bitmapChain = GetImageSource(source);
 
             // ReSharper disable CompareOfFloatsByEqualityOperator
-            if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelWidth && srcHeight == bitmapChain.PixelHeight)
+            if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelSize.Width && srcHeight == bitmapChain.PixelSize.Height)
             // ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 // do not crop
@@ -828,9 +828,8 @@ namespace OxyPlot.Avalonia
                     // The default StrokeLineJoin is Miter
                 }
 
-                if (Math.Abs(thickness - 1) > double.Epsilon)
+                if (thickness > 0)
                 {
-                    // only set if different from the default value (1)
                     shape.StrokeThickness = thickness;
                 }
 

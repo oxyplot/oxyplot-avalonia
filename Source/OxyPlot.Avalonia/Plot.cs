@@ -13,7 +13,6 @@ namespace OxyPlot.Avalonia
     using global::Avalonia.Controls;
     using global::Avalonia.LogicalTree;
     using global::Avalonia.VisualTree;
-    using OmniXaml.Attributes;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;

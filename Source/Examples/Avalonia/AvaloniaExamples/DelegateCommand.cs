@@ -55,24 +55,7 @@ namespace AvaloniaExamples
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command should execute.
         /// </summary>
-        public event EventHandler CanExecuteChanged
-        {
-            add
-            {
-                if (this.canExecute != null)
-                {
-                    CommandManager.RequerySuggested += value;
-                }
-            }
-
-            remove
-            {
-                if (this.canExecute != null)
-                {
-                    CommandManager.RequerySuggested -= value;
-                }
-            }
-        }
+        public event EventHandler CanExecuteChanged;
 
         /// <summary>
         /// Defines the method that determines whether the command can execute in its current state.
@@ -98,7 +81,7 @@ namespace AvaloniaExamples
         /// </summary>
         public void RaiseCanExecuteChanged()
         {
-            CommandManager.InvalidateRequerySuggested();
+            CanExecuteChanged?.Invoke(this, new EventArgs());
         }
     }
 }

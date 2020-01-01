@@ -16,6 +16,7 @@ namespace AvaloniaExamples
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Avalonia;
     using Avalonia.Controls;
     using Avalonia.Markup.Xaml;
     using Avalonia.Diagnostics;
@@ -36,8 +37,8 @@ namespace AvaloniaExamples
             InitializeComponent();
             ListBox.Items = this.Examples = this.GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
             this.DataContext = this;
-            DevTools.Attach(this);
-        }
+			DevToolsExtensions.AttachDevTools(this);
+		}
 
         private void InitializeComponent()
         {
@@ -52,21 +53,6 @@ namespace AvaloniaExamples
         /// <value>The examples.</value>
         public IList<Example> Examples { get; private set; }
 
-        /// <summary>
-        /// Creates a thumbnail of the specified window.
-        /// </summary>
-        /// <param name="window">The window.</param>
-        /// <param name="width">The width of the thumbnail.</param>
-        /// <param name="path">The output path.</param>
-        private static void CreateThumbnail(Avalonia.Controls.Window window, int width, string path)
-        {
-            var bitmap = ScreenCapture.Capture(
-                (int)window.Bounds.TopLeft.X,
-                (int)window.Bounds.TopLeft.Y,
-                (int)window.Bounds.Width,
-                (int)window.Bounds.Height);
-            var newHeight = width * bitmap.Height / bitmap.Width;
-        }
 
         /// <summary>
         /// Handles the MouseDoubleClick event of the ListBox control.

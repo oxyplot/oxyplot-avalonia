@@ -37,7 +37,6 @@ namespace AvaloniaExamples.Examples.TaskDemo
             this.points.Add(new DataPoint(0, 0));
             this.PlotModel.Series.Add(this.LineSeries1);
 
-            System.Windows.Threading.Dispatcher.CurrentDispatcher.Thread.Name = "UI thread";
             Debug.WriteLine("The MainViewModel is created on: " + Thread.CurrentThread.Name);
 
             // Create a cancellation token source so we can cancel the worker task when

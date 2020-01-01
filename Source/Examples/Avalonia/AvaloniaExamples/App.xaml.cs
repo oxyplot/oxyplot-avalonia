@@ -21,20 +21,18 @@ namespace AvaloniaExamples
 
         static void Main(string[] args)
         {
+            OxyPlotModule.EnsureLoaded();
             InitializeLogging();
-            AppBuilder.Configure<App>()
-                .UseWin32()
-                .UseSkia()
-                .BeforeStarting(_ => OxyPlotModule.Initialize())
+            AppBuilder.Configure<App>().UsePlatformDetect()
                 .Start<MainWindow>();
         }
 
         public static void AttachDevTools(Window window)
         {
 #if DEBUG
-            DevTools.Attach(window);
+			DevToolsExtensions.AttachDevTools(window);
 #endif
-        }
+		}
 
         private static void InitializeLogging()
         {

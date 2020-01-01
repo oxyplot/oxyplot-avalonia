@@ -7,10 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using Avalonia.Markup.Xaml;
+
 namespace OxyPlot.Avalonia
 {
-    using OmniXaml;
-
     /// <summary>
     /// Provides a markup extension for <see cref="DataPoint" />s.
     /// </summary>
@@ -31,7 +32,7 @@ namespace OxyPlot.Avalonia
             point = new DataPoint(x, y);
         }
 
-        public override object ProvideValue(MarkupExtensionContext markupExtensionContext)
+        public override object ProvideValue(IServiceProvider serviceProvider)
         {
             return point;
         }

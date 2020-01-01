@@ -14,7 +14,7 @@ namespace AvaloniaExamples.Examples.ColorBindingDemo
 
     using ICommand = System.Windows.Input.ICommand;
 
-    public class MainViewModel : Observable
+    public class MainViewModel : NotifyPropertyChangedBase
     {
         private OxyColor background;
 
@@ -69,8 +69,7 @@ namespace AvaloniaExamples.Examples.ColorBindingDemo
 
             set
             {
-                this.textColor = value;
-                this.RaisePropertyChanged(() => this.TextColor);
+                SetValue(ref textColor, value);
             }
         }
 
@@ -81,11 +80,7 @@ namespace AvaloniaExamples.Examples.ColorBindingDemo
                 return this.ticklineColor;
             }
 
-            set
-            {
-                this.ticklineColor = value;
-                this.RaisePropertyChanged(() => this.TicklineColor);
-            }
+            set => SetValue(ref ticklineColor, value);
         }
 
         public OxyColor PlotAreaBorderColor
@@ -95,11 +90,7 @@ namespace AvaloniaExamples.Examples.ColorBindingDemo
                 return this.plotAreaBorderColor;
             }
 
-            set
-            {
-                this.plotAreaBorderColor = value;
-                this.RaisePropertyChanged(() => this.PlotAreaBorderColor);
-            }
+            set => SetValue(ref plotAreaBorderColor, value);
         }
 
         public OxyColor Background
@@ -109,11 +100,7 @@ namespace AvaloniaExamples.Examples.ColorBindingDemo
                 return this.background;
             }
 
-            set
-            {
-                this.background = value;
-                this.RaisePropertyChanged(() => this.Background);
-            }
+            set => SetValue(ref background, value);
         }
     }
 }

@@ -21,17 +21,17 @@ namespace MemoryTest
 
         static void Main(string[] args)
         {
+            OxyPlotModule.EnsureLoaded();
             InitializeLogging();
             AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .BeforeStarting(_ => OxyPlotModule.Initialize())
                 .Start<MainWindow>();
         }
 
         public static void AttachDevTools(Window window)
         {
 #if DEBUG
-            DevTools.Attach(window);
+			DevToolsExtensions.AttachDevTools(window);
 #endif
         }
 

@@ -1,6 +1,9 @@
 ﻿<Window 
         xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" xmlns:local="clr-namespace:PolarDemo" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
+        xmlns:local="clr-namespace:PolarDemo" 
+        x:Class="AvaloniaExamples.Examples.PolarDemo.MainWindow"
         Title="PolarDemo" Height="480" Width="640">
     <TabControl>
         <TabItem Header="Defined by PlotModel">

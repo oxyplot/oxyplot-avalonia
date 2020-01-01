@@ -1,4 +1,7 @@
-﻿namespace OxyPlot.Avalonia
+﻿using Avalonia.Metadata;
+
+[assembly: XmlnsDefinition("http://oxyplot.org/avalonia", "OxyPlot.Avalonia")]
+namespace OxyPlot.Avalonia
 {
     using global::Avalonia;
     using global::Avalonia.Styling;
@@ -9,5 +12,6 @@
         {
             AvaloniaLocator.Current.GetService<IGlobalStyles>().Styles.AddRange(new Themes.Default());
         }
+        public static void EnsureLoaded(){}
     }
 }

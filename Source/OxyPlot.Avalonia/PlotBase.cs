@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia.Media;
+
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia;
@@ -95,7 +97,7 @@ namespace OxyPlot.Avalonia
         {
             DisconnectCanvasWhileUpdating = true;
             trackerDefinitions = new ObservableCollection<TrackerDefinition>();
-            new BoundsTracker().Track(this).Subscribe(bounds => OnSizeChanged(this, bounds?.Bounds.Size ?? new Size()));
+            this.GetObservable(TransformedBoundsProperty).Subscribe(bounds => OnSizeChanged(this, bounds?.Bounds.Size ?? new Size()));
         }
         
         /// <summary>
@@ -247,6 +249,7 @@ namespace OxyPlot.Avalonia
                 // After the invalidation, the element will have its layout updated,
                 // which will occur asynchronously unless subsequently forced by UpdateLayout.
                 BeginInvoke(InvalidateArrange);
+                BeginInvoke(InvalidateVisual);
             }
         }
 
@@ -336,8 +339,8 @@ namespace OxyPlot.Avalonia
             if (!object.ReferenceEquals(tracker, currentTracker))
             {
                 HideTracker();
-                overlays.Children.Add(tracker);
-                currentTracker = tracker;
+                overlays.Children.Add(tracker.Control);
+                currentTracker = tracker.Control;
             }
 
             if (currentTracker != null)
@@ -416,7 +419,7 @@ namespace OxyPlot.Avalonia
         /// <returns><c>true</c> if if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
         private static bool IsUserVisible(Control element)
         {
-            return element.IsEffectivelyVisible && BoundsTracker.GetTransformedBounds(element).HasValue;
+            return element.IsEffectivelyVisible && element.TransformedBounds.HasValue;
         }
 
         /// <summary>

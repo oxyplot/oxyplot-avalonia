@@ -19,15 +19,15 @@ namespace SimpleDemo
 
         public override void Initialize()
         {
-            base.Initialize();
             AvaloniaXamlLoader.Load(this);
+            base.Initialize();
         }
 
         public static void Main(string[] args)
         {
+            OxyPlotModule.EnsureLoaded();
             AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .BeforeStarting(_ => OxyPlotModule.Initialize())
                 .Start<MainWindow>();
         }
     }

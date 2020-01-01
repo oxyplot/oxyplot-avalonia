@@ -20,7 +20,7 @@ namespace AvaloniaExamples.Examples.DataTemplateDemo
     using AvaloniaExamples;
     using Avalonia.Controls.Templates;
     using Avalonia.Controls;
-    using Avalonia.Markup.Xaml.Data;
+    using Avalonia.Data;
 
     /// <summary>
     /// Interaction logic for PlotViewDataTemplateWindow.xaml
@@ -32,7 +32,7 @@ namespace AvaloniaExamples.Examples.DataTemplateDemo
         {
             this.InitializeComponent();
             this.DataContext = new { Models = CreateModels().ToArray() };
-            this.DataTemplates.Add(new FuncDataTemplate<Model>(model => new OxyPlot.Avalonia.PlotView
+            this.DataTemplates.Add(new FuncDataTemplate<Model>((model, _) => new OxyPlot.Avalonia.PlotView
             {
                 [!!OxyPlot.Avalonia.PlotView.ModelProperty] = new Binding(nameof(Model.PlotModel)),
                 [!!OxyPlot.Avalonia.PlotView.ControllerProperty] = new Binding(nameof(Model.PlotController)) 

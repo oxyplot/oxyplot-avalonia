@@ -1,7 +1,10 @@
 ﻿<Window 
         xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:UserControlDemo="clr-namespace:AvaloniaExamples.Examples.UserControlDemo;assembly=AvaloniaExamples"
-        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" Title="Plot in DataTemplate" Height="480" Width="640">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:UserControlDemo="clr-namespace:AvaloniaExamples.Examples.UserControlDemo;assembly=AvaloniaExamples"
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
+        x:Class="AvaloniaExamples.Examples.UserControlDemo.MainWindow3"
+        Title="Plot in DataTemplate" Height="480" Width="640">
     <Window.DataTemplates>
         <DataTemplate DataType="{x:Type UserControlDemo:ViewModel}">
             <oxy:Plot Title="{Binding Title}">
