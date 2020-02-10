@@ -13,3 +13,39 @@ mkdir ./external
 git submodule add git@github.com:oxyplot/oxyplot-avalonia.git ./external/oxyplot-avalonia
 # Reference the ../external/oxyplot-avalonia/Source/OxyPlot.Avalonia/OxyPlot.Avalonia.csproj project then.
 ```
+
+### Usage
+
+To use the library, add the following to your `App.xaml`:
+
+```xml
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Sensei.Presentation.Avalonia.App">
+    <Application.Styles>
+        <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
+        <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
+      
+        <!-- Add the line below to get OxyPlot UI theme applied. -->
+        <StyleInclude Source="resm:OxyPlot.Avalonia.Themes.Default.xaml?assembly=OxyPlot.Avalonia"/>
+    </Application.Styles>
+</Application>
+```
+
+Then, you can add plots to your application, as such:
+
+```xml
+<avalonia:Plot Height="150" 
+               PlotMargins="50 0 0 0"
+               PlotAreaBorderColor="#999999">
+    <avalonia:Plot.Series>
+        <avalonia:AreaSeries 
+            DataFieldX="Index"
+            DataFieldY="Value"
+            Items="{Binding Path=Values}"
+            Color="#fd6d00" />
+    </avalonia:Plot.Series>
+</avalonia:Plot>
+```
+
+See the [AvaloniaExamples](https://github.com/oxyplot/oxyplot-avalonia/tree/master/Source/Examples/Avalonia/AvaloniaExamples) project and [OxyPlot Documentation](https://readthedocs.org/projects/oxyplot/downloads/pdf/latest/) to learn how to create more complex plots. 
