@@ -22,6 +22,7 @@ jobs:
   - task: DotNetCoreCLI@2
     inputs:
       command: pack
+      projects: '**/OxyPlot.Avalonia.csproj'
       arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
       zipAfterPublish: True
   - task: PublishBuildArtifacts@1
