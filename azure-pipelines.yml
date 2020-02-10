@@ -26,5 +26,9 @@ jobs:
 - job: Linux
   pool:
     vmImage: 'ubuntu 16.04'
+  variables:
+    solution: '**/*.sln'
+    buildPlatform: 'Any CPU'
+    buildConfiguration: 'Release'
   steps:
   - script: cd ./Source && dotnet build --configuration $(buildConfiguration)
