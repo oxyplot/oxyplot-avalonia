@@ -1,12 +1,8 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using OxyPlot.Avalonia;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimpleDemo
 {
@@ -23,12 +19,24 @@ namespace SimpleDemo
             base.Initialize();
         }
 
+        public override void OnFrameworkInitializationCompleted()
+        {
+            if (!(ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop))
+            {
+                throw new PlatformNotSupportedException();
+            }
+
+            desktop.MainWindow = new MainWindow();
+
+            base.OnFrameworkInitializationCompleted();
+        }
+
         public static void Main(string[] args)
         {
             OxyPlotModule.EnsureLoaded();
             AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .Start<MainWindow>();
+                .StartWithClassicDesktopLifetime(args);
         }
     }
 }
