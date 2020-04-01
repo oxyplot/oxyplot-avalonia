@@ -519,6 +519,7 @@ namespace OxyPlot.Avalonia
             {
                 tb.Clip.Transform = new MatrixTransform(tb.RenderTransform.Value.Invert());
             }
+            tb.RenderTransformOrigin = new RelativePoint(0.0, 0.0, RelativeUnit.Relative);
         }
 
         /// <summary>
