@@ -1,9 +1,8 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Diagnostics;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Logging.Serilog;
-using Avalonia.Themes.Default;
 using Avalonia.Markup.Xaml;
 using Serilog;
 using OxyPlot.Avalonia;
@@ -19,12 +18,25 @@ namespace AvaloniaExamples
             base.Initialize();
         }
 
+        public override void OnFrameworkInitializationCompleted()
+        {
+            if (!(ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop))
+            {
+                throw new PlatformNotSupportedException();
+            }
+
+            desktop.MainWindow = new MainWindow();
+
+            base.OnFrameworkInitializationCompleted();
+        }
+
         static void Main(string[] args)
         {
             OxyPlotModule.EnsureLoaded();
             InitializeLogging();
-            AppBuilder.Configure<App>().UsePlatformDetect()
-                .Start<MainWindow>();
+            AppBuilder.Configure<App>()
+                .UsePlatformDetect()
+                .StartWithClassicDesktopLifetime(args);
         }
 
         public static void AttachDevTools(Window window)
