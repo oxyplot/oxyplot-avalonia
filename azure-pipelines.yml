@@ -8,6 +8,7 @@ jobs:
     solution: '**/*.sln'
     buildPlatform: 'Any CPU'
     buildConfiguration: 'Release'
+    buildVersion: '2.0.0-unstable-$(Build.BuildNumber)'
   steps:
   - task: NuGetToolInstaller@1
   - task: NuGetCommand@2
@@ -16,12 +17,13 @@ jobs:
   - task: VSBuild@1
     inputs:
       solution: '$(solution)'
-      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)" /p:Version=$(buildVersion)'
       platform: '$(buildPlatform)'
       configuration: '$(buildConfiguration)'
   - task: NuGetCommand@2
     inputs:
-      command: pack
+      command: custom
+      arguments: 'pack --no-build'
       packagesToPack: '**/OxyPlot.Avalonia.csproj'
   - task: PublishBuildArtifacts@1
     inputs:
