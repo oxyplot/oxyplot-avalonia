@@ -6,15 +6,13 @@
 
 namespace AvaloniaExamples.Examples.RealtimeDemo
 {
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Threading;
-
+    using Avalonia.Threading;
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
-    using Avalonia.Threading;
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
 
     public enum SimulationType
     {
@@ -22,79 +20,103 @@ namespace AvaloniaExamples.Examples.RealtimeDemo
         TimeSimulation
     }
 
-    public class MainViewModel : INotifyPropertyChanged, IDisposable
+    public class MainViewModel : INotifyPropertyChanged
     {
-        // try to change might be lower or higher than the rendering interval
-        private const int UpdateInterval = 20;
-
-        private bool disposed;
-        private readonly Timer timer;
-        private readonly Stopwatch watch = new Stopwatch();
-        private int numberOfSeries;
-        private SimulationType simulationType;
-
-        public MainViewModel()
+        public PlotModel PlotModel
         {
-            this.timer = new Timer(OnTimerElapsed);
-            this.Function = (t, x, a) => Math.Cos(t * a) * (x == 0 ? 1 : Math.Sin(x * a) / x);
-            this.SimulationType = SimulationType.Waves;
+            get
+            {
+                return plotModel;
+            }
+            set
+            {
+                plotModel = value;
+                RaisePropertyChanged("PlotModel");
+            }
         }
+
+        private PlotModel plotModel;
+
+        public int TotalNumberOfPoints
+        {
+            get
+            {
+                return totalNumberOfPoints;
+            }
+            set
+            {
+                totalNumberOfPoints = value;
+                RaisePropertyChanged("TotalNumberOfPoints");
+            }
+        }
+
+        private int totalNumberOfPoints = 0;
 
         public SimulationType SimulationType
         {
             get
             {
-                return this.simulationType;
+                return simulationType;
             }
 
             set
             {
-                this.simulationType = value;
-                this.RaisePropertyChanged("SimulationType");
-                this.SetupModel();
+                simulationType = value;
+                RaisePropertyChanged("SimulationType");
             }
+        }
+
+        private SimulationType simulationType;
+
+        private readonly DispatcherTimer timer;
+        private readonly Stopwatch watch = new Stopwatch();
+        private const int UpdateInterval = 33;
+        private Func<double, double, double, double> Function { get; set; }
+
+        public MainViewModel()
+        {
+            timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(UpdateInterval) };
+            timer.Tick += Timer_Tick;
+
+            Function = (t, x, a) => Math.Cos(t * a) * (x == 0 ? 1 : Math.Sin(x * a) / x);
+            SimulationType = SimulationType.Waves;
+            SetupModel();
+
+            watch.Start();
+            timer.Start();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChanged(string property)
+        {
+            Dispatcher.UIThread.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property)));
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            UpdateModel();
+
+            Dispatcher.UIThread.InvokeAsync(() => PlotModel.InvalidatePlot(true), DispatcherPriority.Background);
         }
 
         private void SetupModel()
         {
-            this.timer.Change(Timeout.Infinite, Timeout.Infinite);
-
             PlotModel = new PlotModel();
             PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -2, Maximum = 2 });
 
-            this.numberOfSeries = this.SimulationType == SimulationType.TimeSimulation ? 1 : 20;
-
-            for (int i = 0; i < this.numberOfSeries; i++)
+            var numberOfSeries = SimulationType == SimulationType.TimeSimulation ? 1 : 20;
+            for (int i = 0; i < numberOfSeries; i++)
             {
                 PlotModel.Series.Add(new LineSeries { LineStyle = LineStyle.Solid });
             }
-            
-            this.watch.Start();
 
-            this.RaisePropertyChanged("PlotModel");
-
-            this.timer.Change(1000, UpdateInterval);
+            RaisePropertyChanged("PlotModel");
         }
 
-        public int TotalNumberOfPoints { get; private set; }
-
-        private Func<double, double, double, double> Function { get; set; }
-
-        public PlotModel PlotModel { get; private set; }
-
-        private void OnTimerElapsed(object state)
+        private void UpdateModel()
         {
-            lock (this.PlotModel.SyncRoot)
-            {
-                this.Update();
-            }
-
-            Dispatcher.UIThread.InvokeAsync(() => this.PlotModel.InvalidatePlot(true), DispatcherPriority.Background);
-        }
-
-        private void Update()
-        {
-            double t = this.watch.ElapsedMilliseconds * 0.001;
+            double t = watch.ElapsedMilliseconds * 0.001;
             int n = 0;
 
             for (int i = 0; i < PlotModel.Series.Count; i++)
@@ -131,37 +153,12 @@ namespace AvaloniaExamples.Examples.RealtimeDemo
                 n += s.Points.Count;
             }
 
-            if (this.TotalNumberOfPoints != n)
+            if (TotalNumberOfPoints != n)
             {
-                this.TotalNumberOfPoints = n;
-                this.RaisePropertyChanged("TotalNumberOfPoints");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string property)
-        {
-            Dispatcher.UIThread.InvokeAsync(() => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property)));
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    this.timer.Dispose();
-                }
+                TotalNumberOfPoints = n;
             }
 
-            this.disposed = true;
+            RaisePropertyChanged("PlotModel");
         }
     }
 }
