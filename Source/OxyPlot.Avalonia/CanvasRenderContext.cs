@@ -627,6 +627,15 @@ namespace OxyPlot.Avalonia
             //// alternative: image.RenderTransform = new TranslateTransform(destX, destY);
 
             image.Source = bitmapChain;
+
+            if (interpolate)
+            {
+                RenderOptions.SetBitmapInterpolationMode(image, global::Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.LowQuality);
+            }
+            else
+            {
+                RenderOptions.SetBitmapInterpolationMode(image, global::Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.Default);
+            }
         }
 
         /// <summary>
