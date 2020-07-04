@@ -80,7 +80,7 @@ namespace OxyPlot.Avalonia
         public CanvasRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
-            UseStreamGeometry = false; // Temporarily disabled because of Avalonia bug
+            UseStreamGeometry = true;
             RendersToScreen = true;
             BalancedLineDrawingThicknessLimit = 3.5;
         }
@@ -112,17 +112,14 @@ namespace OxyPlot.Avalonia
         /// <param name="thickness">The thickness (in device independent units, 1/96 inch).</param>
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var e = CreateAndAdd<Ellipse>(rect.Left, rect.Top);
-            SetStroke(e, stroke, thickness);
-            if (fill.IsVisible())
+            var path = CreateAndAdd<Path>();
+            SetStroke(path, stroke, thickness);
+            if (!fill.IsUndefined())
             {
-                e.Fill = GetCachedBrush(fill);
+                path.Fill = GetCachedBrush(fill);
             }
-
-            e.Width = rect.Width;
-            e.Height = rect.Height;
-            Canvas.SetLeft(e, rect.Left);
-            Canvas.SetTop(e, rect.Top);
+            var ellipseGeometry = new EllipseGeometry(ToRect(rect));
+            path.Data = ellipseGeometry;
         }
 
         /// <summary>
@@ -346,6 +343,11 @@ namespace OxyPlot.Avalonia
                     }
                 }
 
+                if (usg)
+                {
+                    sgc.EndFigure(true);
+                }
+
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
@@ -389,18 +391,14 @@ namespace OxyPlot.Avalonia
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var e = CreateAndAdd<Rectangle>(rect.Left, rect.Top);
-            SetStroke(e, stroke, thickness, LineJoin.Miter, null, 0, true);
-
+            var path = CreateAndAdd<Path>();
+            SetStroke(path, stroke, thickness);
             if (!fill.IsUndefined())
             {
-                e.Fill = GetCachedBrush(fill);
+                path.Fill = GetCachedBrush(fill);
             }
-
-            e.Width = rect.Width;
-            e.Height = rect.Height;
-            Canvas.SetLeft(e, rect.Left);
-            Canvas.SetTop(e, rect.Top);
+            var rectangleGeometry = new RectangleGeometry(ToRect(rect));
+            path.Data = rectangleGeometry;
         }
 
         /// <summary>
@@ -413,10 +411,8 @@ namespace OxyPlot.Avalonia
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
-            foreach (var rect in rectangles)
-            {
-                DrawRectangle(rect, fill, stroke, thickness);
-            }
+            var polys = rectangles.Select(r => (IList<ScreenPoint>)RectangleToPolygon(r)).ToList();
+            DrawPolygons(polys, fill, stroke, thickness, null, LineJoin.Miter, false);
         }
 
         /// <summary>
@@ -845,7 +841,8 @@ namespace OxyPlot.Avalonia
 
                 if (dashArray != null)
                 {
-                    shape.StrokeDashArray = new global::Avalonia.Collections.AvaloniaList<double>(dashArray.Select(dash => dash + dashOffset));
+                    shape.StrokeDashArray = new global::Avalonia.Collections.AvaloniaList<double>(dashArray.Select(dash => dash));
+                    shape.StrokeDashOffset = dashOffset;
                 }
             }
         }
@@ -1020,5 +1017,22 @@ namespace OxyPlot.Avalonia
         {
             return new List<Point>(aliased ? points.Select(ToPixelAlignedPoint) : points.Select(ToPoint));
         }
+
+        /// <summary>
+        /// Converts an <see cref="OxyRect"/> to an array of <see cref="ScreenPoint"/>.
+        /// </summary>
+        /// <param name="rect">The rectangle.</param>
+        /// <returns>A <see cref="ScreenPoint[]"/>.</returns>
+        private static ScreenPoint[] RectangleToPolygon(OxyRect rect)
+        {
+            return new ScreenPoint[]
+            {
+                rect.BottomLeft,
+                rect.TopLeft,
+                rect.TopRight,
+                rect.BottomRight,
+            };
+        }
+
     }
 }
