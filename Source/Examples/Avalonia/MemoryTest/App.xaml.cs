@@ -2,9 +2,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Logging.Serilog;
 using Avalonia.Markup.Xaml;
-using Serilog;
 using OxyPlot.Avalonia;
 
 namespace MemoryTest
@@ -33,9 +31,11 @@ namespace MemoryTest
         static void Main(string[] args)
         {
             OxyPlotModule.EnsureLoaded();
-            InitializeLogging();
             AppBuilder.Configure<App>()
                 .UsePlatformDetect()
+#if DEBUG
+                .LogToDebug()
+#endif
                 .StartWithClassicDesktopLifetime(args);
         }
 
@@ -43,16 +43,6 @@ namespace MemoryTest
         {
 #if DEBUG
 			DevToolsExtensions.AttachDevTools(window);
-#endif
-        }
-
-        private static void InitializeLogging()
-        {
-#if DEBUG
-            SerilogLogger.Initialize(new LoggerConfiguration()
-                .MinimumLevel.Warning()
-                .WriteTo.Trace(outputTemplate: "{Area}: {Message}")
-                .CreateLogger());
 #endif
         }
     }

@@ -31,7 +31,7 @@ namespace OxyPlot.Avalonia
                 return;
             }
 
-            var args = new OxyKeyEventArgs { ModifierKeys = e.Modifiers.ToModifierKeys(), Key = e.Key.Convert() };
+            var args = new OxyKeyEventArgs { ModifierKeys = e.KeyModifiers.ToModifierKeys(), Key = e.Key.Convert() };
             e.Handled = ActualController.HandleKeyDown(this, args);
         }
 

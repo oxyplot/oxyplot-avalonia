@@ -21,15 +21,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies this <see cref="DataProperty"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double[,]> DataProperty = AvaloniaProperty.Register<HeatMapSeries, double[,]>(nameof(Data), new double[0, 0], validate: (obj, val) =>
-        {
-            if (val == null)
-            {
-                throw new System.ArgumentException();
-            }
-
-            return val;
-        });
+        public static readonly StyledProperty<double[,]> DataProperty = AvaloniaProperty.Register<HeatMapSeries, double[,]>(nameof(Data), new double[0, 0], validate: val => val != null);
 
         /// <summary>
         /// Identifies this <see cref="X0Property"/> dependency property.

@@ -259,9 +259,9 @@ namespace OxyPlot.Avalonia
         /// just before a UI element displays in an application. For more information, see Remarks.
         /// </summary>
         /// <param name="e">Event data for applying the template.</param>
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            base.OnTemplateApplied(e);
+            base.OnApplyTemplate(e);
             panel = e.NameScope.Find(PartPanel) as Panel;
             if (panel == null)
             {
