@@ -2,31 +2,7 @@
 
 # OxyPlot.Avalonia
 
-[OxyPlot](https://github.com/oxyplot) is a plotting library for .NET. This package targets Avalonia applications.
-
-### Installation
-
-To access the latest version of `OxyPlot.Avalonia` you can add this repo as a [submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to your own git repo:
-
-```sh
-mkdir ./external
-git submodule add git@github.com:oxyplot/oxyplot-avalonia.git ./external/oxyplot-avalonia
-# Reference the ../external/oxyplot-avalonia/Source/OxyPlot.Avalonia/OxyPlot.Avalonia.csproj project then.
-```
-
-Another way is to import our [Azure Artifacts NuGet package feed](https://worldbeater.visualstudio.com/OxyPlot.Avalonia/_packaging) by creating the following `nuget.config` file:
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<configuration>
-  <packageSources>
-    <clear /> <!-- Add other external NuGet package sources here -->
-    <add key="OxyPlot.Avalonia-CI" value="https://worldbeater.pkgs.visualstudio.com/OxyPlot.Avalonia/_packaging/OxyPlot.Avalonia-CI/nuget/v3/index.json" />
-  </packageSources>
-</configuration>
-```
-
-Next, install the latest preview version of the `OxyPlot.Avalonia` package as such:
+[OxyPlot](https://github.com/oxyplot) is a plotting library for .NET. This [package](https://www.nuget.org/packages/OxyPlot.Avalonia) targets Avalonia applications.
 
 ```
 dotnet add package OxyPlot.Avalonia
@@ -67,3 +43,32 @@ Then, you can add plots to your application, as such:
 ```
 
 See the [AvaloniaExamples](https://github.com/oxyplot/oxyplot-avalonia/tree/master/Source/Examples/Avalonia/AvaloniaExamples) project and [OxyPlot Documentation](https://readthedocs.org/projects/oxyplot/downloads/pdf/latest/) to learn how to create more complex plots. 
+
+
+### Installing Preview Versions
+
+To access the latest version of `OxyPlot.Avalonia` you can add this repo as a [submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to your own git repo:
+
+```sh
+mkdir ./external
+git submodule add git@github.com:oxyplot/oxyplot-avalonia.git ./external/oxyplot-avalonia
+# Reference the ../external/oxyplot-avalonia/Source/OxyPlot.Avalonia/OxyPlot.Avalonia.csproj project then.
+```
+
+Another way is to import our [Azure Artifacts NuGet package feed](https://worldbeater.visualstudio.com/OxyPlot.Avalonia/_packaging) by creating the following `nuget.config` file:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <clear /> <!-- Add other external NuGet package sources here -->
+    <add key="OxyPlot.Avalonia-CI" value="https://worldbeater.pkgs.visualstudio.com/OxyPlot.Avalonia/_packaging/OxyPlot.Avalonia-CI/nuget/v3/index.json" />
+  </packageSources>
+</configuration>
+```
+
+Next, install the latest preview version of the `OxyPlot.Avalonia` package as such:
+
+```
+dotnet add package OxyPlot.Avalonia
+```
