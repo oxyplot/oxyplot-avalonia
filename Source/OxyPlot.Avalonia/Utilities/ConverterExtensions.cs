@@ -372,25 +372,25 @@ namespace OxyPlot.Avalonia
             }
         }
 
-        public static OxyModifierKeys ToModifierKeys(this InputModifiers modifiers)
+        public static OxyModifierKeys ToModifierKeys(this KeyModifiers modifiers)
         {
             var modifierKeys = OxyModifierKeys.None;
-            if ((modifiers & InputModifiers.Shift) != 0)
+            if ((modifiers & KeyModifiers.Shift) != 0)
             {
                 modifierKeys |= OxyModifierKeys.Shift;
             }
 
-            if ((modifiers & InputModifiers.Control) != 0)
+            if ((modifiers & KeyModifiers.Control) != 0)
             {
                 modifierKeys |= OxyModifierKeys.Control;
             }
 
-            if ((modifiers & InputModifiers.Alt) != 0)
+            if ((modifiers & KeyModifiers.Alt) != 0)
             {
                 modifierKeys |= OxyModifierKeys.Alt;
             }
 
-            if ((modifiers & InputModifiers.Windows) != 0)
+            if ((modifiers & KeyModifiers.Meta) != 0)
             {
                 modifierKeys |= OxyModifierKeys.Windows;
             }
@@ -427,7 +427,7 @@ namespace OxyPlot.Avalonia
                 ChangedButton = e.MouseButton.Convert(),
                 ClickCount = e.ClickCount,
                 Position = e.GetPosition(relativeTo).ToScreenPoint(),
-                ModifierKeys = e.InputModifiers.ToModifierKeys()
+                ModifierKeys = e.KeyModifiers.ToModifierKeys()
             };
         }
 
@@ -442,7 +442,7 @@ namespace OxyPlot.Avalonia
             return new OxyMouseEventArgs
             {
                 Position = e.GetPosition(relativeTo).ToScreenPoint(),
-                ModifierKeys = e.InputModifiers.ToModifierKeys()
+                ModifierKeys = e.KeyModifiers.ToModifierKeys()
             };
         }
 
@@ -457,7 +457,7 @@ namespace OxyPlot.Avalonia
             return new OxyMouseEventArgs
             {
                 Position = e.GetPosition(relativeTo).ToScreenPoint(),
-                ModifierKeys = e.InputModifiers.ToModifierKeys()
+                ModifierKeys = e.KeyModifiers.ToModifierKeys()
             };
         }
 

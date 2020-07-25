@@ -41,15 +41,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="PaletteSizeProperty"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<int> PaletteSizeProperty = AvaloniaProperty.Register<LinearColorAxis, int>(nameof(PaletteSize), 20, validate: (obj, val) =>
-        {
-            if (!ValidatePaletteSize(val))
-            {
-                throw new System.ArgumentException();
-            }
-
-            return val;
-        });
+        public static readonly StyledProperty<int> PaletteSizeProperty = AvaloniaProperty.Register<LinearColorAxis, int>(nameof(PaletteSize), 20, validate: ValidatePaletteSize);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearColorAxis"/> class.
@@ -209,9 +201,9 @@ namespace OxyPlot.Avalonia
         /// <returns>
         /// The validation result.
         /// </returns>
-        private static bool ValidatePaletteSize(object value)
+        private static bool ValidatePaletteSize(int value)
         {
-            return (int)value >= 1;
+            return value >= 1;
         }
 
         static LinearColorAxis()

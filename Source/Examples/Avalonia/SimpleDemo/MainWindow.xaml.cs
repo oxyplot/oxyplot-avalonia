@@ -25,7 +25,7 @@ namespace SimpleDemo
         public MainWindow()
         {
             InitializeComponent();
-			DevToolsExtensions.AttachDevTools(this);
+			this.AttachDevTools();
         }
 
         private void InitializeComponent()

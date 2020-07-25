@@ -316,9 +316,9 @@ namespace OxyPlot.Avalonia
             }
         }
 
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            base.OnTemplateApplied(e);
+            base.OnApplyTemplate(e);
             path = e.NameScope.Get<Path>(PartPath);
             content = e.NameScope.Get<ContentPresenter>(PartContent);
             contentContainer = e.NameScope.Get<Panel>(PartContentContainer);
