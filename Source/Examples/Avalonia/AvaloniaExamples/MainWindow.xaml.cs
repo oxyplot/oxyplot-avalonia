@@ -67,8 +67,7 @@ namespace AvaloniaExamples
             {
                 var window = example.Create();
                 window.Icon = this.Icon;
-                window.Show();
-                
+                window.Show(this);                
             }
         }
 
