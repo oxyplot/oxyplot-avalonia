@@ -357,6 +357,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         /// <param name="button">The button to convert.</param>
         /// <returns>The converted mouse button.</returns>
+        [Obsolete]
         public static OxyMouseButton Convert(this MouseButton button)
         {
             switch (button)
@@ -367,6 +368,25 @@ namespace OxyPlot.Avalonia
                     return OxyMouseButton.Middle;
                 case MouseButton.Right:
                     return OxyMouseButton.Right;
+                default:
+                    return OxyMouseButton.None;
+            }
+        }
+
+        public static OxyMouseButton Convert(this PointerUpdateKind pointerUpdateKind)
+        {
+            switch (pointerUpdateKind)
+            {
+                case PointerUpdateKind.LeftButtonPressed:
+                    return OxyMouseButton.Left;
+                case PointerUpdateKind.MiddleButtonPressed:
+                    return OxyMouseButton.Middle;
+                case PointerUpdateKind.RightButtonPressed:
+                    return OxyMouseButton.Right;
+                case PointerUpdateKind.XButton1Pressed:
+                    return OxyMouseButton.XButton1;
+                case PointerUpdateKind.XButton2Pressed:
+                    return OxyMouseButton.XButton2;
                 default:
                     return OxyMouseButton.None;
             }
@@ -422,10 +442,14 @@ namespace OxyPlot.Avalonia
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseDownEventArgs ToMouseDownEventArgs(this PointerPressedEventArgs e, IInputElement relativeTo)
         {
+            var point = e.GetCurrentPoint(relativeTo);
+            
             return new OxyMouseDownEventArgs
             {
-                ChangedButton = e.MouseButton.Convert(),
+                ChangedButton = point.Properties.PointerUpdateKind.Convert(),
+#pragma warning disable CS0618 // Type or member is obsolete
                 ClickCount = e.ClickCount,
+#pragma warning restore CS0618 // Type or member is obsolete
                 Position = e.GetPosition(relativeTo).ToScreenPoint(),
                 ModifierKeys = e.KeyModifiers.ToModifierKeys()
             };

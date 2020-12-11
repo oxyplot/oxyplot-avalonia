@@ -34,7 +34,7 @@ namespace MemoryTest
             AppBuilder.Configure<App>()
                 .UsePlatformDetect()
 #if DEBUG
-                .LogToDebug()
+                .LogToTrace()
 #endif
                 .StartWithClassicDesktopLifetime(args);
         }
