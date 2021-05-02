@@ -359,8 +359,11 @@ namespace OxyPlot.Avalonia
                 return;
             }
 
-            Canvas.SetLeft(this, Position.X);
-            Canvas.SetTop(this, Position.Y);
+            var pos = this.Position;
+            var lineExtents = this.LineExtents;
+
+            Canvas.SetLeft(this, pos.X);
+            Canvas.SetTop(this, pos.Y);
             Control parent = this;
             while (!(parent is Canvas) && parent != null)
             {
@@ -388,25 +391,25 @@ namespace OxyPlot.Avalonia
             var ha = HorizontalAlignment.Center;
             if (CanCenterHorizontally)
             {
-                if (Position.X - (contentWidth / 2) < MarginLimit)
+                if (pos.X - (contentWidth / 2) < MarginLimit)
                 {
                     ha = HorizontalAlignment.Left;
                 }
 
-                if (Position.X + (contentWidth / 2) > canvasWidth - MarginLimit)
+                if (pos.X + (contentWidth / 2) > canvasWidth - MarginLimit)
                 {
                     ha = HorizontalAlignment.Right;
                 }
             }
             else
             {
-                ha = Position.X < canvasWidth / 2 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+                ha = pos.X < canvasWidth / 2 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
             }
 
             var va = VerticalAlignment.Center;
             if (CanCenterVertically)
             {
-                if (Position.Y - (contentHeight / 2) < MarginLimit)
+                if (pos.Y - (contentHeight / 2) < MarginLimit)
                 {
                     va = VerticalAlignment.Top;
                 }
@@ -414,25 +417,25 @@ namespace OxyPlot.Avalonia
                 if (ha == HorizontalAlignment.Center)
                 {
                     va = VerticalAlignment.Bottom;
-                    if (Position.Y - contentHeight < MarginLimit)
+                    if (pos.Y - contentHeight < MarginLimit)
                     {
                         va = VerticalAlignment.Top;
                     }
                 }
 
-                if (va == VerticalAlignment.Center && Position.Y + (contentHeight / 2) > canvasHeight - MarginLimit)
+                if (va == VerticalAlignment.Center && pos.Y + (contentHeight / 2) > canvasHeight - MarginLimit)
                 {
                     va = VerticalAlignment.Bottom;
                 }
 
-                if (va == VerticalAlignment.Top && Position.Y + contentHeight > canvasHeight - MarginLimit)
+                if (va == VerticalAlignment.Top && pos.Y + contentHeight > canvasHeight - MarginLimit)
                 {
                     va = VerticalAlignment.Bottom;
                 }
             }
             else
             {
-                va = Position.Y < canvasHeight / 2 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+                va = pos.Y < canvasHeight / 2 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
             }
 
             var dx = ha == HorizontalAlignment.Center ? -0.5 : ha == HorizontalAlignment.Left ? 0 : -1;
@@ -454,40 +457,16 @@ namespace OxyPlot.Avalonia
                     Y = dy * contentSize.Height
                 };
 
-            var pos = Position;
-
             if (horizontalLine != null)
             {
-                if (LineExtents.Width > 0)
-                {
-                    horizontalLine.StartPoint = horizontalLine.StartPoint.WithX(LineExtents.Left);
-                    horizontalLine.EndPoint = horizontalLine.StartPoint.WithX(LineExtents.Right);
-                }
-                else
-                {
-                    horizontalLine.StartPoint = horizontalLine.StartPoint.WithX(0);
-                    horizontalLine.EndPoint = horizontalLine.StartPoint.WithX(canvasWidth);
-                }
-
-                horizontalLine.StartPoint = horizontalLine.StartPoint.WithY(pos.Y);
-                horizontalLine.EndPoint = horizontalLine.EndPoint.WithY(pos.Y);
+                horizontalLine.StartPoint = new Point(lineExtents.Left - pos.X, 0);
+                horizontalLine.EndPoint = new Point(lineExtents.Right - pos.X, 0);
             }
 
             if (verticalLine != null)
             {
-                if (LineExtents.Width > 0)
-                {
-                    horizontalLine.StartPoint = horizontalLine.StartPoint.WithY(LineExtents.Top);
-                    horizontalLine.EndPoint = horizontalLine.StartPoint.WithY(LineExtents.Bottom);
-                }
-                else
-                {
-                    horizontalLine.StartPoint = horizontalLine.StartPoint.WithY(0);
-                    horizontalLine.EndPoint = horizontalLine.StartPoint.WithY(canvasHeight);
-                }
-
-                horizontalLine.StartPoint = horizontalLine.StartPoint.WithY(pos.X);
-                horizontalLine.EndPoint = horizontalLine.EndPoint.WithY(pos.X);
+                verticalLine.StartPoint = new Point(0, lineExtents.Top - pos.Y);
+                verticalLine.EndPoint = new Point(0, lineExtents.Bottom - pos.Y);
             }
         }
 
