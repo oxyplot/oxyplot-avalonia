@@ -845,7 +845,8 @@ namespace OxyPlot.Avalonia
 
                 if (dashArray != null)
                 {
-                    shape.StrokeDashArray = new global::Avalonia.Collections.AvaloniaList<double>(dashArray.Select(dash => dash + dashOffset));
+                    shape.StrokeDashArray = new global::Avalonia.Collections.AvaloniaList<double>(dashArray);
+                    shape.StrokeDashOffset = dashOffset;
                 }
             }
         }
