@@ -19,7 +19,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="False">
+                    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="False">
                         <Line Name="PART_HorizontalLine" IsVisible="{TemplateBinding HorizontalLineVisibility}"
                   Stroke="{TemplateBinding LineStroke}"
                   StrokeDashArray="{TemplateBinding LineDashArray}" />
@@ -31,7 +31,7 @@
                     StrokeThickness="{TemplateBinding BorderThickness, Converter={x:Static converters:ThicknessConverter.Instance}}" />
                             <ContentPresenter Name="PART_Content" Content="{TemplateBinding Content}" HorizontalAlignment="Center" />
                         </Panel>
-                    </Panel>
+                    </Canvas>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
