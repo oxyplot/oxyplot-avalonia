@@ -18,6 +18,7 @@ namespace AvaloniaExamples.Examples.ControllerDemo
             this.UnbindAll();
             this.BindKeyDown(OxyKey.Left, PlotCommands.PanRight);
             this.BindKeyDown(OxyKey.Right, PlotCommands.PanLeft);
+            this.BindTouchDown(PlotCommands.PanZoomByTouch);
         }
     }
 }
