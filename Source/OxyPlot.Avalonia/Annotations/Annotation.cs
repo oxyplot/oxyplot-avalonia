@@ -35,6 +35,11 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<string> YAxisKeyProperty = AvaloniaProperty.Register<Annotation, string>(nameof(YAxisKey), null);
 
         /// <summary>
+        /// Identifies the <see cref="EdgeRenderingMode"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<EdgeRenderingMode> EdgeRenderingModeProperty = AvaloniaProperty.Register<Annotation, EdgeRenderingMode>(nameof(EdgeRenderingMode), EdgeRenderingMode.Automatic);
+
+        /// <summary>
         /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.AboveSeries" />.
         /// </summary>
         public AnnotationLayer Layer
@@ -83,6 +88,22 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="OxyPlot.EdgeRenderingMode"/> for the annotation.
+        /// </summary>
+        public EdgeRenderingMode EdgeRenderingMode
+        {
+            get
+            {
+                return GetValue(EdgeRenderingModeProperty);
+            }
+
+            set
+            {
+                SetValue(EdgeRenderingModeProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the internal annotation object.
         /// </summary>
         public Annotations.Annotation InternalAnnotation { get; protected set; }
@@ -102,6 +123,7 @@ namespace OxyPlot.Avalonia
             a.Layer = Layer;
             a.XAxisKey = XAxisKey;
             a.YAxisKey = YAxisKey;
+            a.EdgeRenderingMode = EdgeRenderingMode;
         }
 
         /// <summary>
@@ -137,6 +159,7 @@ namespace OxyPlot.Avalonia
             LayerProperty.Changed.AddClassHandler<Annotation>(AppearanceChanged);
             XAxisKeyProperty.Changed.AddClassHandler<Annotation>(AppearanceChanged);
             YAxisKeyProperty.Changed.AddClassHandler<Annotation>(AppearanceChanged);
+            EdgeRenderingModeProperty.Changed.AddClassHandler<Annotation>(AppearanceChanged);
         }
     }
 }

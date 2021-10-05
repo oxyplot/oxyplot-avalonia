@@ -40,10 +40,12 @@ namespace OxyPlot.Avalonia
             series = new ObservableCollection<Series>();
             axes = new ObservableCollection<Axis>();
             annotations = new ObservableCollection<Annotation>();
+            legends = new ObservableCollection<Legend>();
 
             series.CollectionChanged += OnSeriesChanged;
             axes.CollectionChanged += OnAxesChanged;
             annotations.CollectionChanged += OnAnnotationsChanged;
+            legends.CollectionChanged += this.OnAnnotationsChanged;
 
             defaultController = new PlotController();
             internalModel = new PlotModel();
@@ -96,6 +98,7 @@ namespace OxyPlot.Avalonia
             SynchronizeSeries();
             SynchronizeAxes();
             SynchronizeAnnotations();
+            SynchronizeLegends();
 
             base.UpdateModel(updateData);
         }
@@ -220,35 +223,6 @@ namespace OxyPlot.Avalonia
             m.AxisTierDistance = AxisTierDistance;
 
             m.IsLegendVisible = IsLegendVisible;
-            m.LegendTextColor = LegendTextColor.ToOxyColor();
-            m.LegendTitle = LegendTitle;
-            m.LegendTitleColor = LegendTitleColor.ToOxyColor();
-            m.LegendTitleFont = LegendTitleFont;
-            m.LegendTitleFontSize = LegendTitleFontSize;
-            m.LegendTitleFontWeight = (int)LegendTitleFontWeight;
-            m.LegendFont = LegendFont;
-            m.LegendFontSize = LegendFontSize;
-            m.LegendFontWeight = (int)LegendFontWeight;
-            m.LegendSymbolLength = LegendSymbolLength;
-            m.LegendSymbolMargin = LegendSymbolMargin;
-            m.LegendPadding = LegendPadding;
-            m.LegendColumnSpacing = LegendColumnSpacing;
-            m.LegendItemSpacing = LegendItemSpacing;
-            m.LegendLineSpacing = LegendLineSpacing;
-            m.LegendMargin = LegendMargin;
-            m.LegendMaxHeight = LegendMaxHeight;
-            m.LegendMaxWidth = LegendMaxWidth;
-
-            m.LegendBackground = LegendBackground.ToOxyColor();
-            m.LegendBorder = LegendBorder.ToOxyColor();
-            m.LegendBorderThickness = LegendBorderThickness;
-
-            m.LegendPlacement = LegendPlacement;
-            m.LegendPosition = LegendPosition;
-            m.LegendOrientation = LegendOrientation;
-            m.LegendItemOrder = LegendItemOrder;
-            m.LegendItemAlignment = LegendItemAlignment.ToHorizontalAlignment();
-            m.LegendSymbolPlacement = LegendSymbolPlacement;
 
             m.PlotAreaBackground = PlotAreaBackground.ToOxyColor();
             m.PlotAreaBorderColor = PlotAreaBorderColor.ToOxyColor();
@@ -288,6 +262,18 @@ namespace OxyPlot.Avalonia
             foreach (var s in Series)
             {
                 internalModel.Series.Add(s.CreateModel());
+            }
+        }
+
+        /// <summary>
+        /// Synchronizes the legends in the internal model.
+        /// </summary>
+        private void SynchronizeLegends()
+        {
+            internalModel.Legends.Clear();
+            foreach (var l in Legends)
+            {
+                internalModel.Legends.Add(l.CreateModel());
             }
         }
     }

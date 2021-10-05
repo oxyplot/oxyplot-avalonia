@@ -48,6 +48,11 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<string> TrackerKeyProperty = AvaloniaProperty.Register<Series, string>(nameof(TrackerKey), null);
 
         /// <summary>
+        /// Identifies the <see cref="EdgeRenderingMode"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<EdgeRenderingMode> EdgeRenderingModeProperty = AvaloniaProperty.Register<Series, EdgeRenderingMode>(nameof(EdgeRenderingMode), EdgeRenderingMode.Automatic);
+
+        /// <summary>
         /// The event listener used to subscribe to ItemSource.CollectionChanged events
         /// </summary>
         private readonly EventListener eventListener;
@@ -64,6 +69,7 @@ namespace OxyPlot.Avalonia
             RenderInLegendProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
             TrackerFormatStringProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
             TrackerKeyProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
+            EdgeRenderingModeProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
         }
 
         /// <summary>
@@ -160,6 +166,22 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="OxyPlot.EdgeRenderingMode"/> for the series.
+        /// </summary>
+        public EdgeRenderingMode EdgeRenderingMode
+        {
+            get
+            {
+                return GetValue(EdgeRenderingModeProperty);
+            }
+
+            set
+            {
+                SetValue(EdgeRenderingModeProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Creates the model.
         /// </summary>
         /// <returns>A series.</returns>
@@ -243,6 +265,7 @@ namespace OxyPlot.Avalonia
             s.IsVisible = IsVisible;
             s.Font = FontFamily.ToString();
             s.TextColor = Foreground.ToOxyColor();
+            s.EdgeRenderingMode = EdgeRenderingMode;
         }
 
         /// <summary>

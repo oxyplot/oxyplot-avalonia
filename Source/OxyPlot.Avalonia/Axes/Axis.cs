@@ -331,6 +331,11 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<bool> UseSuperExponentialFormatProperty = AvaloniaProperty.Register<Axis, bool>(nameof(UseSuperExponentialFormat), false);
 
         /// <summary>
+        /// Identifies the <see cref="EdgeRenderingMode"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<EdgeRenderingMode> EdgeRenderingModeProperty = AvaloniaProperty.Register<Axis, EdgeRenderingMode>(nameof(EdgeRenderingMode), EdgeRenderingMode.Automatic);
+
+        /// <summary>
         /// Gets or sets the internal axis.
         /// </summary>
         public Axes.Axis InternalAxis { get; protected set; }
@@ -1339,6 +1344,22 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="OxyPlot.EdgeRenderingMode"/> for the axis.
+        /// </summary>
+        public EdgeRenderingMode EdgeRenderingMode
+        {
+            get
+            {
+                return GetValue(EdgeRenderingModeProperty);
+            }
+
+            set
+            {
+                SetValue(EdgeRenderingModeProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Creates the model.
         /// </summary>
         /// <returns>An axis object.</returns>
@@ -1474,6 +1495,7 @@ namespace OxyPlot.Avalonia
             a.Unit = Unit;
             a.UseSuperExponentialFormat = UseSuperExponentialFormat;
             a.LabelFormatter = LabelFormatter;
+            a.EdgeRenderingMode = EdgeRenderingMode;
         }
 
         static Axis()
@@ -1538,6 +1560,7 @@ namespace OxyPlot.Avalonia
             TitleProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             UnitProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             UseSuperExponentialFormatProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
+            EdgeRenderingModeProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
         }
     }
 }
