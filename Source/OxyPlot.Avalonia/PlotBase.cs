@@ -504,7 +504,7 @@ namespace OxyPlot.Avalonia
                         panel.Children.RemoveAt(idx);
                     }
 
-                    ((IPlotModel)ActualModel).Render(renderContext, canvas.Bounds.Width, canvas.Bounds.Height);
+                    ((IPlotModel)ActualModel).Render(renderContext, new OxyRect(0, 0, canvas.Bounds.Width, canvas.Bounds.Height));
 
                     // reinsert the canvas again
                     if (idx != -1)
@@ -514,7 +514,7 @@ namespace OxyPlot.Avalonia
                 }
                 else
                 {
-                    ((IPlotModel)ActualModel).Render(renderContext, canvas.Bounds.Width, canvas.Bounds.Height);
+                    ((IPlotModel)ActualModel).Render(renderContext, new OxyRect(0, 0, canvas.Bounds.Width, canvas.Bounds.Height));
                 }
             }
         }

@@ -85,7 +85,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         static BarSeriesBase()
         {
-            TrackerFormatStringProperty.OverrideMetadata(typeof(BarSeriesBase), new StyledPropertyMetadata<string>(OxyPlot.Series.BarSeriesBase.DefaultTrackerFormatString));
+            TrackerFormatStringProperty.OverrideMetadata(typeof(BarSeriesBase), new StyledPropertyMetadata<string>(OxyPlot.Series.BarSeries.DefaultTrackerFormatString));
             BaseValueProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
             ColorFieldProperty.Changed.AddClassHandler<BarSeriesBase>(DataChanged);
             FillColorProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
@@ -316,7 +316,7 @@ namespace OxyPlot.Avalonia
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = (OxyPlot.Series.BarSeriesBase)series;
+            var s = (OxyPlot.Series.BarSeries)series;
             s.BaseValue = BaseValue;
             s.ColorField = ColorField;
             s.FillColor = FillColor.ToOxyColor();

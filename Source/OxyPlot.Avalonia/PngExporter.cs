@@ -113,7 +113,7 @@ namespace OxyPlot.Avalonia
             var rc = new CanvasRenderContext(canvas) { RendersToScreen = false };
             
             model.Update(true);
-            model.Render(rc, canvas.Width, canvas.Height);
+            model.Render(rc, new OxyRect(0, 0, canvas.Width, canvas.Height));
 
             canvas.Measure(new Size(canvas.Width, canvas.Height));
             canvas.Arrange(new Rect(0, 0, canvas.Width, canvas.Height));

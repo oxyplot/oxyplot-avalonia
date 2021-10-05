@@ -36,11 +36,6 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<bool> ClipByYAxisProperty = AvaloniaProperty.Register<PathAnnotation, bool>(nameof(ClipByYAxis), true);
 
         /// <summary>
-        /// Identifies the <see cref="ClipText"/> dependency property.
-        /// </summary>
-        public static readonly StyledProperty<bool> ClipTextProperty = AvaloniaProperty.Register<PathAnnotation, bool>(nameof(ClipText), true);
-
-        /// <summary>
         /// Identifies the <see cref="LineJoin"/> dependency property.
         /// </summary>
         public static readonly StyledProperty<LineJoin> LineJoinProperty = AvaloniaProperty.Register<PathAnnotation, LineJoin>(nameof(LineJoin), LineJoin.Miter);
@@ -101,23 +96,6 @@ namespace OxyPlot.Avalonia
             set
             {
                 SetValue(ClipByYAxisProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the text should be clipped within the plot area.
-        /// </summary>
-        /// <value><c>true</c> if text should be clipped; otherwise, <c>false</c>.</value>
-        public bool ClipText
-        {
-            get
-            {
-                return GetValue(ClipTextProperty);
-            }
-
-            set
-            {
-                SetValue(ClipTextProperty, value);
             }
         }
 
@@ -271,7 +249,6 @@ namespace OxyPlot.Avalonia
             a.TextLinePosition = TextLinePosition;
             a.TextOrientation = TextOrientation;
             a.TextMargin = TextMargin;
-            a.ClipText = ClipText;
         }
 
         static PathAnnotation()
