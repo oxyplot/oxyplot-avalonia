@@ -148,7 +148,7 @@ namespace OxyPlot.Avalonia
             var e = CreateAndAdd<Polyline>();
             SetStroke(e, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
 
-            bool aliased = ShouldUseAntiAliasingForLine(edgeRenderingMode, points);
+            bool aliased = !ShouldUseAntiAliasingForLine(edgeRenderingMode, points);
             e.Points = ToPointCollection(points, aliased);
         }
 
