@@ -241,6 +241,7 @@ namespace OxyPlot.Avalonia
                 return;
             }
 
+            // TODO: legend on/off crash (issue with Legend hit-test implementation, really)
             UpdateModel(updateData);
 
             if (Interlocked.CompareExchange(ref isPlotInvalidated, 1, 0) == 0)
