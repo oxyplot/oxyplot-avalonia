@@ -27,8 +27,6 @@ namespace AvaloniaExamples.Examples.BarSeriesDemo
     {
         public MainWindow()
         {
-            this.InitializeComponent();
-
             // Create some data
             var items = new Collection<Item>
                             {
@@ -51,6 +49,8 @@ namespace AvaloniaExamples.Examples.BarSeriesDemo
             tmp.Series.Add(new BarSeries { Title = "2011", ItemsSource = items, ValueField = "Value3" });
 
             this.DataContext = new { Model1 = tmp, Items = items };
+
+            this.InitializeComponent();
 
             App.AttachDevTools(this);
         }
