@@ -12,8 +12,8 @@
     </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.11-rc.2" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.11-rc.2" />
     <PackageReference Include="OxyPlot.Core" Version="2.1.0" />
     <PackageReference Include="OxyPlot.ExampleLibrary" Version="2.1.0" />
   </ItemGroup>

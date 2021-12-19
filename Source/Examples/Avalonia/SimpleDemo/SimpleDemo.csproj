@@ -13,7 +13,7 @@
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
     <ProjectReference Include="..\..\..\OxyPlot.Avalonia\OxyPlot.Avalonia.csproj" />
     <PackageReference Include="Serilog.Sinks.Trace" Version="2.1.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.11-rc.2" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.11-rc.2" />
   </ItemGroup>
 </Project>
