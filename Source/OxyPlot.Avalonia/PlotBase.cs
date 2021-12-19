@@ -423,7 +423,7 @@ namespace OxyPlot.Avalonia
         {
             if (size.Height > 0 && size.Width > 0)
             {
-                InvalidatePlot(sender is Plot); // TODO: this is a hack, need to improve
+                InvalidatePlot(false);
             }
         }
 

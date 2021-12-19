@@ -96,7 +96,7 @@ namespace OxyPlot.Avalonia
             StackGroupProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
             StrokeColorProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
             StrokeThicknessProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
-            ValueFieldProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
+            ValueFieldProperty.Changed.AddClassHandler<BarSeriesBase>(DataChanged);
             TrackerFormatStringProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
         }
 
