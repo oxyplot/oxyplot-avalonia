@@ -289,7 +289,7 @@ namespace OxyPlot.Avalonia
         /// Identifies the <see cref="TextColor"/> dependency property.
         /// </summary>
         public static readonly StyledProperty<Color> TextColorProperty = AvaloniaProperty.Register<Axis, Color>(nameof(TextColor), MoreColors.Automatic);
-        
+
         /// <summary>
         /// Identifies the <see cref="TickStyle"/> dependency property.
         /// </summary>
@@ -1474,8 +1474,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         protected void OnDataChanged()
         {
-            var pc = Parent as IPlotView;
-            if (pc != null)
+            if (Parent is IPlotView pc)
             {
                 pc.InvalidatePlot();
             }
@@ -1488,13 +1487,9 @@ namespace OxyPlot.Avalonia
         protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> e)
         {
             base.OnPropertyChanged(e);
-            if (e.Property.OwnerType == GetType())
+            if (e.Property.OwnerType == GetType() && Parent is IPlotView plot)
             {
-                var plot = Parent as IPlotView;
-                if (plot != null)
-                {
-                    plot.InvalidatePlot();
-                }
+                plot.InvalidatePlot();
             }
         }
 
@@ -1503,8 +1498,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         protected void OnVisualChanged()
         {
-            var pc = Parent as IPlotView;
-            if (pc != null)
+            if (Parent is IPlotView pc)
             {
                 pc.InvalidatePlot(false);
             }
@@ -1577,7 +1571,7 @@ namespace OxyPlot.Avalonia
             a.TitleFontWeight = (int)TitleFontWeight;
             a.TitleFormatString = TitleFormatString;
             a.Title = Title;
-            a.ToolTip = ToolTip.GetTip(this) != null ? ToolTip.GetTip(this).ToString() : null;
+            a.ToolTip = (ToolTip.GetTip(this)?.ToString());
             a.TickStyle = TickStyle;
             a.TitlePosition = TitlePosition;
             a.Unit = Unit;

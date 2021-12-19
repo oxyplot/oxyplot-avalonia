@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Avalonia
 {
-    using global::Avalonia;
     using global::Avalonia.Controls;
     using global::Avalonia.LogicalTree;
     using global::Avalonia.VisualTree;
@@ -176,6 +175,7 @@ namespace OxyPlot.Avalonia
                 {
                     item.SetParent(null);
                 }
+
                 foreach (var item in e.OldItems)
                 {
                     LogicalChildren.Remove((ILogical)item);

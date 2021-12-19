@@ -120,7 +120,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Gets or sets a value indicating whether the series should be rendered in the legend.
         /// </summary>
-        public bool RenderInLegend 
+        public bool RenderInLegend
         {
             get
             {
@@ -212,8 +212,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         protected void OnDataChanged()
         {
-            var pc = Parent as IPlotView;
-            if (pc != null)
+            if (Parent is IPlotView pc)
             {
                 pc.InvalidatePlot();
             }
@@ -223,7 +222,6 @@ namespace OxyPlot.Avalonia
         /// The on items source changed.
         /// </summary>
         /// <param name="e">Event args</param>
-        /// 
         protected override void ItemsChanged(AvaloniaPropertyChangedEventArgs e)
         {
             base.ItemsChanged(e);
@@ -236,8 +234,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         protected void OnVisualChanged()
         {
-            var pc = Parent as IPlotView;
-            if (pc != null)
+            if (Parent is IPlotView pc)
             {
                 pc.InvalidatePlot(false);
             }
@@ -275,8 +272,7 @@ namespace OxyPlot.Avalonia
         /// <param name="newValue">The new ItemsSource</param>
         private void SubscribeToCollectionChanged(IEnumerable oldValue, IEnumerable newValue)
         {
-            var collection = oldValue as INotifyCollectionChanged;
-            if (collection != null)
+            if (oldValue is INotifyCollectionChanged collection)
             {
                 WeakSubscriptionManager.Unsubscribe(collection, "CollectionChanged", eventListener);
             }

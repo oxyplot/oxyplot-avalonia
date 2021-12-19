@@ -27,7 +27,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="Offset"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<Vector> OffsetProperty = AvaloniaProperty.Register<TextAnnotation, Vector>(nameof(Offset), default(Vector));
+        public static readonly StyledProperty<Vector> OffsetProperty = AvaloniaProperty.Register<TextAnnotation, Vector>(nameof(Offset), default);
 
         /// <summary>
         /// Identifies the <see cref="Padding"/> dependency property.

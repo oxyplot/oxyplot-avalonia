@@ -88,7 +88,7 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
+        /// Exports the specified <see cref="PlotModel"/> to the specified <see cref="Stream"/>.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="stream">The output stream.</param>
@@ -111,7 +111,7 @@ namespace OxyPlot.Avalonia
             canvas.Arrange(new Rect(0, 0, canvas.Width, canvas.Height));
 
             var rc = new CanvasRenderContext(canvas) { RendersToScreen = false };
-            
+
             model.Update(true);
             model.Render(rc, new OxyRect(0, 0, canvas.Width, canvas.Height));
 

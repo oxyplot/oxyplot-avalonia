@@ -14,21 +14,21 @@ namespace OxyPlot.Avalonia
     using global::Avalonia.Controls;
 
     /// <summary>
-    /// Represents a control that displays a <see cref="OxyPlot.Legends.Legend" />.
+    /// Represents a control that displays a <see cref="Legends.Legend" />.
     /// </summary>
     public partial class Legend : Control
     {
         /// <summary>
         /// The internal model.
         /// </summary>
-        private readonly OxyPlot.Legends.Legend InternalLegend;
+        private readonly Legends.Legend InternalLegend;
 
         /// <summary>
         /// Initializes static members of the <see cref="Legend" /> class.
         /// </summary>
         public Legend()
         {
-            this.InternalLegend = new OxyPlot.Legends.Legend();
+            this.InternalLegend = new Legends.Legend();
         }
 
         /// <summary>
@@ -79,8 +79,7 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void AppearanceChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
         {
-            var pc = ((Legend)d).Parent as IPlotView;
-            if (pc != null)
+            if (((Legend)d).Parent is IPlotView pc)
             {
                 pc.InvalidatePlot(false);
             }
@@ -93,8 +92,7 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void DataChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
         {
-            var pc = ((Legend)d).Parent as IPlotView;
-            if (pc != null)
+            if (((Legend)d).Parent is IPlotView pc)
             {
                 pc.InvalidatePlot();
             }
@@ -142,7 +140,7 @@ namespace OxyPlot.Avalonia
         /// Creates the internal legend.
         /// </summary>
         /// <returns>The internal legend.</returns>
-        public OxyPlot.Legends.Legend CreateModel()
+        public Legends.Legend CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalLegend;

@@ -127,8 +127,7 @@ namespace OxyPlot.Avalonia
         /// <returns>An <see cref="OxyColor" />.</returns>
         public static OxyColor ToOxyColor(this IBrush brush)
         {
-            var scb = brush as SolidColorBrush;
-            return scb != null ? scb.Color.ToOxyColor() : OxyColors.Undefined;
+            return brush is SolidColorBrush scb ? scb.Color.ToOxyColor() : OxyColors.Undefined;
         }
 
         /// <summary>
@@ -443,7 +442,7 @@ namespace OxyPlot.Avalonia
         public static OxyMouseDownEventArgs ToMouseDownEventArgs(this PointerPressedEventArgs e, IInputElement relativeTo)
         {
             var point = e.GetCurrentPoint(relativeTo);
-            
+
             return new OxyMouseDownEventArgs
             {
                 ChangedButton = point.Properties.PointerUpdateKind.Convert(),

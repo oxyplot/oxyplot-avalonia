@@ -13,7 +13,6 @@ using Avalonia.Markup.Xaml.Templates;
 
 namespace OxyPlot.Avalonia
 {
-
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
@@ -94,7 +93,7 @@ namespace OxyPlot.Avalonia
         /// Gets or sets the pan cursor.
         /// </summary>
         /// <value>The pan cursor.</value>
-        public global::Avalonia.Input.Cursor PanCursor
+        public Cursor PanCursor
         {
             get
             {

@@ -12,7 +12,6 @@ using Avalonia;
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia.Media;
-
     using OxyPlot.Series;
 
     /// <summary>

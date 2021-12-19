@@ -7,8 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using Avalonia.Markup.Xaml;
+using System;
 
 namespace OxyPlot.Avalonia
 {

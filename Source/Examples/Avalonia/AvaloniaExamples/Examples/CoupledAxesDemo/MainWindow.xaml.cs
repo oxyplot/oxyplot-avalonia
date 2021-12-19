@@ -9,14 +9,11 @@
 
 namespace AvaloniaExamples.Examples.CoupledAxesDemo
 {
-    using System;
-    using System.Windows;
-
+    using AvaloniaExamples;
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
-
-    using AvaloniaExamples;
+    using System;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -40,17 +37,17 @@ namespace AvaloniaExamples.Examples.CoupledAxesDemo
 
             bool isInternalChange = false;
             axis1.AxisChanged += (s, e) =>
+            {
+                if (isInternalChange)
                 {
-                    if (isInternalChange)
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    isInternalChange = true;
-                    axis2.Zoom(axis1.ActualMinimum, axis1.ActualMaximum);
-                    this.Model2.InvalidatePlot(false);
-                    isInternalChange = false;
-                };
+                isInternalChange = true;
+                axis2.Zoom(axis1.ActualMinimum, axis1.ActualMaximum);
+                this.Model2.InvalidatePlot(false);
+                isInternalChange = false;
+            };
 
             axis2.AxisChanged += (s, e) =>
             {

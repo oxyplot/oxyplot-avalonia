@@ -18,13 +18,10 @@ namespace OxyPlot.Avalonia
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using FontWeights = OxyPlot.FontWeights;
-    using HorizontalAlignment = OxyPlot.HorizontalAlignment;
     using Path = global::Avalonia.Controls.Shapes.Path;
-    using VerticalAlignment = OxyPlot.VerticalAlignment;
 
     /// <summary>
-    /// Implements <see cref="IRenderContext" /> for <see cref="System.Windows.Controls.Canvas" />.
+    /// Implements <see cref="IRenderContext" /> for <see cref="Windows.Controls.Canvas" />.
     /// </summary>
     public class CanvasRenderContext : ClippingRenderContext
     {
@@ -57,11 +54,11 @@ namespace OxyPlot.Avalonia
         /// The brush cache.
         /// </summary>
         private readonly Dictionary<OxyColor, IBrush> brushCache = new Dictionary<OxyColor, IBrush>();
-        
+
         /// <summary>
         /// The canvas.
         /// </summary>
-        private readonly global::Avalonia.Controls.Canvas canvas;
+        private readonly Canvas canvas;
 
         /// <summary>
         /// The clip rectangle.
@@ -72,7 +69,7 @@ namespace OxyPlot.Avalonia
         /// The current tool tip
         /// </summary>
         private string currentToolTip;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasRenderContext" /> class.
         /// </summary>
@@ -98,7 +95,7 @@ namespace OxyPlot.Avalonia
         public bool UseStreamGeometry { get; set; }
 
         ///<inheritdoc/>
-        public void DrawEllipse(OxyRect rect,
+        public override void DrawEllipse(OxyRect rect,
             OxyColor fill,
             OxyColor stroke,
             double thickness,
@@ -118,7 +115,7 @@ namespace OxyPlot.Avalonia
         }
 
         ///<inheritdoc/>
-        public void DrawEllipses(IList<OxyRect> rectangles,
+        public override void DrawEllipses(IList<OxyRect> rectangles,
             OxyColor fill,
             OxyColor stroke,
             double thickness,
@@ -437,7 +434,7 @@ namespace OxyPlot.Avalonia
             {
                 tb.FontWeight = GetFontWeight(fontWeight);
             }
-            
+
             double dx = 0;
             double dy = 0;
 
@@ -519,7 +516,7 @@ namespace OxyPlot.Avalonia
             }
 
             var tb = new TextBlock { Text = text };
-            
+
             if (fontFamily != null)
             {
                 tb.FontFamily = fontFamily;
@@ -544,7 +541,7 @@ namespace OxyPlot.Avalonia
         /// Sets the tool tip for the following items.
         /// </summary>
         /// <param name="text">The text in the tool tip.</param>
-        public void SetToolTip(string text)
+        public override void SetToolTip(string text)
         {
             currentToolTip = text;
         }
@@ -563,7 +560,7 @@ namespace OxyPlot.Avalonia
         /// <param name="destHeight">The height of the drawn image.</param>
         /// <param name="opacity">The opacity.</param>
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
-        public void DrawImage(
+        public override void DrawImage(
             OxyImage source,
             double srcX,
             double srcY,
@@ -599,7 +596,7 @@ namespace OxyPlot.Avalonia
             image.Width = destWidth;
             image.Height = destHeight;
             image.Stretch = Stretch.Fill;
-            
+
             // Set the position of the image
             Canvas.SetLeft(image, destX);
             Canvas.SetTop(image, destY);
@@ -677,7 +674,7 @@ namespace OxyPlot.Avalonia
 
             if (clip != null)
             {
-                element.Clip = new global::Avalonia.Media.RectangleGeometry(
+                element.Clip = new RectangleGeometry(
                         new Rect(
                             clip.Value.X - clipOffsetX,
                             clip.Value.Y - clipOffsetY,
@@ -695,7 +692,7 @@ namespace OxyPlot.Avalonia
         /// Applies the current tool tip to the specified element.
         /// </summary>
         /// <param name="element">The element.</param>
-        private void ApplyToolTip(global::Avalonia.Controls.Control element)
+        private void ApplyToolTip(Control element)
         {
             if (!string.IsNullOrEmpty(currentToolTip))
             {
@@ -773,8 +770,7 @@ namespace OxyPlot.Avalonia
                 return null;
             }
 
-            IBrush brush;
-            if (!brushCache.TryGetValue(color, out brush))
+            if (!brushCache.TryGetValue(color, out IBrush brush))
             {
                 brush = new SolidColorBrush(color.ToColor());
                 brushCache.Add(color, brush);
@@ -853,8 +849,7 @@ namespace OxyPlot.Avalonia
                 imagesInUse.Add(image);
             }
 
-            IBitmap src;
-            if (imageCache.TryGetValue(image, out src))
+            if (imageCache.TryGetValue(image, out var src))
             {
                 return src;
             }

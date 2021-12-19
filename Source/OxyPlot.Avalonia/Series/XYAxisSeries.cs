@@ -11,7 +11,6 @@ using Avalonia;
 
 namespace OxyPlot.Avalonia
 {
-
     /// <summary>
     /// Abstract base class for series that use X and Y axes.
     /// </summary>

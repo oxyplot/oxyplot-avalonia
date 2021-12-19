@@ -133,8 +133,7 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void AppearanceChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
         {
-            var pc = ((Annotation)d).Parent as IPlotView;
-            if (pc != null)
+            if (((Annotation)d).Parent is IPlotView pc)
             {
                 pc.InvalidatePlot(false);
             }
@@ -147,8 +146,7 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void DataChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
         {
-            var pc = ((Annotation)d).Parent as IPlotView;
-            if (pc != null)
+            if (((Annotation)d).Parent is IPlotView pc)
             {
                 pc.InvalidatePlot();
             }

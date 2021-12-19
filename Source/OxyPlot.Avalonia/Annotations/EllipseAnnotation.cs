@@ -47,7 +47,7 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
-        /// Gets or sets the  X.
+        /// Gets or sets the X.
         /// </summary>
         public double X
         {
@@ -63,7 +63,7 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
-        /// Gets or sets the  Y.
+        /// Gets or sets the Y.
         /// </summary>
         public double Y
         {

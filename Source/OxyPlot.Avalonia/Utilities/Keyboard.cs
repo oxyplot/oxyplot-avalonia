@@ -33,7 +33,6 @@ namespace OxyPlot.Avalonia
         /// <returns>A <see cref="OxyModifierKeys" /> value.</returns>
         public OxyModifierKeys GetModifierKeys()
         {
-
             var modifiers = OxyModifierKeys.None;
             if ((currentModifiers & RawInputModifiers.Shift) != 0)
             {
@@ -60,9 +59,8 @@ namespace OxyPlot.Avalonia
 
         private void ProcessModifierKeys(RawInputEventArgs args)
         {
-            if (args is RawKeyEventArgs)
+            if (args is RawKeyEventArgs keyArgs)
             {
-                var keyArgs = (RawKeyEventArgs)args;
                 currentModifiers = keyArgs.Modifiers;
             }
         }

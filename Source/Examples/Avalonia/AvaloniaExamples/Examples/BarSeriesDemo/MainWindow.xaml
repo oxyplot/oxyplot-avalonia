@@ -21,6 +21,7 @@
                     <oxy:BarSeries Title="2009" Items="{Binding Items}" ValueField="Value1"/>
                     <oxy:BarSeries Title="2010" Items="{Binding Items}" ValueField="Value2"/>
                     <oxy:BarSeries Title="2011" Items="{Binding Items}" ValueField="Value3"/>
+					<oxy:BarSeries Title="2012" Items="{Binding Items}" ValueField="Value4"/>
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>

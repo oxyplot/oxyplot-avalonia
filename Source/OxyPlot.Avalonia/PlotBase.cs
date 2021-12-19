@@ -99,7 +99,7 @@ namespace OxyPlot.Avalonia
             trackerDefinitions = new ObservableCollection<TrackerDefinition>();
             this.GetObservable(TransformedBoundsProperty).Subscribe(bounds => OnSizeChanged(this, bounds?.Bounds.Size ?? new Size()));
         }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether to disconnect the canvas while updating.
         /// </summary>
@@ -195,10 +195,7 @@ namespace OxyPlot.Avalonia
         /// <param name="delta">The delta.</param>
         public void PanAllAxes(Vector delta)
         {
-            if (ActualModel != null)
-            {
-                ActualModel.PanAllAxes(delta.X, delta.Y);
-            }
+            ActualModel?.PanAllAxes(delta.X, delta.Y);
 
             InvalidatePlot(false);
         }
@@ -209,10 +206,7 @@ namespace OxyPlot.Avalonia
         /// <param name="factor">The zoom factor.</param>
         public void ZoomAllAxes(double factor)
         {
-            if (ActualModel != null)
-            {
-                ActualModel.ZoomAllAxes(factor);
-            }
+            ActualModel?.ZoomAllAxes(factor);
 
             InvalidatePlot(false);
         }
@@ -222,10 +216,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         public void ResetAllAxes()
         {
-            if (ActualModel != null)
-            {
-                ActualModel.ResetAllAxes();
-            }
+            ActualModel?.ResetAllAxes();
 
             InvalidatePlot(false);
         }
@@ -256,7 +247,7 @@ namespace OxyPlot.Avalonia
 
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass)
-        /// call <see cref="M:System.Windows.Controls.Control.ApplyTemplate" /> . In simplest terms, this means the method is called 
+        /// call <see cref="M:System.Windows.Controls.Control.ApplyTemplate" /> . In simplest terms, this means the method is called
         /// just before a UI element displays in an application. For more information, see Remarks.
         /// </summary>
         /// <param name="e">Event data for applying the template.</param>
@@ -370,7 +361,7 @@ namespace OxyPlot.Avalonia
         /// <param name="text">The text.</param>
         public async void SetClipboardText(string text)
         {
-            await AvaloniaLocator.Current.GetService<IClipboard>().SetTextAsync(text);
+            await AvaloniaLocator.Current.GetService<IClipboard>().SetTextAsync(text).ConfigureAwait(true);
         }
 
         /// <summary>
@@ -417,7 +408,7 @@ namespace OxyPlot.Avalonia
         /// Determines whether the specified element is currently visible to the user.
         /// </summary>
         /// <param name="element">The element.</param>
-        /// <returns><c>true</c> if if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
         private static bool IsUserVisible(Control element)
         {
             return element.IsEffectivelyVisible && element.TransformedBounds.HasValue;
@@ -432,7 +423,7 @@ namespace OxyPlot.Avalonia
         {
             if (size.Height > 0 && size.Width > 0)
             {
-                InvalidatePlot(false);
+                InvalidatePlot(sender is Plot); // TODO: this is a hack, need to improve
             }
         }
 
@@ -447,14 +438,12 @@ namespace OxyPlot.Avalonia
         {
             var container = obj.VisualParent;
 
-            var contentPresenter = container as ContentPresenter;
-            if (contentPresenter != null)
+            if (container is ContentPresenter contentPresenter)
             {
                 container = GetRelevantParent<T>(contentPresenter);
             }
 
-            var panel = container as Panel;
-            if (panel != null)
+            if (container is Panel panel)
             {
                 container = GetRelevantParent<ScrollViewer>(panel);
             }
@@ -485,7 +474,7 @@ namespace OxyPlot.Avalonia
             // Clear the canvas
             canvas.Children.Clear();
 
-            if (ActualModel != null && ActualModel.Background.IsVisible())
+            if (ActualModel?.Background.IsVisible() == true)
             {
                 canvas.Background = ActualModel.Background.ToBrush();
             }
