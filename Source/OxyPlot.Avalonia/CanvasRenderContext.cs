@@ -77,7 +77,7 @@ namespace OxyPlot.Avalonia
         public CanvasRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
-            UseStreamGeometry = false; // Temporarily disabled because of Avalonia bug
+            UseStreamGeometry = true;
             RendersToScreen = true;
             BalancedLineDrawingThicknessLimit = 3.5;
         }
@@ -101,17 +101,13 @@ namespace OxyPlot.Avalonia
             double thickness,
             EdgeRenderingMode edgeRenderingMode)
         {
-            var e = CreateAndAdd<Ellipse>(rect.Left, rect.Top);
-            SetStroke(e, stroke, thickness, edgeRenderingMode);
-            if (fill.IsVisible())
+            var path = CreateAndAdd<Path>();
+            SetStroke(path, stroke, thickness, edgeRenderingMode);
+            if (!fill.IsUndefined())
             {
-                e.Fill = GetCachedBrush(fill);
+                path.Fill = GetCachedBrush(fill);
             }
-
-            e.Width = rect.Width;
-            e.Height = rect.Height;
-            Canvas.SetLeft(e, rect.Left);
-            Canvas.SetTop(e, rect.Top);
+            path.Data = new EllipseGeometry(ToRect(rect));
         }
 
         ///<inheritdoc/>
@@ -147,6 +143,65 @@ namespace OxyPlot.Avalonia
 
             bool aliased = !ShouldUseAntiAliasingForLine(edgeRenderingMode, points);
             e.Points = ToPointCollection(points, aliased);
+        }
+
+        #region DrawLineSegments
+        /// <summary>
+        /// Draws the line segments by stream geometry.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
+        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
+        /// <param name="lineJoin">The line join.</param>
+        private void DrawLineSegmentsByStreamGeometry(
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            EdgeRenderingMode edgeRenderingMode,
+            double[] dashArray,
+            LineJoin lineJoin)
+        {
+            bool aliased = edgeRenderingMode == EdgeRenderingMode.PreferSpeed;
+
+            StreamGeometry streamGeometry = null;
+            StreamGeometryContext streamGeometryContext = null;
+
+            var count = 0;
+
+            for (int i = 0; i + 1 < points.Count; i += 2)
+            {
+                if (streamGeometry == null)
+                {
+                    streamGeometry = new StreamGeometry();
+                    streamGeometryContext = streamGeometry.Open();
+                }
+
+                streamGeometryContext.BeginFigure(ToPoint(points[i], aliased), false);
+                streamGeometryContext.LineTo(ToPoint(points[i + 1], aliased));
+
+                count++;
+
+                // Must limit the number of figures, otherwise drawing errors...
+                if (count > MaxFiguresPerGeometry || dashArray != null)
+                {
+                    streamGeometryContext.Dispose();
+                    var path = CreateAndAdd<Path>();
+                    SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
+                    path.Data = streamGeometry;
+                    streamGeometry = null;
+                    count = 0;
+                }
+            }
+
+            if (streamGeometry != null)
+            {
+                streamGeometryContext.Dispose();
+                var path = CreateAndAdd<Path>();
+                SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, null, 0);
+                path.Data = streamGeometry;
+            }
         }
 
         /// <summary>
@@ -209,7 +264,9 @@ namespace OxyPlot.Avalonia
                 path.Data = pathGeometry;
             }
         }
+        #endregion
 
+        #region DrawPolygon(s)
         ///<inheritdoc/>
         public override void DrawPolygon(
             IList<ScreenPoint> points,
@@ -232,6 +289,88 @@ namespace OxyPlot.Avalonia
             e.Points = ToPointCollection(points, aliased);
         }
 
+        private void DrawPolygonsByStreamGeometry(
+            IList<IList<ScreenPoint>> polygons,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            EdgeRenderingMode edgeRenderingMode,
+            double[] dashArray,
+            LineJoin lineJoin)
+        {
+            Path path = null;
+            StreamGeometry streamGeometry = null;
+            StreamGeometryContext sgc = null;
+            var count = 0;
+
+            Func<ScreenPoint, Point> toPointFunc;
+            if (edgeRenderingMode == EdgeRenderingMode.PreferSpeed) // aliased
+            {
+                toPointFunc = ToPixelAlignedPoint;
+            }
+            else
+            {
+                toPointFunc = ToPoint;
+            }
+
+            bool isDefined = !fill.IsUndefined();
+            IBrush cachedBrush = null;
+            if (isDefined)
+            {
+                cachedBrush = GetCachedBrush(fill);
+            }
+
+            foreach (var polygon in polygons)
+            {
+                if (path == null)
+                {
+                    path = CreateAndAdd<Path>();
+                    SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
+                    if (isDefined)
+                    {
+                        path.Fill = cachedBrush;
+                    }
+
+                    streamGeometry = new StreamGeometry();
+                    sgc = streamGeometry.Open();
+                    sgc.SetFillRule(FillRule.NonZero);
+                }
+
+                var first = true;
+                foreach (var p in polygon)
+                {
+                    if (first)
+                    {
+                        sgc.BeginFigure(toPointFunc(p), isDefined);
+                        first = false;
+                    }
+                    else
+                    {
+                        sgc.LineTo(toPointFunc(p));
+                    }
+                }
+
+                sgc.EndFigure(true);
+
+                count++;
+
+                // Must limit the number of figures, otherwise drawing errors...
+                if (count > MaxFiguresPerGeometry)
+                {
+                    sgc.Dispose();
+                    path.Data = streamGeometry;
+                    path = null;
+                    count = 0;
+                }
+            }
+
+            if (path != null)
+            {
+                sgc.Dispose();
+                path.Data = streamGeometry;
+            }
+        }
+
         ///<inheritdoc/>
         public override void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
@@ -242,12 +381,33 @@ namespace OxyPlot.Avalonia
             double[] dashArray,
             LineJoin lineJoin)
         {
-            var usg = UseStreamGeometry;
+            if (UseStreamGeometry)
+            {
+                DrawPolygonsByStreamGeometry(polygons, fill, stroke, thickness, edgeRenderingMode, dashArray, lineJoin);
+                return;
+            }
+
             Path path = null;
-            StreamGeometry streamGeometry = null;
             StreamGeometryContext sgc = null;
             PathGeometry pathGeometry = null;
             var count = 0;
+
+            Func<ScreenPoint, Point> toPointFunc;
+            if (edgeRenderingMode == EdgeRenderingMode.PreferSpeed) // aliased
+            {
+                toPointFunc = ToPixelAlignedPoint;
+            }
+            else
+            {
+                toPointFunc = ToPoint;
+            }
+
+            bool isDefined = !fill.IsUndefined();
+            IBrush cachedBrush = null;
+            if (isDefined)
+            {
+                cachedBrush = GetCachedBrush(fill);
+            }
 
             foreach (var polygon in polygons)
             {
@@ -255,59 +415,33 @@ namespace OxyPlot.Avalonia
                 {
                     path = CreateAndAdd<Path>();
                     SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
-                    if (!fill.IsUndefined())
+                    if (isDefined)
                     {
-                        path.Fill = GetCachedBrush(fill);
+                        path.Fill = cachedBrush;
                     }
 
-                    if (usg)
-                    {
-                        streamGeometry = new StreamGeometry();
-                        sgc = streamGeometry.Open();
-                        sgc.SetFillRule(FillRule.NonZero);
-                    }
-                    else
-                    {
-                        pathGeometry = new PathGeometry { FillRule = FillRule.NonZero };
-                    }
+                    pathGeometry = new PathGeometry { FillRule = FillRule.NonZero };
                 }
-
-                bool aliased = edgeRenderingMode == EdgeRenderingMode.PreferSpeed;
 
                 PathFigure figure = null;
                 var first = true;
                 foreach (var p in polygon)
                 {
-                    var point = aliased ? ToPixelAlignedPoint(p) : ToPoint(p);
                     if (first)
                     {
-                        if (usg)
+                        figure = new PathFigure
                         {
-                            sgc.BeginFigure(point, !fill.IsUndefined());
-                        }
-                        else
-                        {
-                            figure = new PathFigure
-                            {
-                                StartPoint = point,
-                                IsFilled = !fill.IsUndefined(),
-                                IsClosed = true
-                            };
-                            pathGeometry.Figures.Add(figure);
-                        }
+                            StartPoint = toPointFunc(p),
+                            IsFilled = isDefined,
+                            IsClosed = true
+                        };
+                        pathGeometry.Figures.Add(figure);
 
                         first = false;
                     }
                     else
                     {
-                        if (usg)
-                        {
-                            sgc.LineTo(point);
-                        }
-                        else
-                        {
-                            figure.Segments.Add(new LineSegment { Point = point });
-                        }
+                        sgc.LineTo(toPointFunc(p));
                     }
                 }
 
@@ -316,16 +450,7 @@ namespace OxyPlot.Avalonia
                 // Must limit the number of figures, otherwise drawing errors...
                 if (count > MaxFiguresPerGeometry)
                 {
-                    if (usg)
-                    {
-                        sgc.Dispose();
-                        path.Data = streamGeometry;
-                    }
-                    else
-                    {
-                        path.Data = pathGeometry;
-                    }
-
+                    path.Data = pathGeometry;
                     path = null;
                     count = 0;
                 }
@@ -333,17 +458,10 @@ namespace OxyPlot.Avalonia
 
             if (path != null)
             {
-                if (usg)
-                {
-                    sgc.Dispose();
-                    path.Data = streamGeometry;
-                }
-                else
-                {
-                    path.Data = pathGeometry;
-                }
+                path.Data = pathGeometry;
             }
         }
+        #endregion
 
         /// <summary>
         /// Draws a rectangle.
@@ -358,18 +476,13 @@ namespace OxyPlot.Avalonia
             double thickness,
             EdgeRenderingMode edgeRenderingMode)
         {
-            var e = CreateAndAdd<Rectangle>(rect.Left, rect.Top);
-            SetStroke(e, stroke, thickness, edgeRenderingMode, LineJoin.Miter, null, 0);
-
+            var path = CreateAndAdd<Path>();
+            SetStroke(path, stroke, thickness, edgeRenderingMode);
             if (!fill.IsUndefined())
             {
-                e.Fill = GetCachedBrush(fill);
+                path.Fill = GetCachedBrush(fill);
             }
-
-            e.Width = rect.Width;
-            e.Height = rect.Height;
-            Canvas.SetLeft(e, rect.Left);
-            Canvas.SetTop(e, rect.Top);
+            path.Data = new RectangleGeometry(ToRect(rect));
         }
 
         /// <summary>
@@ -386,10 +499,8 @@ namespace OxyPlot.Avalonia
             double thickness,
             EdgeRenderingMode edgeRenderingMode)
         {
-            foreach (var rect in rectangles)
-            {
-                DrawRectangle(rect, fill, stroke, thickness, edgeRenderingMode);
-            }
+            var polys = rectangles.Select(r => (IList<ScreenPoint>)RectangleToPolygon(r)).ToList();
+            DrawPolygons(polys, fill, stroke, thickness, edgeRenderingMode, null, LineJoin.Miter);
         }
 
         /// <summary>
@@ -639,10 +750,8 @@ namespace OxyPlot.Avalonia
         public override void CleanUp()
         {
             // Find the images in the cache that has not been used since last call to this method
-            var imagesToRelease = imageCache.Keys.Where(i => !imagesInUse.Contains(i)).ToList();
-
             // Remove the images from the cache
-            foreach (var i in imagesToRelease)
+            foreach (var i in imageCache.Keys.Where(i => !imagesInUse.Contains(i)).ToList())
             {
                 imageCache.Remove(i);
             }
@@ -667,7 +776,7 @@ namespace OxyPlot.Avalonia
         /// <param name="clipOffsetX">The clip offset executable.</param>
         /// <param name="clipOffsetY">The clip offset asynchronous.</param>
         /// <returns>The element.</returns>
-        private T CreateAndAdd<T>(double clipOffsetX = 0, double clipOffsetY = 0) where T : global::Avalonia.Controls.Control, new()
+        private T CreateAndAdd<T>(double clipOffsetX = 0, double clipOffsetY = 0) where T : Control, new()
         {
             // TODO: here we can reuse existing elements in the canvas.Children collection
             var element = new T();
@@ -697,64 +806,6 @@ namespace OxyPlot.Avalonia
             if (!string.IsNullOrEmpty(currentToolTip))
             {
                 ToolTip.SetTip(element, currentToolTip);
-            }
-        }
-
-        /// <summary>
-        /// Draws the line segments by stream geometry.
-        /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The thickness.</param>
-        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
-        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
-        /// <param name="lineJoin">The line join.</param>
-        private void DrawLineSegmentsByStreamGeometry(
-            IList<ScreenPoint> points,
-            OxyColor stroke,
-            double thickness,
-            EdgeRenderingMode edgeRenderingMode,
-            double[] dashArray,
-            LineJoin lineJoin)
-        {
-            bool aliased = edgeRenderingMode == EdgeRenderingMode.PreferSpeed;
-
-            StreamGeometry streamGeometry = null;
-            StreamGeometryContext streamGeometryContext = null;
-
-            var count = 0;
-
-            for (int i = 0; i + 1 < points.Count; i += 2)
-            {
-                if (streamGeometry == null)
-                {
-                    streamGeometry = new StreamGeometry();
-                    streamGeometryContext = streamGeometry.Open();
-                }
-
-                streamGeometryContext.BeginFigure(ToPoint(points[i], aliased), false);
-                streamGeometryContext.LineTo(ToPoint(points[i + 1], aliased));
-
-                count++;
-
-                // Must limit the number of figures, otherwise drawing errors...
-                if (count > MaxFiguresPerGeometry || dashArray != null)
-                {
-                    streamGeometryContext.Dispose();
-                    var path = CreateAndAdd<Path>();
-                    SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
-                    path.Data = streamGeometry;
-                    streamGeometry = null;
-                    count = 0;
-                }
-            }
-
-            if (streamGeometry != null)
-            {
-                streamGeometryContext.Dispose();
-                var path = CreateAndAdd<Path>();
-                SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, null, 0);
-                path.Data = streamGeometry;
             }
         }
 
@@ -798,7 +849,7 @@ namespace OxyPlot.Avalonia
             IEnumerable<double> dashArray = null,
             double dashOffset = 0)
         {
-            if (!stroke.IsUndefined() && thickness > 0)
+            if (thickness > 0 && !stroke.IsUndefined())
             {
                 shape.Stroke = GetCachedBrush(stroke);
 
@@ -811,7 +862,7 @@ namespace OxyPlot.Avalonia
                         shape.StrokeJoin = PenLineJoin.Bevel;
                         break;
 
-                    // The default StrokeLineJoin is Miter
+                        // The default StrokeLineJoin is Miter
                 }
 
                 if (thickness > 0)
@@ -819,8 +870,9 @@ namespace OxyPlot.Avalonia
                     shape.StrokeThickness = thickness;
                 }
 
-                if (dashArray != null)
+                if (dashArray != null) // what happens if thickness is 0?
                 {
+                    // ?????? shape.StrokeDashArray = new global::Avalonia.Collections.AvaloniaList<double>(dashArray.Select(dash => dash)); 
                     shape.StrokeDashArray = new global::Avalonia.Collections.AvaloniaList<double>(dashArray);
                     shape.StrokeDashOffset = dashOffset;
                 }
@@ -1001,6 +1053,22 @@ namespace OxyPlot.Avalonia
         private static List<Point> ToPointCollection(IEnumerable<ScreenPoint> points, bool aliased)
         {
             return new List<Point>(aliased ? points.Select(ToPixelAlignedPoint) : points.Select(ToPoint));
+        }
+
+        /// <summary>
+        /// Converts an <see cref="OxyRect"/> to an array of <see cref="ScreenPoint"/>.
+        /// </summary>
+        /// <param name="rect">The rectangle.</param>
+        /// <returns>A <see cref="ScreenPoint[]"/>.</returns>
+        private static ScreenPoint[] RectangleToPolygon(OxyRect rect)
+        {
+            return new ScreenPoint[]
+            {
+                rect.BottomLeft,
+                rect.TopLeft,
+                rect.TopRight,
+                rect.BottomRight,
+            };
         }
     }
 }

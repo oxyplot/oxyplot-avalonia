@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Avalonia.Media;
-
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia;
@@ -23,7 +21,6 @@ namespace OxyPlot.Avalonia
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading;
-    using CursorType = OxyPlot.CursorType;
 
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
