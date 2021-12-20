@@ -499,7 +499,7 @@ namespace OxyPlot.Avalonia
             double thickness,
             EdgeRenderingMode edgeRenderingMode)
         {
-            var polys = rectangles.Select(r => (IList<ScreenPoint>)RectangleToPolygon(r)).ToList();
+            var polys = rectangles.Select(r => RectangleToPolygon(r)).ToList();
             DrawPolygons(polys, fill, stroke, thickness, edgeRenderingMode, null, LineJoin.Miter);
         }
 
@@ -1060,7 +1060,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         /// <param name="rect">The rectangle.</param>
         /// <returns>A <see cref="ScreenPoint[]"/>.</returns>
-        private static ScreenPoint[] RectangleToPolygon(OxyRect rect)
+        private static IList<ScreenPoint> RectangleToPolygon(OxyRect rect)
         {
             return new ScreenPoint[]
             {
