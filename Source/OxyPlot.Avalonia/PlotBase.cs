@@ -384,7 +384,7 @@ namespace OxyPlot.Avalonia
         /// Updates the model.
         /// </summary>
         /// <param name="updateData">The update Data.</param>
-        protected virtual void UpdateModel(bool updateData = true)
+        protected void UpdateModel(bool updateData = true)
         {
             if (ActualModel != null)
             {

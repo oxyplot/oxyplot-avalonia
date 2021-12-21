@@ -78,6 +78,10 @@ namespace OxyPlot.Avalonia
         protected Series()
         {
             eventListener = new EventListener(OnCollectionChanged);
+
+            // Set Items to null for consistency with WPF behaviour in Oxyplot-Contrib
+            // Works around issue with BarSeriesManager throwing on empty Items collection in OxyPlot.Core 2.1
+            Items = null;
         }
 
         /// <summary>
@@ -212,10 +216,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         protected void OnDataChanged()
         {
-            if (Parent is IPlotView pc)
-            {
-                pc.InvalidatePlot();
-            }
+            (((Series)this).Parent as IPlot)?.ElementDataChanged(this);
         }
 
         /// <summary>
@@ -234,10 +235,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         protected void OnVisualChanged()
         {
-            if (Parent is IPlotView pc)
-            {
-                pc.InvalidatePlot(false);
-            }
+            (((Series)this).Parent as IPlot)?.ElementAppearanceChanged(this);
         }
 
         protected override void OnAttachedToLogicalTree(global::Avalonia.LogicalTree.LogicalTreeAttachmentEventArgs e)

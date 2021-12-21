@@ -19,7 +19,7 @@ namespace OxyPlot.Avalonia
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    public partial class Plot : PlotBase
+    public partial class Plot : PlotBase, IPlot
     {
         /// <summary>
         /// The internal model.
@@ -91,7 +91,7 @@ namespace OxyPlot.Avalonia
         /// Updates the model. If Model==<c>null</c>, an internal model will be created. The ActualModel.Update will be called (updates all series data).
         /// </summary>
         /// <param name="updateData">if set to <c>true</c> , all data collections will be updated.</param>
-        protected override void UpdateModel(bool updateData = true)
+        protected new void UpdateModel(bool updateData = true)
         {
             SynchronizeProperties();
             SynchronizeSeries();
@@ -99,6 +99,7 @@ namespace OxyPlot.Avalonia
             SynchronizeAnnotations();
             SynchronizeLegends();
 
+            // TODO: does this achieve anything? we always call InvalidatePlot after UpdateModel
             base.UpdateModel(updateData);
         }
 
@@ -110,6 +111,21 @@ namespace OxyPlot.Avalonia
             UpdateModel(false);
             InvalidatePlot(false);
         }
+
+        void IPlot.ElementAppearanceChanged(object element)
+        {
+            // TODO: determine type of element to perform a more fine-grained update
+            this.UpdateModel(false);
+            base.InvalidatePlot(false);
+        }
+
+        void IPlot.ElementDataChanged(object element)
+        {
+            // TODO: determine type of element to perform a more fine-grained update
+            this.UpdateModel(true);
+            base.InvalidatePlot(true);
+        }
+
 
         /// <summary>
         /// Called when the visual appearance is changed.
@@ -182,6 +198,8 @@ namespace OxyPlot.Avalonia
                     VisualChildren.Remove((IVisual)item);
                 }
             }
+
+            this.OnAppearanceChanged();
         }
 
         /// <summary>
