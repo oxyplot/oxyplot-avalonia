@@ -388,7 +388,6 @@ namespace OxyPlot.Avalonia
             }
 
             Path path = null;
-            StreamGeometryContext sgc = null;
             PathGeometry pathGeometry = null;
             var count = 0;
 
@@ -441,7 +440,7 @@ namespace OxyPlot.Avalonia
                     }
                     else
                     {
-                        sgc.LineTo(toPointFunc(p));
+                        figure.Segments.Add(new LineSegment { Point = toPointFunc(p) });
                     }
                 }
 
