@@ -20,16 +20,16 @@
         <ColumnDefinition Width="2*" />
       </Grid.ColumnDefinitions>
       
-        <!-- The OxyPlot control is binding to a PlotModel in the MainViewModel -->
+      <!-- The OxyPlot control is binding to a PlotModel in the MainViewModel -->
       <ScrollViewer>
         <ItemsControl Items="{Binding Categories}" Padding="0">
           <ItemsControl.DataTemplates>
             <DataTemplate>
               <Expander Margin="0" Focusable="False">
                 <Expander.Header>
-                  <TextBlock Text="{Binding Key}" DockPanel.Dock="Top"  Margin="0" />
+                  <TextBlock Text="{Binding Key}" DockPanel.Dock="Top" Margin="0" />
                 </Expander.Header>
-                <ListBox Items="{Binding Examples}" SelectedItem="{Binding $parent[Grid].DataContext.Example}" VirtualizationMode="None"  Margin="0" Padding="0">
+                <ListBox Items="{Binding Examples}" SelectedItem="{Binding $parent[Grid].DataContext.Example}" VirtualizationMode="None" Margin="0" Padding="0">
                   <ListBox.DataTemplates>
                     <DataTemplate>
                       <TextBlock Text="{Binding Title}" />
