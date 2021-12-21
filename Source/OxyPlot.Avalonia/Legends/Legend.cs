@@ -79,10 +79,15 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void AppearanceChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
         {
-            if (((Legend)d).Parent is IPlotView pc)
-            {
-                pc.InvalidatePlot(false);
-            }
+            ((Legend)d).OnVisualChanged();
+        }
+
+        /// <summary>
+        /// The on visual changed handler.
+        /// </summary>
+        protected void OnVisualChanged()
+        {
+            (this.Parent as IPlot)?.ElementAppearanceChanged(this);
         }
 
         /// <summary>
@@ -92,10 +97,15 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void DataChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
         {
-            if (((Legend)d).Parent is IPlotView pc)
-            {
-                pc.InvalidatePlot();
-            }
+            ((Legend)d).OnDataChanged();
+        }
+
+        /// <summary>
+        /// The on data changed handler.
+        /// </summary>
+        protected void OnDataChanged()
+        {
+            (this.Parent as IPlot)?.ElementDataChanged(this);
         }
 
         static Legend()

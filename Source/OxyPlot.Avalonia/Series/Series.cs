@@ -202,6 +202,14 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
+        /// The on visual changed handler.
+        /// </summary>
+        protected void OnVisualChanged()
+        {
+            (this.Parent as IPlot)?.ElementAppearanceChanged(this);
+        }
+
+        /// <summary>
         /// The data changed.
         /// </summary>
         /// <param name="d">The d.</param>
@@ -212,11 +220,11 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
-        /// The on data changed.
+        /// The on data changed handler.
         /// </summary>
         protected void OnDataChanged()
         {
-            (((Series)this).Parent as IPlot)?.ElementDataChanged(this);
+            (this.Parent as IPlot)?.ElementDataChanged(this);
         }
 
         /// <summary>
@@ -228,14 +236,6 @@ namespace OxyPlot.Avalonia
             base.ItemsChanged(e);
             SubscribeToCollectionChanged(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
             OnDataChanged();
-        }
-
-        /// <summary>
-        /// The on visual changed.
-        /// </summary>
-        protected void OnVisualChanged()
-        {
-            (((Series)this).Parent as IPlot)?.ElementAppearanceChanged(this);
         }
 
         protected override void OnAttachedToLogicalTree(global::Avalonia.LogicalTree.LogicalTreeAttachmentEventArgs e)

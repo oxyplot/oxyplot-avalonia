@@ -1460,6 +1460,14 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
+        /// The on visual changed handler.
+        /// </summary>
+        protected void OnVisualChanged()
+        {
+            (this.Parent as IPlot)?.ElementAppearanceChanged(this);
+        }
+
+        /// <summary>
         /// The data changed.
         /// </summary>
         /// <param name="d">The sender.</param>
@@ -1474,10 +1482,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         protected void OnDataChanged()
         {
-            if (Parent is IPlotView pc)
-            {
-                pc.InvalidatePlot();
-            }
+            (this.Parent as IPlot)?.ElementDataChanged(this);
         }
 
         /// <summary>
@@ -1490,17 +1495,6 @@ namespace OxyPlot.Avalonia
             if (e.Property.OwnerType == GetType() && Parent is IPlotView plot)
             {
                 plot.InvalidatePlot();
-            }
-        }
-
-        /// <summary>
-        /// Handles changed visuals.
-        /// </summary>
-        protected void OnVisualChanged()
-        {
-            if (Parent is IPlotView pc)
-            {
-                pc.InvalidatePlot(false);
             }
         }
 
