@@ -36,6 +36,8 @@ namespace OxyPlot.Avalonia
 
             XProperty.Changed.AddClassHandler<EllipseAnnotation>(DataChanged);
             YProperty.Changed.AddClassHandler<EllipseAnnotation>(DataChanged);
+            WidthProperty.Changed.AddClassHandler<EllipseAnnotation>(DataChanged);
+            HeightProperty.Changed.AddClassHandler<EllipseAnnotation>(DataChanged);
         }
 
         /// <summary>
