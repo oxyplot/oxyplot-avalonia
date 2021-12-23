@@ -94,6 +94,7 @@ namespace OxyPlot.Avalonia
         /// <remarks>The XamlWriter does not serialize StreamGeometry, so set this to <c>false</c> if you want to export to XAML. Using stream geometry seems to be slightly faster than using path geometry.</remarks>
         public bool UseStreamGeometry { get; set; }
 
+        #region DrawEllipse(s)
         ///<inheritdoc/>
         public override void DrawEllipse(OxyRect rect,
             OxyColor fill,
@@ -110,6 +111,86 @@ namespace OxyPlot.Avalonia
             path.Data = new EllipseGeometry(ToRect(rect));
         }
 
+        private void DrawEllipsesByStreamGeometry(
+            IList<OxyRect> rects,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            EdgeRenderingMode edgeRenderingMode,
+            double[] dashArray,
+            LineJoin lineJoin)
+        {
+            const double ratio = 0.55228475; // (Math.Sqrt(2) - 1.0) * 4.0 / 3.0;
+
+            Path path = null;
+            StreamGeometry streamGeometry = null;
+            StreamGeometryContext sgc = null;
+            var count = 0;
+
+            bool isSolid = !fill.IsUndefined();
+            IBrush cachedBrush = null;
+            if (isSolid)
+            {
+                cachedBrush = GetCachedBrush(fill);
+            }
+
+            foreach (var rect in rects)
+            {
+                if (path == null)
+                {
+                    path = CreateAndAdd<Path>();
+                    SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
+                    if (isSolid)
+                    {
+                        path.Fill = cachedBrush;
+                    }
+
+                    streamGeometry = new StreamGeometry();
+                    sgc = streamGeometry.Open();
+                    sgc.SetFillRule(FillRule.NonZero);
+                }
+
+                var a = rect.Width / 2.0;
+                var b = rect.Height / 2.0;
+
+                var x0 = rect.Center.X - a;
+                var x1 = rect.Center.X - a * ratio;
+                var x2 = rect.Center.X;
+                var x3 = rect.Center.X + a * ratio;
+                var x4 = rect.Center.X + a;
+
+                var y0 = rect.Center.Y - b;
+                var y1 = rect.Center.Y - b * ratio;
+                var y2 = rect.Center.Y;
+                var y3 = rect.Center.Y + b * ratio;
+                var y4 = rect.Center.Y + b;
+
+                sgc.BeginFigure(new Point(x2, y0), isSolid);
+                sgc.CubicBezierTo(new Point(x3, y0), new Point(x4, y1), new Point(x4, y2));
+                sgc.CubicBezierTo(new Point(x4, y3), new Point(x3, y4), new Point(x2, y4));
+                sgc.CubicBezierTo(new Point(x1, y4), new Point(x0, y3), new Point(x0, y2));
+                sgc.CubicBezierTo(new Point(x0, y1), new Point(x1, y0), new Point(x2, y0));
+                sgc.EndFigure(true);
+
+                count++;
+
+                // Must limit the number of figures, otherwise drawing errors...
+                if (count > MaxFiguresPerGeometry)
+                {
+                    sgc.Dispose();
+                    path.Data = streamGeometry;
+                    path = null;
+                    count = 0;
+                }
+            }
+
+            if (path != null)
+            {
+                sgc.Dispose();
+                path.Data = streamGeometry;
+            }
+        }
+
         ///<inheritdoc/>
         public override void DrawEllipses(IList<OxyRect> rectangles,
             OxyColor fill,
@@ -117,11 +198,18 @@ namespace OxyPlot.Avalonia
             double thickness,
             EdgeRenderingMode edgeRenderingMode)
         {
+            if (UseStreamGeometry)
+            {
+                DrawEllipsesByStreamGeometry(rectangles, fill, stroke, thickness, edgeRenderingMode, null, LineJoin.Miter);
+                return;
+            }
+
             foreach (var rect in rectangles)
             {
                 DrawEllipse(rect, fill, stroke, thickness, edgeRenderingMode);
             }
         }
+        #endregion
 
         ///<inheritdoc/>
         public override void DrawLine(
@@ -313,9 +401,9 @@ namespace OxyPlot.Avalonia
                 toPointFunc = ToPoint;
             }
 
-            bool isDefined = !fill.IsUndefined();
+            bool isSolid = !fill.IsUndefined();
             IBrush cachedBrush = null;
-            if (isDefined)
+            if (isSolid)
             {
                 cachedBrush = GetCachedBrush(fill);
             }
@@ -326,7 +414,7 @@ namespace OxyPlot.Avalonia
                 {
                     path = CreateAndAdd<Path>();
                     SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
-                    if (isDefined)
+                    if (isSolid)
                     {
                         path.Fill = cachedBrush;
                     }
@@ -341,7 +429,7 @@ namespace OxyPlot.Avalonia
                 {
                     if (first)
                     {
-                        sgc.BeginFigure(toPointFunc(p), isDefined);
+                        sgc.BeginFigure(toPointFunc(p), isSolid);
                         first = false;
                     }
                     else
@@ -401,9 +489,9 @@ namespace OxyPlot.Avalonia
                 toPointFunc = ToPoint;
             }
 
-            bool isDefined = !fill.IsUndefined();
+            bool isSolid = !fill.IsUndefined();
             IBrush cachedBrush = null;
-            if (isDefined)
+            if (isSolid)
             {
                 cachedBrush = GetCachedBrush(fill);
             }
@@ -414,7 +502,7 @@ namespace OxyPlot.Avalonia
                 {
                     path = CreateAndAdd<Path>();
                     SetStroke(path, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
-                    if (isDefined)
+                    if (isSolid)
                     {
                         path.Fill = cachedBrush;
                     }
@@ -431,7 +519,7 @@ namespace OxyPlot.Avalonia
                         figure = new PathFigure
                         {
                             StartPoint = toPointFunc(p),
-                            IsFilled = isDefined,
+                            IsFilled = isSolid,
                             IsClosed = true
                         };
                         pathGeometry.Figures.Add(figure);
