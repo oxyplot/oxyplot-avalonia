@@ -211,16 +211,16 @@ namespace OxyPlot.Avalonia
         /// <param name="points">The points.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join type.</param>
-        /// <param name="edgeRenderingMode">The edge rendering mode.</param>
-        public void DrawLineSegments(
+        public override void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
             double thickness,
+            EdgeRenderingMode edgeRenderingMode,
             double[] dashArray,
-            LineJoin lineJoin,
-            EdgeRenderingMode edgeRenderingMode)
+            LineJoin lineJoin)
         {
             if (UseStreamGeometry)
             {
