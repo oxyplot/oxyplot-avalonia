@@ -7,8 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
 using Avalonia;
+using System.Linq;
 
 namespace OxyPlot.Avalonia
 {
@@ -23,7 +23,7 @@ namespace OxyPlot.Avalonia
         /// Identifies the <see cref="Dashes2"/> dependency property.
         /// </summary>
         public static readonly StyledProperty<double[]> Dashes2Property = AvaloniaProperty.Register<TwoColorAreaSeries, double[]>(nameof(Dashes2));
-        
+
         /// <summary>
         /// Identifies the <see cref="Fill"/> dependency property.
         /// </summary>
@@ -43,7 +43,7 @@ namespace OxyPlot.Avalonia
         /// Identifies the <see cref="Limit"/> dependency property.
         /// </summary>
         public static readonly AvaloniaProperty LimitProperty = AvaloniaProperty.Register<TwoColorAreaSeries, double>(nameof(Limit));
-        
+
         /// <summary>
         /// Identifies the <see cref="MarkerFill2"/> dependency property.
         /// </summary>
@@ -140,7 +140,7 @@ namespace OxyPlot.Avalonia
                 SetValue(MarkerStroke2Property, value);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the line style for the part of the line that is below the limit.
         /// </summary>
@@ -180,7 +180,7 @@ namespace OxyPlot.Avalonia
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = (OxyPlot.Series.TwoColorAreaSeries)series;            
+            var s = (OxyPlot.Series.TwoColorAreaSeries)series;
             s.Fill = Fill.ToOxyColor();
             s.Fill2 = Fill2.ToOxyColor();
             s.MarkerFill2 = MarkerFill2.ToOxyColor();

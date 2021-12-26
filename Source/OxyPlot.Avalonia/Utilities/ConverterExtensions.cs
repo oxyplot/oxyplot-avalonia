@@ -12,9 +12,8 @@ namespace OxyPlot.Avalonia
     using global::Avalonia;
     using global::Avalonia.Input;
     using global::Avalonia.Media;
+    using global::Avalonia.Media.Immutable;
     using System;
-    using HorizontalAlignment = OxyPlot.HorizontalAlignment;
-    using VerticalAlignment = OxyPlot.VerticalAlignment;
 
     /// <summary>
     /// Extension method used to convert to/from Windows/Windows.Media classes.
@@ -127,8 +126,15 @@ namespace OxyPlot.Avalonia
         /// <returns>An <see cref="OxyColor" />.</returns>
         public static OxyColor ToOxyColor(this IBrush brush)
         {
-            var scb = brush as SolidColorBrush;
-            return scb != null ? scb.Color.ToOxyColor() : OxyColors.Undefined;
+            if (brush is ImmutableSolidColorBrush iscb)
+            {
+                return iscb.Color.ToOxyColor();
+            }
+            else if (brush is SolidColorBrush scb)
+            {
+                return scb.Color.ToOxyColor();
+            }
+            return OxyColors.Undefined;
         }
 
         /// <summary>
@@ -443,7 +449,7 @@ namespace OxyPlot.Avalonia
         public static OxyMouseDownEventArgs ToMouseDownEventArgs(this PointerPressedEventArgs e, IInputElement relativeTo)
         {
             var point = e.GetCurrentPoint(relativeTo);
-            
+
             return new OxyMouseDownEventArgs
             {
                 ChangedButton = point.Properties.PointerUpdateKind.Convert(),
@@ -485,51 +491,51 @@ namespace OxyPlot.Avalonia
             };
         }
 
-    /** Touch Events currently not supported in Avalonia
-        /// <summary>
-        /// Converts <see cref="ManipulationStartedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch started event.
-        /// </summary>
-        /// <param name="e">The <see cref="ManipulationStartedEventArgs" /> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationStartedEventArgs e, UIElement relativeTo)
-        {
-            return new OxyTouchEventArgs
+        /** Touch Events currently not supported in Avalonia
+            /// <summary>
+            /// Converts <see cref="ManipulationStartedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch started event.
+            /// </summary>
+            /// <param name="e">The <see cref="ManipulationStartedEventArgs" /> instance containing the event data.</param>
+            /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+            /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
+            public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationStartedEventArgs e, UIElement relativeTo)
             {
-                Position = e.ManipulationOrigin.ToScreenPoint(),
-            };
-        }
+                return new OxyTouchEventArgs
+                {
+                    Position = e.ManipulationOrigin.ToScreenPoint(),
+                };
+            }
 
-        /// <summary>
-        /// Converts <see cref="ManipulationDeltaEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch delta event.
-        /// </summary>
-        /// <param name="e">The <see cref="ManipulationDeltaEventArgs" /> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationDeltaEventArgs e, UIElement relativeTo)
-        {
-            return new OxyTouchEventArgs
+            /// <summary>
+            /// Converts <see cref="ManipulationDeltaEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch delta event.
+            /// </summary>
+            /// <param name="e">The <see cref="ManipulationDeltaEventArgs" /> instance containing the event data.</param>
+            /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+            /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
+            public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationDeltaEventArgs e, UIElement relativeTo)
             {
-                Position = e.ManipulationOrigin.ToScreenPoint(),
-                DeltaTranslation = e.DeltaManipulation.Translation.ToScreenVector(),
-                DeltaScale = e.DeltaManipulation.Scale.ToScreenVector()
-            };
-        }
+                return new OxyTouchEventArgs
+                {
+                    Position = e.ManipulationOrigin.ToScreenPoint(),
+                    DeltaTranslation = e.DeltaManipulation.Translation.ToScreenVector(),
+                    DeltaScale = e.DeltaManipulation.Scale.ToScreenVector()
+                };
+            }
 
-        /// <summary>
-        /// Converts <see cref="ManipulationCompletedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch completed event.
-        /// </summary>
-        /// <param name="e">The <see cref="ManipulationCompletedEventArgs" /> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
-        public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationCompletedEventArgs e, UIElement relativeTo)
-        {
-            return new OxyTouchEventArgs
+            /// <summary>
+            /// Converts <see cref="ManipulationCompletedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch completed event.
+            /// </summary>
+            /// <param name="e">The <see cref="ManipulationCompletedEventArgs" /> instance containing the event data.</param>
+            /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+            /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
+            public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationCompletedEventArgs e, UIElement relativeTo)
             {
-                Position = e.ManipulationOrigin.ToScreenPoint()
-            };
-        }
+                return new OxyTouchEventArgs
+                {
+                    Position = e.ManipulationOrigin.ToScreenPoint()
+                };
+            }
 
-    */
+        */
     }
 }

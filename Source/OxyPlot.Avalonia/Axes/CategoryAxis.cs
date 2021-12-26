@@ -156,7 +156,7 @@ namespace OxyPlot.Avalonia
         /// Creates the internal axis.
         /// </summary>
         /// <returns>The internal axis.</returns>
-        public override OxyPlot.Axes.Axis CreateModel()
+        public override Axes.Axis CreateModel()
         {
             SynchronizeProperties();
             return InternalAxis;
@@ -168,7 +168,7 @@ namespace OxyPlot.Avalonia
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (OxyPlot.Axes.CategoryAxis)InternalAxis;
+            var a = (Axes.CategoryAxis)InternalAxis;
             a.IsTickCentered = IsTickCentered;
             a.ItemsSource = Items;
             a.LabelField = LabelField;

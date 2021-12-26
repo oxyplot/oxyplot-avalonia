@@ -50,7 +50,7 @@ namespace OxyPlot.Avalonia
         /// Identifies the <see cref="LineDashArray"/> dependency property.
         /// </summary>
         public static readonly StyledProperty<List<double>> LineDashArrayProperty = AvaloniaProperty.Register<TrackerControl, List<double>>(nameof(LineDashArray));
-        
+
         /// <summary>
         /// Identifies the <see cref="ShowPointer"/> dependency property.
         /// </summary>
@@ -326,7 +326,6 @@ namespace OxyPlot.Avalonia
             verticalLine = e.NameScope.Find<Line>(PartVerticalLine);
 
             UpdatePositionAndBorder();
-
         }
 
         /// <summary>
@@ -441,10 +440,8 @@ namespace OxyPlot.Avalonia
             var dx = ha == HorizontalAlignment.Center ? -0.5 : ha == HorizontalAlignment.Left ? 0 : -1;
             var dy = va == VerticalAlignment.Center ? -0.5 : va == VerticalAlignment.Top ? 0 : -1;
 
-            Thickness margin;
-            path.Data = ShowPointer
-                                 ? CreatePointerBorderGeometry(ha, va, contentWidth, contentHeight, out margin)
-                                 : CreateBorderGeometry(ha, va, contentWidth, contentHeight, out margin);
+            path.Data = ShowPointer ? CreatePointerBorderGeometry(ha, va, contentWidth, contentHeight, out var margin)
+                                    : CreateBorderGeometry(ha, va, contentWidth, contentHeight, out margin);
 
             content.Margin = margin;
 
@@ -452,10 +449,10 @@ namespace OxyPlot.Avalonia
             var contentSize = contentContainer.DesiredSize;
 
             contentContainer.RenderTransform = new TranslateTransform
-                {
-                    X = dx * contentSize.Width,
-                    Y = dy * contentSize.Height
-                };
+            {
+                X = dx * contentSize.Width,
+                Y = dy * contentSize.Height
+            };
 
             if (horizontalLine != null)
             {
@@ -511,65 +508,55 @@ namespace OxyPlot.Avalonia
 
             if (ha == HorizontalAlignment.Center && va == VerticalAlignment.Bottom)
             {
-                double x0 = 0;
                 var x1 = width;
-                var x2 = (x0 + x1) / 2;
-                double y0 = 0;
+                var x2 = x1 / 2;
                 var y1 = height;
                 margin = new Thickness(0, 0, 0, m);
                 points = new[]
-                    {
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + (m / 2), y1),
-                        new Point(x2, y1 + m), new Point(x2 - (m / 2), y1), new Point(x0, y1)
-                    };
+                {
+                    new Point(0, 0), new Point(x1, 0), new Point(x1, y1), new Point(x2 + (m / 2), y1),
+                    new Point(x2, y1 + m), new Point(x2 - (m / 2), y1), new Point(0, y1)
+                };
             }
-
-            if (ha == HorizontalAlignment.Center && va == VerticalAlignment.Top)
+            else if (ha == HorizontalAlignment.Center && va == VerticalAlignment.Top)
             {
-                double x0 = 0;
                 var x1 = width;
-                var x2 = (x0 + x1) / 2;
+                var x2 = x1 / 2;
                 var y0 = m;
                 var y1 = m + height;
                 margin = new Thickness(0, m, 0, 0);
                 points = new[]
-                    {
-                        new Point(x0, y0), new Point(x2 - (m / 2), y0), new Point(x2, 0), new Point(x2 + (m / 2), y0),
-                        new Point(x1, y0), new Point(x1, y1), new Point(x0, y1)
-                    };
+                {
+                    new Point(0, y0), new Point(x2 - (m / 2), y0), new Point(x2, 0), new Point(x2 + (m / 2), y0),
+                    new Point(x1, y0), new Point(x1, y1), new Point(0, y1)
+                };
             }
-
-            if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Center)
+            else if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Center)
             {
                 var x0 = m;
                 var x1 = m + width;
-                double y0 = 0;
                 var y1 = height;
-                var y2 = (y0 + y1) / 2;
+                var y2 = y1 / 2;
                 margin = new Thickness(m, 0, 0, 0);
                 points = new[]
-                    {
-                        new Point(0, y2), new Point(x0, y2 - (m / 2)), new Point(x0, y0), new Point(x1, y0),
-                        new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + (m / 2))
-                    };
+                {
+                    new Point(0, y2), new Point(x0, y2 - (m / 2)), new Point(x0, 0), new Point(x1, 0),
+                    new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + (m / 2))
+                };
             }
-
-            if (ha == HorizontalAlignment.Right && va == VerticalAlignment.Center)
+            else if (ha == HorizontalAlignment.Right && va == VerticalAlignment.Center)
             {
-                double x0 = 0;
                 var x1 = width;
-                double y0 = 0;
                 var y1 = height;
-                var y2 = (y0 + y1) / 2;
+                var y2 = y1 / 2;
                 margin = new Thickness(0, 0, m, 0);
                 points = new[]
-                    {
-                        new Point(x1 + m, y2), new Point(x1, y2 + (m / 2)), new Point(x1, y1), new Point(x0, y1),
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y2 - (m / 2))
-                    };
+                {
+                    new Point(x1 + m, y2), new Point(x1, y2 + (m / 2)), new Point(x1, y1), new Point(0, y1),
+                    new Point(0, 0), new Point(x1, 0), new Point(x1, y2 - (m / 2))
+                };
             }
-
-            if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Top)
+            else if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Top)
             {
                 m *= 0.67;
                 var x0 = m;
@@ -578,55 +565,48 @@ namespace OxyPlot.Avalonia
                 var y1 = m + height;
                 margin = new Thickness(m, m, 0, 0);
                 points = new[]
-                    {
-                        new Point(0, 0), new Point(m * 2, y0), new Point(x1, y0), new Point(x1, y1), new Point(x0, y1),
-                        new Point(x0, m * 2)
-                    };
+                {
+                    new Point(0, 0), new Point(m * 2, y0), new Point(x1, y0), new Point(x1, y1), new Point(x0, y1),
+                    new Point(x0, m * 2)
+                };
             }
-
-            if (ha == HorizontalAlignment.Right && va == VerticalAlignment.Top)
+            else if (ha == HorizontalAlignment.Right && va == VerticalAlignment.Top)
             {
                 m *= 0.67;
-                double x0 = 0;
                 var x1 = width;
                 var y0 = m;
                 var y1 = m + height;
                 margin = new Thickness(0, m, m, 0);
                 points = new[]
-                    {
-                        new Point(x1 + m, 0), new Point(x1, y0 + m), new Point(x1, y1), new Point(x0, y1),
-                        new Point(x0, y0), new Point(x1 - m, y0)
-                    };
+                {
+                    new Point(x1 + m, 0), new Point(x1, y0 + m), new Point(x1, y1), new Point(0, y1),
+                    new Point(0, y0), new Point(x1 - m, y0)
+                };
             }
-
-            if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Bottom)
+            else if (ha == HorizontalAlignment.Left && va == VerticalAlignment.Bottom)
             {
                 m *= 0.67;
                 var x0 = m;
                 var x1 = m + width;
-                double y0 = 0;
                 var y1 = height;
                 margin = new Thickness(m, 0, 0, m);
                 points = new[]
-                    {
-                        new Point(0, y1 + m), new Point(x0, y1 - m), new Point(x0, y0), new Point(x1, y0),
-                        new Point(x1, y1), new Point(x0 + m, y1)
-                    };
+                {
+                    new Point(0, y1 + m), new Point(x0, y1 - m), new Point(x0, 0), new Point(x1, 0),
+                    new Point(x1, y1), new Point(x0 + m, y1)
+                };
             }
-
-            if (ha == HorizontalAlignment.Right && va == VerticalAlignment.Bottom)
+            else if (ha == HorizontalAlignment.Right && va == VerticalAlignment.Bottom)
             {
                 m *= 0.67;
-                double x0 = 0;
                 var x1 = width;
-                double y0 = 0;
                 var y1 = height;
                 margin = new Thickness(0, 0, m, m);
                 points = new[]
-                    {
-                        new Point(x1 + m, y1 + m), new Point(x1 - m, y1), new Point(x0, y1), new Point(x0, y0),
-                        new Point(x1, y0), new Point(x1, y1 - m)
-                    };
+                {
+                    new Point(x1 + m, y1 + m), new Point(x1 - m, y1), new Point(0, y1), new Point(0, 0),
+                    new Point(x1, 0), new Point(x1, y1 - m)
+                };
             }
 
             if (points == null)

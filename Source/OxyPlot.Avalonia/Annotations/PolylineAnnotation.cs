@@ -47,6 +47,7 @@ namespace OxyPlot.Avalonia
             TextVerticalAlignmentProperty.Changed.AddClassHandler<PolylineAnnotation>(AppearanceChanged);
 
             InterpolationAlgorithmProperty.Changed.AddClassHandler<PolylineAnnotation>(DataChanged);
+            PointsProperty.Changed.AddClassHandler<PolylineAnnotation>(DataChanged);
         }
 
         /// <summary>

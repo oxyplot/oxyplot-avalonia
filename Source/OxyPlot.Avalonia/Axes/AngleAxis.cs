@@ -11,7 +11,6 @@ using Avalonia;
 
 namespace OxyPlot.Avalonia
 {
-
     using OxyPlot.Axes;
 
     /// <summary>

@@ -48,6 +48,11 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<string> TrackerKeyProperty = AvaloniaProperty.Register<Series, string>(nameof(TrackerKey), null);
 
         /// <summary>
+        /// Identifies the <see cref="EdgeRenderingMode"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<EdgeRenderingMode> EdgeRenderingModeProperty = AvaloniaProperty.Register<Series, EdgeRenderingMode>(nameof(EdgeRenderingMode), EdgeRenderingMode.Automatic);
+
+        /// <summary>
         /// The event listener used to subscribe to ItemSource.CollectionChanged events
         /// </summary>
         private readonly EventListener eventListener;
@@ -64,6 +69,7 @@ namespace OxyPlot.Avalonia
             RenderInLegendProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
             TrackerFormatStringProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
             TrackerKeyProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
+            EdgeRenderingModeProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
         }
 
         /// <summary>
@@ -72,6 +78,10 @@ namespace OxyPlot.Avalonia
         protected Series()
         {
             eventListener = new EventListener(OnCollectionChanged);
+
+            // Set Items to null for consistency with WPF behaviour in Oxyplot-Contrib
+            // Works around issue with BarSeriesManager throwing on empty Items collection in OxyPlot.Core 2.1
+            Items = null;
         }
 
         /// <summary>
@@ -114,7 +124,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Gets or sets a value indicating whether the series should be rendered in the legend.
         /// </summary>
-        public bool RenderInLegend 
+        public bool RenderInLegend
         {
             get
             {
@@ -160,6 +170,22 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="OxyPlot.EdgeRenderingMode"/> for the series.
+        /// </summary>
+        public EdgeRenderingMode EdgeRenderingMode
+        {
+            get
+            {
+                return GetValue(EdgeRenderingModeProperty);
+            }
+
+            set
+            {
+                SetValue(EdgeRenderingModeProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Creates the model.
         /// </summary>
         /// <returns>A series.</returns>
@@ -176,6 +202,14 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
+        /// The on visual changed handler.
+        /// </summary>
+        protected void OnVisualChanged()
+        {
+            (this.Parent as IPlot)?.ElementAppearanceChanged(this);
+        }
+
+        /// <summary>
         /// The data changed.
         /// </summary>
         /// <param name="d">The d.</param>
@@ -186,39 +220,22 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
-        /// The on data changed.
+        /// The on data changed handler.
         /// </summary>
         protected void OnDataChanged()
         {
-            var pc = Parent as IPlotView;
-            if (pc != null)
-            {
-                pc.InvalidatePlot();
-            }
+            (this.Parent as IPlot)?.ElementDataChanged(this);
         }
 
         /// <summary>
         /// The on items source changed.
         /// </summary>
         /// <param name="e">Event args</param>
-        /// 
         protected override void ItemsChanged(AvaloniaPropertyChangedEventArgs e)
         {
             base.ItemsChanged(e);
             SubscribeToCollectionChanged(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
             OnDataChanged();
-        }
-
-        /// <summary>
-        /// The on visual changed.
-        /// </summary>
-        protected void OnVisualChanged()
-        {
-            var pc = Parent as IPlotView;
-            if (pc != null)
-            {
-                pc.InvalidatePlot(false);
-            }
         }
 
         protected override void OnAttachedToLogicalTree(global::Avalonia.LogicalTree.LogicalTreeAttachmentEventArgs e)
@@ -243,6 +260,7 @@ namespace OxyPlot.Avalonia
             s.IsVisible = IsVisible;
             s.Font = FontFamily.ToString();
             s.TextColor = Foreground.ToOxyColor();
+            s.EdgeRenderingMode = EdgeRenderingMode;
         }
 
         /// <summary>
@@ -252,8 +270,7 @@ namespace OxyPlot.Avalonia
         /// <param name="newValue">The new ItemsSource</param>
         private void SubscribeToCollectionChanged(IEnumerable oldValue, IEnumerable newValue)
         {
-            var collection = oldValue as INotifyCollectionChanged;
-            if (collection != null)
+            if (oldValue is INotifyCollectionChanged collection)
             {
                 WeakSubscriptionManager.Unsubscribe(collection, "CollectionChanged", eventListener);
             }

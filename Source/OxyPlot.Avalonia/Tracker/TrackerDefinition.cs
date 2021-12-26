@@ -12,7 +12,6 @@ using Avalonia.Markup.Xaml.Templates;
 
 namespace OxyPlot.Avalonia
 {
-
     /// <summary>
     /// Represents a tracker definition.
     /// </summary>

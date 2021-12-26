@@ -26,37 +26,37 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies this <see cref="X0Property"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> X0Property = AvaloniaProperty.Register<HeatMapSeries, double>(nameof(X0), default(double));
+        public static readonly StyledProperty<double> X0Property = AvaloniaProperty.Register<HeatMapSeries, double>(nameof(X0), default);
 
         /// <summary>
         /// Identifies this <see cref="X1Property"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> X1Property = AvaloniaProperty.Register<HeatMapSeries, double>(nameof(X1), default(double));
+        public static readonly StyledProperty<double> X1Property = AvaloniaProperty.Register<HeatMapSeries, double>(nameof(X1), default);
 
         /// <summary>
         /// Identifies this <see cref="Y0Property"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> Y0Property = AvaloniaProperty.Register<HeatMapSeries, double>(nameof(Y0), default(double));
+        public static readonly StyledProperty<double> Y0Property = AvaloniaProperty.Register<HeatMapSeries, double>(nameof(Y0), default);
 
         /// <summary>
         /// Identifies this <see cref="Y1Property"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> Y1Property = AvaloniaProperty.Register<HeatMapSeries, double>(nameof(Y1), default(double));
+        public static readonly StyledProperty<double> Y1Property = AvaloniaProperty.Register<HeatMapSeries, double>(nameof(Y1), default);
 
         /// <summary>
         /// Identifies this <see cref="ColorAxisKeyProperty"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<string> ColorAxisKeyProperty = AvaloniaProperty.Register<HeatMapSeries, string>(nameof(ColorAxisKey), default(string));
+        public static readonly StyledProperty<string> ColorAxisKeyProperty = AvaloniaProperty.Register<HeatMapSeries, string>(nameof(ColorAxisKey), default);
 
         /// <summary>
         /// Identifies this <see cref="LowColorProperty"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<Color> LowColorProperty = AvaloniaProperty.Register<HeatMapSeries, Color>(nameof(LowColor), default(Color));
+        public static readonly StyledProperty<Color> LowColorProperty = AvaloniaProperty.Register<HeatMapSeries, Color>(nameof(LowColor), default);
 
         /// <summary>
         /// Identifies this <see cref="HighColorProperty"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<Color> HighColorProperty = AvaloniaProperty.Register<HeatMapSeries, Color>(nameof(HighColor), default(Color));
+        public static readonly StyledProperty<Color> HighColorProperty = AvaloniaProperty.Register<HeatMapSeries, Color>(nameof(HighColor), default);
 
         /// <summary>
         /// Initializes static members of the <see cref="HeatMapSeries"/> class.

@@ -9,7 +9,6 @@
 
 namespace OxyPlot.Avalonia
 {
-    using global::Avalonia;
     using global::Avalonia.Controls;
     using global::Avalonia.LogicalTree;
     using global::Avalonia.VisualTree;
@@ -20,7 +19,7 @@ namespace OxyPlot.Avalonia
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    public partial class Plot : PlotBase
+    public partial class Plot : PlotBase, IPlot
     {
         /// <summary>
         /// The internal model.
@@ -40,10 +39,12 @@ namespace OxyPlot.Avalonia
             series = new ObservableCollection<Series>();
             axes = new ObservableCollection<Axis>();
             annotations = new ObservableCollection<Annotation>();
+            legends = new ObservableCollection<Legend>();
 
             series.CollectionChanged += OnSeriesChanged;
             axes.CollectionChanged += OnAxesChanged;
             annotations.CollectionChanged += OnAnnotationsChanged;
+            legends.CollectionChanged += this.OnAnnotationsChanged;
 
             defaultController = new PlotController();
             internalModel = new PlotModel();
@@ -90,13 +91,15 @@ namespace OxyPlot.Avalonia
         /// Updates the model. If Model==<c>null</c>, an internal model will be created. The ActualModel.Update will be called (updates all series data).
         /// </summary>
         /// <param name="updateData">if set to <c>true</c> , all data collections will be updated.</param>
-        protected override void UpdateModel(bool updateData = true)
+        protected new void UpdateModel(bool updateData = true)
         {
             SynchronizeProperties();
             SynchronizeSeries();
             SynchronizeAxes();
             SynchronizeAnnotations();
+            SynchronizeLegends();
 
+            // TODO: does this achieve anything? we always call InvalidatePlot after UpdateModel
             base.UpdateModel(updateData);
         }
 
@@ -105,8 +108,24 @@ namespace OxyPlot.Avalonia
         /// </summary>
         protected void OnAppearanceChanged()
         {
+            UpdateModel(false);
             InvalidatePlot(false);
         }
+
+        void IPlot.ElementAppearanceChanged(object element)
+        {
+            // TODO: determine type of element to perform a more fine-grained update
+            this.UpdateModel(false);
+            base.InvalidatePlot(false);
+        }
+
+        void IPlot.ElementDataChanged(object element)
+        {
+            // TODO: determine type of element to perform a more fine-grained update
+            this.UpdateModel(true);
+            base.InvalidatePlot(true);
+        }
+
 
         /// <summary>
         /// Called when the visual appearance is changed.
@@ -172,12 +191,15 @@ namespace OxyPlot.Avalonia
                 {
                     item.SetParent(null);
                 }
+
                 foreach (var item in e.OldItems)
                 {
                     LogicalChildren.Remove((ILogical)item);
                     VisualChildren.Remove((IVisual)item);
                 }
             }
+
+            this.OnAppearanceChanged();
         }
 
         /// <summary>
@@ -220,35 +242,6 @@ namespace OxyPlot.Avalonia
             m.AxisTierDistance = AxisTierDistance;
 
             m.IsLegendVisible = IsLegendVisible;
-            m.LegendTextColor = LegendTextColor.ToOxyColor();
-            m.LegendTitle = LegendTitle;
-            m.LegendTitleColor = LegendTitleColor.ToOxyColor();
-            m.LegendTitleFont = LegendTitleFont;
-            m.LegendTitleFontSize = LegendTitleFontSize;
-            m.LegendTitleFontWeight = (int)LegendTitleFontWeight;
-            m.LegendFont = LegendFont;
-            m.LegendFontSize = LegendFontSize;
-            m.LegendFontWeight = (int)LegendFontWeight;
-            m.LegendSymbolLength = LegendSymbolLength;
-            m.LegendSymbolMargin = LegendSymbolMargin;
-            m.LegendPadding = LegendPadding;
-            m.LegendColumnSpacing = LegendColumnSpacing;
-            m.LegendItemSpacing = LegendItemSpacing;
-            m.LegendLineSpacing = LegendLineSpacing;
-            m.LegendMargin = LegendMargin;
-            m.LegendMaxHeight = LegendMaxHeight;
-            m.LegendMaxWidth = LegendMaxWidth;
-
-            m.LegendBackground = LegendBackground.ToOxyColor();
-            m.LegendBorder = LegendBorder.ToOxyColor();
-            m.LegendBorderThickness = LegendBorderThickness;
-
-            m.LegendPlacement = LegendPlacement;
-            m.LegendPosition = LegendPosition;
-            m.LegendOrientation = LegendOrientation;
-            m.LegendItemOrder = LegendItemOrder;
-            m.LegendItemAlignment = LegendItemAlignment.ToHorizontalAlignment();
-            m.LegendSymbolPlacement = LegendSymbolPlacement;
 
             m.PlotAreaBackground = PlotAreaBackground.ToOxyColor();
             m.PlotAreaBorderColor = PlotAreaBorderColor.ToOxyColor();
@@ -288,6 +281,18 @@ namespace OxyPlot.Avalonia
             foreach (var s in Series)
             {
                 internalModel.Series.Add(s.CreateModel());
+            }
+        }
+
+        /// <summary>
+        /// Synchronizes the legends in the internal model.
+        /// </summary>
+        private void SynchronizeLegends()
+        {
+            internalModel.Legends.Clear();
+            foreach (var l in Legends)
+            {
+                internalModel.Legends.Add(l.CreateModel());
             }
         }
     }

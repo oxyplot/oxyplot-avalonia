@@ -9,30 +9,27 @@
 
 namespace AvaloniaExamples.Examples.OverlayDemo
 {
-    using System;
     using Avalonia;
     using Avalonia.Controls;
+    using Avalonia.Controls.Shapes;
     using Avalonia.Media;
-
+    using AvaloniaExamples;
     using OxyPlot;
     using OxyPlot.Axes;
-
-    using AvaloniaExamples;
-    using Avalonia.Controls.Shapes;
+    using System;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [Example("Avalonia overlays.")]
-    public partial class MainWindow : Avalonia.Controls.Window
+    public partial class MainWindow : Window
     {
-        private LinearAxis horizontalAxis;
+        private readonly LinearAxis horizontalAxis;
 
-        private LinearAxis verticalAxis;
+        private readonly LinearAxis verticalAxis;
 
-        private PlotModel model;
-        
-        private Avalonia.Controls.Shapes.Rectangle rect;
+        private readonly PlotModel model;
+        private readonly Rectangle rect;
         private OxyPlot.Avalonia.PlotView plot1;
         private Canvas canvas1;
 
@@ -72,7 +69,7 @@ namespace AvaloniaExamples.Examples.OverlayDemo
             canvas1 = this.Get<Canvas>(nameof(canvas1));
         }
 
-        void HandleTransformChanged(object sender, EventArgs e)
+        private void HandleTransformChanged(object sender, EventArgs e)
         {
             // Transform to screen coordinates
             var p1 = this.horizontalAxis.Transform(0, 0, this.verticalAxis);

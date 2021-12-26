@@ -19,7 +19,7 @@ namespace OxyPlot.Avalonia
     using System.Linq;
 
     /// <summary>
-    /// Provides a Avalonia wrapper for the <see cref="OxyPlot.Axes.LinearColorAxis" />.
+    /// Provides a Avalonia wrapper for the <see cref="Axes.LinearColorAxis" />.
     /// </summary>
     public class LinearColorAxis : Axis
     {

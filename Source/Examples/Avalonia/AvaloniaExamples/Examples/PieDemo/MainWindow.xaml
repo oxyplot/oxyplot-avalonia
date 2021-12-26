@@ -17,7 +17,9 @@
                         Stroke="Black" StrokeThickness="1"
                         StartAngle="0" AngleSpan="360"
                         Items="{Binding Continents}"
-                        LabelField="Name" ValueField="PopulationInMillions" IsExplodedField="IsExploded" />
+                        LabelField="Name" ValueField="PopulationInMillions"
+						IsExplodedField="IsExploded"
+						Foreground="BlueViolet"/>
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>
