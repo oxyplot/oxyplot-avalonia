@@ -58,6 +58,12 @@ namespace ExampleBrowser
             get => example;
             set
             {
+                if (value == null)
+                {
+                    // many listboxes are bound to this, so ignore null assignments and hope that doesn't break anything
+                    return;
+                }
+
                 if (example != value)
                 {
                     example = value;
