@@ -9,7 +9,10 @@
             <oxy:PlotView Model="{Binding Model1}"/>
         </TabItem>
         <TabItem Header="Define plot in XAML">
-            <oxy:Plot Title="Bar series (XAML)" LegendPlacement="Outside" LegendPosition="RightTop" LegendOrientation="Vertical">
+            <oxy:Plot Title="Bar series (XAML)">
+				<oxy:Plot.Legends>
+					<oxy:Legend LegendPlacement="Outside" LegendPosition="RightTop" LegendOrientation="Vertical" />
+				</oxy:Plot.Legends>
                 <oxy:Plot.Axes>
                     <oxy:CategoryAxis Position="Left" Items="{Binding Items}" LabelField="Label"/>
                     <oxy:LinearAxis Position="Bottom" MinimumPadding="0" AbsoluteMinimum="0"/>
@@ -18,6 +21,7 @@
                     <oxy:BarSeries Title="2009" Items="{Binding Items}" ValueField="Value1"/>
                     <oxy:BarSeries Title="2010" Items="{Binding Items}" ValueField="Value2"/>
                     <oxy:BarSeries Title="2011" Items="{Binding Items}" ValueField="Value3"/>
+					<oxy:BarSeries Title="2012" Items="{Binding Items}" ValueField="Value4"/>
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>

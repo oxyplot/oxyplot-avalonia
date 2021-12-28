@@ -16,6 +16,7 @@ namespace AvaloniaExamples.Examples.LegendsDemo
     using AvaloniaExamples;
 
     using HorizontalAlignment = OxyPlot.HorizontalAlignment;
+    using OxyPlot.Legends;
 
     public class MainViewModel : NotifyPropertyChangedBase
     {
@@ -158,6 +159,10 @@ namespace AvaloniaExamples.Examples.LegendsDemo
             var newModel = new PlotModel
             {
                 Title = "LineSeries",
+            };
+
+            var legend = new Legend()
+            {
                 LegendBorder = OxyColors.Black,
                 LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
                 LegendPosition = this.LegendPosition,
@@ -169,6 +174,8 @@ namespace AvaloniaExamples.Examples.LegendsDemo
                 LegendMaxWidth = this.LegendMaxWidth,
                 LegendMaxHeight = this.LegendMaxHeight
             };
+
+            newModel.Legends.Add(legend);
 
             for (int i = 1; i <= n; i++)
             {

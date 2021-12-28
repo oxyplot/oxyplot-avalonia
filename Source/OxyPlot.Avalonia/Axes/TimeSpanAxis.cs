@@ -38,9 +38,8 @@ namespace OxyPlot.Avalonia
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            // ReSharper disable once UnusedVariable
-            var a = (Axes.TimeSpanAxis)InternalAxis;
-            //// Currently no values to synchronize
+            // var a = (Axes.TimeSpanAxis)InternalAxis;
+            // Currently no values to synchronize
         }
     }
 }

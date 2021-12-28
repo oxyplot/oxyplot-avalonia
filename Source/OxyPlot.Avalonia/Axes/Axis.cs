@@ -191,6 +191,16 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<double> MaximumPaddingProperty = AvaloniaProperty.Register<Axis, double>(nameof(MaximumPadding), 0.01);
 
         /// <summary>
+        /// Identifies the <see cref="MaximumMargin"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<double> MaximumMarginProperty = AvaloniaProperty.Register<Axis, double>(nameof(MaximumMargin), 0.0);
+
+        /// <summary>
+        /// Identifies the <see cref="MaximumDataMargin"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<double> MaximumDataMarginProperty = AvaloniaProperty.Register<Axis, double>(nameof(MaximumDataMargin), 0.0);
+
+        /// <summary>
         /// Identifies the <see cref="Maximum"/> dependency property.
         /// </summary>
         public static readonly StyledProperty<double> MaximumProperty = AvaloniaProperty.Register<Axis, double>(nameof(Maximum), double.NaN);
@@ -204,6 +214,16 @@ namespace OxyPlot.Avalonia
         /// Identifies the <see cref="MinimumPadding"/> dependency property.
         /// </summary>
         public static readonly StyledProperty<double> MinimumPaddingProperty = AvaloniaProperty.Register<Axis, double>(nameof(MinimumPadding), 0.01);
+
+        /// <summary>
+        /// Identifies the <see cref="MinimumMargin"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<double> MinimumMarginProperty = AvaloniaProperty.Register<Axis, double>(nameof(MinimumMargin), 0.0);
+
+        /// <summary>
+        /// Identifies the <see cref="MinimumDataMargin"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<double> MinimumDataMarginProperty = AvaloniaProperty.Register<Axis, double>(nameof(MinimumDataMargin), 0.0);
 
         /// <summary>
         /// Identifies the <see cref="Minimum"/> dependency property.
@@ -269,7 +289,7 @@ namespace OxyPlot.Avalonia
         /// Identifies the <see cref="TextColor"/> dependency property.
         /// </summary>
         public static readonly StyledProperty<Color> TextColorProperty = AvaloniaProperty.Register<Axis, Color>(nameof(TextColor), MoreColors.Automatic);
-        
+
         /// <summary>
         /// Identifies the <see cref="TickStyle"/> dependency property.
         /// </summary>
@@ -329,6 +349,11 @@ namespace OxyPlot.Avalonia
         /// Identifies the <see cref="UseSuperExponentialFormat"/> dependency property.
         /// </summary>
         public static readonly StyledProperty<bool> UseSuperExponentialFormatProperty = AvaloniaProperty.Register<Axis, bool>(nameof(UseSuperExponentialFormat), false);
+
+        /// <summary>
+        /// Identifies the <see cref="EdgeRenderingMode"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<EdgeRenderingMode> EdgeRenderingModeProperty = AvaloniaProperty.Register<Axis, EdgeRenderingMode>(nameof(EdgeRenderingMode), EdgeRenderingMode.Automatic);
 
         /// <summary>
         /// Gets or sets the internal axis.
@@ -901,6 +926,38 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
+        /// Gets or sets Margin.
+        /// </summary>
+        public double MaximumMargin
+        {
+            get
+            {
+                return GetValue(MaximumMarginProperty);
+            }
+
+            set
+            {
+                SetValue(MaximumMarginProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets DataMargin.
+        /// </summary>
+        public double MaximumDataMargin
+        {
+            get
+            {
+                return GetValue(MaximumDataMarginProperty);
+            }
+
+            set
+            {
+                SetValue(MaximumDataMarginProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets MaximumRange.
         /// </summary>
         public double MaximumRange
@@ -945,6 +1002,38 @@ namespace OxyPlot.Avalonia
             set
             {
                 SetValue(MinimumPaddingProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets Margin.
+        /// </summary>
+        public double MinimumMargin
+        {
+            get
+            {
+                return GetValue(MinimumMarginProperty);
+            }
+
+            set
+            {
+                SetValue(MinimumMarginProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets DataMargin.
+        /// </summary>
+        public double MinimumDataMargin
+        {
+            get
+            {
+                return GetValue(MinimumDataMarginProperty);
+            }
+
+            set
+            {
+                SetValue(MinimumDataMarginProperty, value);
             }
         }
 
@@ -1339,6 +1428,22 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="OxyPlot.EdgeRenderingMode"/> for the axis.
+        /// </summary>
+        public EdgeRenderingMode EdgeRenderingMode
+        {
+            get
+            {
+                return GetValue(EdgeRenderingModeProperty);
+            }
+
+            set
+            {
+                SetValue(EdgeRenderingModeProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Creates the model.
         /// </summary>
         /// <returns>An axis object.</returns>
@@ -1352,6 +1457,14 @@ namespace OxyPlot.Avalonia
         protected static void AppearanceChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
         {
             ((Axis)d).OnVisualChanged();
+        }
+
+        /// <summary>
+        /// The on visual changed handler.
+        /// </summary>
+        protected void OnVisualChanged()
+        {
+            (this.Parent as IPlot)?.ElementAppearanceChanged(this);
         }
 
         /// <summary>
@@ -1369,11 +1482,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         protected void OnDataChanged()
         {
-            var pc = Parent as IPlotView;
-            if (pc != null)
-            {
-                pc.InvalidatePlot();
-            }
+            (this.Parent as IPlot)?.ElementDataChanged(this);
         }
 
         /// <summary>
@@ -1383,25 +1492,9 @@ namespace OxyPlot.Avalonia
         protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> e)
         {
             base.OnPropertyChanged(e);
-            if (e.Property.OwnerType == GetType())
+            if (e.Property.OwnerType == GetType() && Parent is IPlotView plot)
             {
-                var plot = Parent as IPlotView;
-                if (plot != null)
-                {
-                    plot.InvalidatePlot();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handles changed visuals.
-        /// </summary>
-        protected void OnVisualChanged()
-        {
-            var pc = Parent as IPlotView;
-            if (pc != null)
-            {
-                pc.InvalidatePlot(false);
+                plot.InvalidatePlot();
             }
         }
 
@@ -1454,6 +1547,10 @@ namespace OxyPlot.Avalonia
             a.MaximumRange = MaximumRange;
             a.MinimumPadding = MinimumPadding;
             a.MaximumPadding = MaximumPadding;
+            a.MinimumMargin = MinimumMargin;
+            a.MaximumMargin = MinimumMargin;
+            a.MinimumDataMargin = MinimumDataMargin;
+            a.MaximumDataMargin = MaximumDataMargin;
             a.Position = Position;
             a.PositionTier = PositionTier;
             a.PositionAtZeroCrossing = PositionAtZeroCrossing;
@@ -1468,12 +1565,13 @@ namespace OxyPlot.Avalonia
             a.TitleFontWeight = (int)TitleFontWeight;
             a.TitleFormatString = TitleFormatString;
             a.Title = Title;
-            a.ToolTip = ToolTip.GetTip(this) != null ? ToolTip.GetTip(this).ToString() : null;
+            a.ToolTip = (ToolTip.GetTip(this)?.ToString());
             a.TickStyle = TickStyle;
             a.TitlePosition = TitlePosition;
             a.Unit = Unit;
             a.UseSuperExponentialFormat = UseSuperExponentialFormat;
             a.LabelFormatter = LabelFormatter;
+            a.EdgeRenderingMode = EdgeRenderingMode;
         }
 
         static Axis()
@@ -1510,9 +1608,13 @@ namespace OxyPlot.Avalonia
             MajorStepProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             MajorTickSizeProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             MaximumPaddingProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
+            MaximumMarginProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
+            MaximumDataMarginProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             MaximumProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             MaximumRangeProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             MinimumPaddingProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
+            MinimumMarginProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
+            MinimumDataMarginProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             MinimumProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             MinimumRangeProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             MinorGridlineColorProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
@@ -1538,6 +1640,7 @@ namespace OxyPlot.Avalonia
             TitleProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             UnitProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             UseSuperExponentialFormatProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
+            EdgeRenderingModeProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
         }
     }
 }

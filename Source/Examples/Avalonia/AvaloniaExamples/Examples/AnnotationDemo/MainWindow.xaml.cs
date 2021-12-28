@@ -9,12 +9,9 @@
 
 namespace AvaloniaExamples.Examples.AnnotationDemo
 {
-    using System.Collections.Generic;
-    using System.Windows;
-
-    using OxyPlot;
-
     using AvaloniaExamples;
+    using OxyPlot;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -29,12 +26,11 @@ namespace AvaloniaExamples.Examples.AnnotationDemo
         {
             this.InitializeComponent();
             this.Points = new List<DataPoint>
-                {
-                   new DataPoint(10, 10), new DataPoint(80, 30), new DataPoint(60, 70)
-                };
+            {
+                new DataPoint(10, 10), new DataPoint(80, 30), new DataPoint(60, 70)
+            };
             this.DataContext = new { Points };
         }
-
 
         private void InitializeComponent()
         {

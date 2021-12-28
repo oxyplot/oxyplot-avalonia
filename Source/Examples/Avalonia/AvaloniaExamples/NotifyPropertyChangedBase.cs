@@ -24,7 +24,7 @@ namespace AvaloniaExamples
 
         protected void RaisePropertyChanged(Expression<Func<object>> ignored, [CallerMemberName] string propertyName = null)
             => OnPropertyChanged(propertyName);
-        
+
         protected void SetValue<T>(ref T prop, T value, [CallerMemberName] string propertyName = null)
         {
             prop = value;

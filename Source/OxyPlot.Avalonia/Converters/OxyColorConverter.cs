@@ -10,7 +10,6 @@
 namespace OxyPlot.Avalonia.Converters
 {
     using global::Avalonia.Data.Converters;
-    using global::Avalonia.Markup;
     using global::Avalonia.Media;
     using System;
     using System.Globalization;
@@ -30,9 +29,8 @@ namespace OxyPlot.Avalonia.Converters
         /// <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is OxyColor)
+            if (value is OxyColor color)
             {
-                var color = (OxyColor)value;
                 if (targetType == typeof(Color))
                 {
                     return color.ToColor();
@@ -59,14 +57,12 @@ namespace OxyPlot.Avalonia.Converters
         {
             if (targetType == typeof(OxyColor))
             {
-                if (value is Color)
+                if (value is Color color)
                 {
-                    var color = (Color)value;
                     return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
                 }
 
-                var brush = value as SolidColorBrush;
-                if (brush != null)
+                if (value is SolidColorBrush brush)
                 {
                     return OxyColor.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
                 }

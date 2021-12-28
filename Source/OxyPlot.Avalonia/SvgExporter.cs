@@ -11,7 +11,6 @@ using Avalonia.Controls;
 
 namespace OxyPlot.Avalonia
 {
-
     /// <summary>
     /// Provides functionality to export plots to scalable vector graphics using text measuring in Avalonia.
     /// </summary>

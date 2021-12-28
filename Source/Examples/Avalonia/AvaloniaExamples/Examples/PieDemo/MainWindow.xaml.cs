@@ -31,7 +31,7 @@ namespace AvaloniaExamples.Examples.PieDemo
             // http://en.wikipedia.org/wiki/Continent
 
             var plotModel = new PlotModel { Title = "World population by continent" };
-            var pieSeries = new PieSeries();
+            var pieSeries = new PieSeries() { TextColor = OxyColors.BlueViolet };
             pieSeries.Slices.Add(new PieSlice("Africa", 1030) { IsExploded = true });
             pieSeries.Slices.Add(new PieSlice("Americas", 929) { IsExploded = true });
             pieSeries.Slices.Add(new PieSlice("Asia", 4157));

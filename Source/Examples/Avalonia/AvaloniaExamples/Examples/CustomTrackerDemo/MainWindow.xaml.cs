@@ -7,19 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace AvaloniaExamples.Examples.CustomTrackerDemo
 {
-    using System.Collections.Generic;
-    using System.Windows;
-
-    using OxyPlot;
-    using OxyPlot.Series;
-
-    using AvaloniaExamples;
-    using OxyPlot.Avalonia.Converters;
-    using System;
     using Avalonia.Markup.Xaml;
+    using AvaloniaExamples;
+    using OxyPlot;
+    using OxyPlot.Avalonia.Converters;
+    using OxyPlot.Series;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -37,10 +33,10 @@ namespace AvaloniaExamples.Examples.CustomTrackerDemo
 
         private void InitializeComponent()
         {
-            Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
+            AvaloniaXamlLoader.Load(this);
         }
 
-        class Context
+        private class Context
         {
             public PlotModel Model
             {
@@ -53,7 +49,6 @@ namespace AvaloniaExamples.Examples.CustomTrackerDemo
                 }
             }
         }
-
     }
 
     public class NullExtension : MarkupExtension

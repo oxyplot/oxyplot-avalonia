@@ -34,9 +34,9 @@ namespace AvaloniaExamples
             }
         }
 
-        public string Title { get; private set; }
+        public string Title { get; }
         public string Description { get; set; }
-        private Type MainWindowType { get; set; }
+        private Type MainWindowType { get; }
 
         public IBitmap Thumbnail { get; set; }
 

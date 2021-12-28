@@ -22,6 +22,7 @@ namespace OxyPlot.Avalonia
         {
             base.SynchronizeProperties(series);
             var s = (OxyPlot.Series.ItemsSeries)series;
+            // TODO: BarSeriesManager gets very unhappy when this is not initialised (i.e. empty collection): easier to fix in Core?
             s.ItemsSource = Items;
         }
     }

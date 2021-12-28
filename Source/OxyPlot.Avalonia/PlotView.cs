@@ -11,7 +11,6 @@ using Avalonia;
 
 namespace OxyPlot.Avalonia
 {
-
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>

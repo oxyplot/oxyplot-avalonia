@@ -141,8 +141,6 @@ namespace OxyPlot.Avalonia
                 return;
             }
 
-            var releasedArgs = (PointerReleasedEventArgs)e;
-
             e.Pointer.Capture(null);
 
             if (e.Pointer.Type == PointerType.Touch)
@@ -166,7 +164,7 @@ namespace OxyPlot.Avalonia
             }
             else
             {
-                e.Handled = ActualController.HandleMouseUp(this, releasedArgs.ToMouseReleasedEventArgs(this));
+                e.Handled = ActualController.HandleMouseUp(this, e.ToMouseReleasedEventArgs(this));
 
                 // Open the context menu
                 var p = e.GetPosition(this).ToScreenPoint();
@@ -174,7 +172,7 @@ namespace OxyPlot.Avalonia
 
                 if (ContextMenu != null)
                 {
-                    if (Math.Abs(d) < 1e-8 && releasedArgs.InitialPressMouseButton == MouseButton.Right)
+                    if (Math.Abs(d) < 1e-8 && e.InitialPressMouseButton == MouseButton.Right)
                     {
                         ContextMenu.DataContext = DataContext;
                         ContextMenu.IsVisible = true;

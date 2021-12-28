@@ -11,7 +11,6 @@ namespace OxyPlot.Avalonia.Converters
 {
     using global::Avalonia;
     using global::Avalonia.Data.Converters;
-    using global::Avalonia.Markup;
     using System;
     using System.Globalization;
 
@@ -34,13 +33,9 @@ namespace OxyPlot.Avalonia.Converters
         /// <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Thickness)
+            if (value is Thickness t && targetType == typeof(double))
             {
-                var t = (Thickness)value;
-                if (targetType == typeof(double))
-                {
-                    return Math.Max(Math.Max(t.Left, t.Right), Math.Max(t.Top, t.Bottom));
-                }
+                return Math.Max(Math.Max(t.Left, t.Right), Math.Max(t.Top, t.Bottom));
             }
 
             return value;

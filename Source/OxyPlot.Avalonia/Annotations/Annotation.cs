@@ -35,6 +35,11 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<string> YAxisKeyProperty = AvaloniaProperty.Register<Annotation, string>(nameof(YAxisKey), null);
 
         /// <summary>
+        /// Identifies the <see cref="EdgeRenderingMode"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<EdgeRenderingMode> EdgeRenderingModeProperty = AvaloniaProperty.Register<Annotation, EdgeRenderingMode>(nameof(EdgeRenderingMode), EdgeRenderingMode.Automatic);
+
+        /// <summary>
         /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.AboveSeries" />.
         /// </summary>
         public AnnotationLayer Layer
@@ -83,6 +88,22 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="OxyPlot.EdgeRenderingMode"/> for the annotation.
+        /// </summary>
+        public EdgeRenderingMode EdgeRenderingMode
+        {
+            get
+            {
+                return GetValue(EdgeRenderingModeProperty);
+            }
+
+            set
+            {
+                SetValue(EdgeRenderingModeProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the internal annotation object.
         /// </summary>
         public Annotations.Annotation InternalAnnotation { get; protected set; }
@@ -102,6 +123,7 @@ namespace OxyPlot.Avalonia
             a.Layer = Layer;
             a.XAxisKey = XAxisKey;
             a.YAxisKey = YAxisKey;
+            a.EdgeRenderingMode = EdgeRenderingMode;
         }
 
         /// <summary>
@@ -111,11 +133,15 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void AppearanceChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
         {
-            var pc = ((Annotation)d).Parent as IPlotView;
-            if (pc != null)
-            {
-                pc.InvalidatePlot(false);
-            }
+            ((Annotation)d).OnVisualChanged();
+        }
+
+        /// <summary>
+        /// The on visual changed handler.
+        /// </summary>
+        protected void OnVisualChanged()
+        {
+            (this.Parent as IPlot)?.ElementAppearanceChanged(this);
         }
 
         /// <summary>
@@ -125,11 +151,15 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void DataChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
         {
-            var pc = ((Annotation)d).Parent as IPlotView;
-            if (pc != null)
-            {
-                pc.InvalidatePlot();
-            }
+            ((Annotation)d).OnDataChanged();
+        }
+
+        /// <summary>
+        /// The on data changed handler.
+        /// </summary>
+        protected void OnDataChanged()
+        {
+            (this.Parent as IPlot)?.ElementDataChanged(this);
         }
 
         static Annotation()
@@ -137,6 +167,7 @@ namespace OxyPlot.Avalonia
             LayerProperty.Changed.AddClassHandler<Annotation>(AppearanceChanged);
             XAxisKeyProperty.Changed.AddClassHandler<Annotation>(AppearanceChanged);
             YAxisKeyProperty.Changed.AddClassHandler<Annotation>(AppearanceChanged);
+            EdgeRenderingModeProperty.Changed.AddClassHandler<Annotation>(AppearanceChanged);
         }
     }
 }
