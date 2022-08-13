@@ -58,6 +58,11 @@ namespace OxyPlot.Avalonia
         private Panel panel;
 
         /// <summary>
+        /// Invalidation flag (0: no update, 1: update, 2: update date).
+        /// </summary>
+        private int isUpdateRequired;
+
+        /// <summary>
         /// Invalidation flag (0: no update, 1: update visual elements).
         /// </summary>
         private int isPlotInvalidated;
@@ -224,21 +229,22 @@ namespace OxyPlot.Avalonia
         /// <param name="updateData">The update Data.</param>
         public void InvalidatePlot(bool updateData = true)
         {
-            if (Width <= 0 || Height <= 0)
-            {
-                return;
-            }
+            // perform update on UI thread
+            var updateState = updateData ? 2 : 1;
+            int currentState = isUpdateRequired;
 
-            // TODO: legend on/off crash (issue with Legend hit-test implementation, really)
-            UpdateModel(updateData);
-
-            if (Interlocked.CompareExchange(ref isPlotInvalidated, 1, 0) == 0)
+            while (currentState < updateState)
             {
-                // Invalidate the arrange state for the element.
-                // After the invalidation, the element will have its layout updated,
-                // which will occur asynchronously unless subsequently forced by UpdateLayout.
-                BeginInvoke(InvalidateArrange);
-                BeginInvoke(InvalidateVisual);
+                if (Interlocked.CompareExchange(ref isUpdateRequired, updateState, currentState) == currentState)
+                {
+                    isUpdateRequired = updateState;
+                    BeginInvoke(() => UpdateModel(updateData));
+                    break;
+                }
+                else
+                {
+                    currentState = isUpdateRequired;
+                }
             }
         }
 
@@ -386,10 +392,30 @@ namespace OxyPlot.Avalonia
         /// <param name="updateData">The update Data.</param>
         protected void UpdateModel(bool updateData = true)
         {
-            if (ActualModel != null)
+            if (Width <= 0 || Height <= 0 || ActualModel == null)
             {
-                ((IPlotModel)ActualModel).Update(updateData);
+                return;
             }
+
+            lock (this.ActualModel.SyncRoot)
+            {
+                var updateState = (Interlocked.Exchange(ref isUpdateRequired, 0));
+
+                if (updateState > 0)
+                {
+                    ((IPlotModel)ActualModel).Update(updateState == 2);
+                }
+            }
+
+            if (Interlocked.CompareExchange(ref isPlotInvalidated, 1, 0) == 0)
+            {
+                // Invalidate the arrange state for the element.
+                // After the invalidation, the element will have its layout updated,
+                // which will occur asynchronously unless subsequently forced by UpdateLayout.
+                BeginInvoke(InvalidateArrange);
+                BeginInvoke(InvalidateVisual);
+            }
+
         }
 
         /// <summary>
@@ -482,26 +508,36 @@ namespace OxyPlot.Avalonia
 
             if (ActualModel != null)
             {
-                if (DisconnectCanvasWhileUpdating)
+                lock (this.ActualModel.SyncRoot)
                 {
-                    // TODO: profile... not sure if this makes any difference
-                    var idx = panel.Children.IndexOf(canvas);
-                    if (idx != -1)
+                    var updateState = (Interlocked.Exchange(ref isUpdateRequired, 0));
+
+                    if (updateState > 0)
                     {
-                        panel.Children.RemoveAt(idx);
+                        ((IPlotModel)ActualModel).Update(updateState == 2);
                     }
 
-                    ((IPlotModel)ActualModel).Render(renderContext, new OxyRect(0, 0, canvas.Bounds.Width, canvas.Bounds.Height));
-
-                    // reinsert the canvas again
-                    if (idx != -1)
+                    if (DisconnectCanvasWhileUpdating)
                     {
-                        panel.Children.Insert(idx, canvas);
+                        // TODO: profile... not sure if this makes any difference
+                        var idx = panel.Children.IndexOf(canvas);
+                        if (idx != -1)
+                        {
+                            panel.Children.RemoveAt(idx);
+                        }
+
+                        ((IPlotModel)ActualModel).Render(renderContext, new OxyRect(0, 0, canvas.Bounds.Width, canvas.Bounds.Height));
+
+                        // reinsert the canvas again
+                        if (idx != -1)
+                        {
+                            panel.Children.Insert(idx, canvas);
+                        }
                     }
-                }
-                else
-                {
-                    ((IPlotModel)ActualModel).Render(renderContext, new OxyRect(0, 0, canvas.Bounds.Width, canvas.Bounds.Height));
+                    else
+                    {
+                        ((IPlotModel)ActualModel).Render(renderContext, new OxyRect(0, 0, canvas.Bounds.Width, canvas.Bounds.Height));
+                    }
                 }
             }
         }
@@ -514,11 +550,11 @@ namespace OxyPlot.Avalonia
         {
             if (Dispatcher.UIThread.CheckAccess())
             {
-                Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Loaded);
+                action?.Invoke();
             }
             else
             {
-                action?.Invoke();
+                Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Loaded);
             }
         }
     }
