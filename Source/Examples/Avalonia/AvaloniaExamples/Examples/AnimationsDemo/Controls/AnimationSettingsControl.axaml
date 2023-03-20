@@ -23,7 +23,7 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <TextBlock Text="Easing function" VerticalAlignment="Center" Margin="6,4,6,4" />
-            <DropDown Items="{Binding EasingFunctions}" SelectedItem="{Binding SelectedEasingFunction}" 
+            <ComboBox Items="{Binding EasingFunctions}" SelectedItem="{Binding SelectedEasingFunction}" 
                       Margin="6,4,6,4" Width="100"
                       IsEnabled="{Binding SupportsEasingFunction}"/>            
             

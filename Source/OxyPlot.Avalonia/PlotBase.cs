@@ -101,6 +101,7 @@ namespace OxyPlot.Avalonia
         {
             DisconnectCanvasWhileUpdating = true;
             trackerDefinitions = new ObservableCollection<TrackerDefinition>();
+            
             this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(OnSizeChanged));
         }
 

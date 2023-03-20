@@ -1,6 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:OxyPlot.Avalonia"
+        xmlns:local="http://oxyplot.org/avalonia"
         xmlns:converters="clr-namespace:OxyPlot.Avalonia.Converters">
 
     <Style Selector="local|TrackerControl">
