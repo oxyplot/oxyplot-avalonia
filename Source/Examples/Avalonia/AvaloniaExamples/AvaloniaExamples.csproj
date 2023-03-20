@@ -4,9 +4,7 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup> 
   <ItemGroup>
-    <EmbeddedResource Include="**\*.xaml;Assets\*;Images\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
-  </ItemGroup>
-  <ItemGroup>
+    <AvaloniaResource Include="Images\*"/>
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
     <ProjectReference Include="..\..\..\OxyPlot.Avalonia\OxyPlot.Avalonia.csproj" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview5" />

@@ -5,6 +5,7 @@
         xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         xmlns:exampleBrowser="clr-namespace:ExampleBrowser;assembly=ExampleBrowser"
+        xmlns:exampleLibrary="clr-namespace:ExampleLibrary;assembly=ExampleLibrary"
         x:Class="ExampleBrowser.MainWindow"
         Title="Example Browser">
     <Window.DataContext>
@@ -24,14 +25,14 @@
       <ScrollViewer>
         <ItemsControl Items="{Binding Categories}" Padding="0">
           <ItemsControl.DataTemplates>
-            <DataTemplate>
+            <DataTemplate DataType="exampleBrowser:Category">
               <Expander Margin="0" Focusable="False">
                 <Expander.Header>
                   <TextBlock Text="{Binding Key}" DockPanel.Dock="Top" Margin="0" />
                 </Expander.Header>
-                <ListBox Items="{Binding Examples}" SelectedItem="{Binding $parent[Grid].DataContext.Example}" VirtualizationMode="None" Margin="0" Padding="0">
+                <ListBox Items="{Binding Examples}" SelectedItem="{Binding $parent[Grid].DataContext.Example}" Margin="0" Padding="0">
                   <ListBox.DataTemplates>
-                    <DataTemplate>
+                    <DataTemplate DataType="exampleLibrary:ExampleInfo">
                       <TextBlock Text="{Binding Title}" />
                     </DataTemplate>
                   </ListBox.DataTemplates>
