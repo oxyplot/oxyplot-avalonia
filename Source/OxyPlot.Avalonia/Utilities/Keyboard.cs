@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia.Reactive;
+
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia.Input;
@@ -24,7 +26,7 @@ namespace OxyPlot.Avalonia
 
         public Keyboard()
         {
-            InputManager.Instance.PreProcess.Subscribe(ProcessModifierKeys);
+            InputManager.Instance.PreProcess.Subscribe(new AnonymousObserver<RawInputEventArgs>(ProcessModifierKeys));
         }
 
         /// <summary>

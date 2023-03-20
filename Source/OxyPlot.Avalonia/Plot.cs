@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia;
+
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia.Controls;
@@ -182,7 +184,7 @@ namespace OxyPlot.Avalonia
                     item.SetParent(this);
                 }
                 LogicalChildren.AddRange(e.NewItems.OfType<ILogical>());
-                VisualChildren.AddRange(e.NewItems.OfType<IVisual>());
+                VisualChildren.AddRange(e.NewItems.OfType<Visual>());
             }
 
             if (e.OldItems != null)
@@ -195,7 +197,7 @@ namespace OxyPlot.Avalonia
                 foreach (var item in e.OldItems)
                 {
                     LogicalChildren.Remove((ILogical)item);
-                    VisualChildren.Remove((IVisual)item);
+                    VisualChildren.Remove((Visual)item);
                 }
             }
 

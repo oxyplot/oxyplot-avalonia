@@ -804,11 +804,11 @@ namespace OxyPlot.Avalonia
 
             if (interpolate)
             {
-                RenderOptions.SetBitmapInterpolationMode(image, global::Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.LowQuality);
+                RenderOptions.SetBitmapInterpolationMode(image, BitmapInterpolationMode.LowQuality);
             }
             else
             {
-                RenderOptions.SetBitmapInterpolationMode(image, global::Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.Default);
+                RenderOptions.SetBitmapInterpolationMode(image,  BitmapInterpolationMode.Default);
             }
         }
 

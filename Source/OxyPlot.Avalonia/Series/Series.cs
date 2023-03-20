@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 using Avalonia;
+using Avalonia.Utilities;
+
 
 namespace OxyPlot.Avalonia
 {
@@ -231,10 +233,10 @@ namespace OxyPlot.Avalonia
         /// The on items source changed.
         /// </summary>
         /// <param name="e">Event args</param>
-        protected override void ItemsChanged(AvaloniaPropertyChangedEventArgs e)
+        protected override void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            base.ItemsChanged(e);
-            SubscribeToCollectionChanged(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
+            base.ItemsCollectionChanged(sender, e);
+            SubscribeToCollectionChanged(e.OldItems, e.NewItems);
             OnDataChanged();
         }
 
@@ -272,13 +274,13 @@ namespace OxyPlot.Avalonia
         {
             if (oldValue is INotifyCollectionChanged collection)
             {
-                WeakSubscriptionManager.Unsubscribe(collection, "CollectionChanged", eventListener);
+                WeakEvents.CollectionChanged.Unsubscribe(collection, eventListener);
             }
 
             collection = newValue as INotifyCollectionChanged;
             if (collection != null)
             {
-                WeakSubscriptionManager.Subscribe(collection, "CollectionChanged", eventListener);
+                WeakEvents.CollectionChanged.Subscribe(collection, eventListener);
             }
         }
 
@@ -295,7 +297,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Listens to and forwards any collection changed events
         /// </summary>
-        private class EventListener : IWeakSubscriber<NotifyCollectionChangedEventArgs>
+        private class EventListener : IWeakEventSubscriber<NotifyCollectionChangedEventArgs>
         {
             /// <summary>
             /// The delegate to forward to
@@ -310,8 +312,8 @@ namespace OxyPlot.Avalonia
             {
                 this.onCollectionChanged = onCollectionChanged;
             }
-
-            public void OnEvent(object sender, NotifyCollectionChangedEventArgs e)
+ 
+            public void OnEvent(object sender, WeakEvent ev, NotifyCollectionChangedEventArgs e)
             {
                 onCollectionChanged(sender, e);
             }
