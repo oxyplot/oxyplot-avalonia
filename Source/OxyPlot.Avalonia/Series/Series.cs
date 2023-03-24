@@ -84,6 +84,8 @@ namespace OxyPlot.Avalonia
             // Set Items to null for consistency with WPF behaviour in Oxyplot-Contrib
             // Works around issue with BarSeriesManager throwing on empty Items collection in OxyPlot.Core 2.1
             Items = null;
+            
+            ItemsView.CollectionChanged += ItemsViewOnCollectionChanged;
         }
 
         /// <summary>
@@ -229,17 +231,13 @@ namespace OxyPlot.Avalonia
             (this.Parent as IPlot)?.ElementDataChanged(this);
         }
 
-        /// <summary>
-        /// The on items source changed.
-        /// </summary>
-        /// <param name="e">Event args</param>
-        protected override void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ItemsViewOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            base.ItemsCollectionChanged(sender, e);
             SubscribeToCollectionChanged(e.OldItems, e.NewItems);
             OnDataChanged();
         }
-
+        
+        
         protected override void OnAttachedToLogicalTree(global::Avalonia.LogicalTree.LogicalTreeAttachmentEventArgs e)
         {
             base.OnAttachedToLogicalTree(e);

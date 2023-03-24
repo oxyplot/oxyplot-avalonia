@@ -30,8 +30,6 @@ namespace AvaloniaExamples.Examples.OverlayDemo
 
         private readonly PlotModel model;
         private readonly Rectangle rect;
-        private OxyPlot.Avalonia.PlotView plot1;
-        private Canvas canvas1;
 
         public MainWindow()
         {

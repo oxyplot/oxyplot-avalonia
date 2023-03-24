@@ -27,15 +27,13 @@ namespace AvaloniaExamples
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ListBox ListBox;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow" /> class.
         /// </summary>
         public MainWindow()
         {
             InitializeComponent();
-            ListBox.Items = this.Examples = this.GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
+            ListBox.ItemsSource = this.Examples = this.GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
             this.DataContext = this;
 			DevToolsExtensions.AttachDevTools(this);
 		}
