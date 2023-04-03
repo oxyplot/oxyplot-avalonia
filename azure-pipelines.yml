@@ -40,4 +40,4 @@ jobs:
     buildPlatform: 'Any CPU'
     buildConfiguration: 'Release'
   steps:
-  - script: cd ./Source && dotnet build --configuration $(buildConfiguration)
+  - script: cd ./Source && dotnet build OxyPlot.Avalonia.csproj --configuration $(buildConfiguration)
