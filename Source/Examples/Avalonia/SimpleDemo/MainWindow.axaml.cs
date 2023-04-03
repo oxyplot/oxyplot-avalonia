@@ -17,7 +17,7 @@ namespace SimpleDemo
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public class MainWindow : Window
+    public partial class MainWindow : Window
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow" /> class.
