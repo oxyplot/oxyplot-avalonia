@@ -6,7 +6,7 @@ using System;
 
 namespace MemoryTest
 {
-    public class Window1 : Window
+    public partial class Window1 : Window
     {
         public PlotModel Model { get; set; }
 
