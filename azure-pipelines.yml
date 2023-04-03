@@ -1,5 +1,3 @@
-trigger:
-- avalonia11
 jobs:
 - job: Windows
   pool:
