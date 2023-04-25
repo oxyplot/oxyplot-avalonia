@@ -8,7 +8,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="E_xit" Name="Exit"/>
             </MenuItem>
-            <MenuItem Name="ExamplesMenu" Header="Examples" Items="{Binding Examples}">
+            <MenuItem Name="ExamplesMenu" Header="Examples" ItemsSource="{Binding Examples}">
             </MenuItem>
         </Menu>
         <oxy:PlotView Model="{Binding SelectedExample.PlotModel}"/>

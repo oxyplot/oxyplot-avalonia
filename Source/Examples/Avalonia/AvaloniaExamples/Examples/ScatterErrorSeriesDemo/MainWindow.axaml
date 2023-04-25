@@ -12,7 +12,7 @@
                     <oxy:LinearAxis Position="Left"/>
                 </oxy:Plot.Axes>
                 <oxy:Plot.Series>
-                    <oxy:ScatterErrorSeries Items="{Binding Points}" DataFieldX="V1" DataFieldY="V2" DataFieldErrorX="E1" DataFieldErrorY="E2"/>
+                    <oxy:ScatterErrorSeries ItemsSource="{Binding Points}" DataFieldX="V1" DataFieldY="V2" DataFieldErrorX="E1" DataFieldErrorY="E2"/>
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>
@@ -23,7 +23,7 @@
                     <oxy:LinearAxis Position="Left"/>
                 </oxy:Plot.Axes>
                 <oxy:Plot.Series>
-                    <oxy:ScatterErrorSeries Items="{Binding PointList}" />
+                    <oxy:ScatterErrorSeries ItemsSource="{Binding PointList}" />
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>
@@ -34,7 +34,7 @@
                     <oxy:LinearAxis Position="Left"/>
                 </oxy:Plot.Axes>
                 <oxy:Plot.Series>
-                    <oxy:ScatterErrorSeries Items="{Binding PointArray}" />
+                    <oxy:ScatterErrorSeries ItemsSource="{Binding PointArray}" />
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>

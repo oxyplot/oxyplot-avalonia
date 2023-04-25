@@ -6,7 +6,7 @@
         Title="PerformanceDemo" Height="480" Width="640">
 
     <Grid>
-        <ItemsControl Items="{Binding PlotModels}">
+        <ItemsControl ItemsSource="{Binding PlotModels}">
 
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>

@@ -234,7 +234,7 @@
                             <oxy:LinearAxis Position="Bottom"/>
                         </oxy:Plot.Axes>
                         <oxy:Plot.Series>
-                            <oxy:LineSeries Items="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
+                            <oxy:LineSeries ItemsSource="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
                         </oxy:Plot.Series>
                     </oxy:Plot>
                     <oxy:Plot Title="No padding" Grid.Row="0" Grid.Column="1">
@@ -243,7 +243,7 @@
                             <oxy:LinearAxis Position="Bottom" MinimumPadding="0" MaximumPadding="0"/>
                         </oxy:Plot.Axes>
                         <oxy:Plot.Series>
-                            <oxy:LineSeries Items="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
+                            <oxy:LineSeries ItemsSource="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
                         </oxy:Plot.Series>
                     </oxy:Plot>
                     <oxy:Plot Title="Padding 10%" Grid.Row="0" Grid.Column="2">
@@ -252,7 +252,7 @@
                             <oxy:LinearAxis Position="Bottom" MinimumPadding="0.1" MaximumPadding="0.1"/>
                         </oxy:Plot.Axes>
                         <oxy:Plot.Series>
-                            <oxy:LineSeries Items="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
+                            <oxy:LineSeries ItemsSource="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
                         </oxy:Plot.Series>
                     </oxy:Plot>
                     <oxy:Plot Title="X-axis MinimumPadding=0.1" Grid.Row="1" Grid.Column="0">
@@ -261,7 +261,7 @@
                             <oxy:LinearAxis Position="Bottom" MinimumPadding="0.1"/>
                         </oxy:Plot.Axes>
                         <oxy:Plot.Series>
-                            <oxy:LineSeries Items="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
+                            <oxy:LineSeries ItemsSource="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
                         </oxy:Plot.Series>
                     </oxy:Plot>
                     <oxy:Plot Title="X-axis MaximumPadding=0.1" Grid.Row="1" Grid.Column="1">
@@ -270,7 +270,7 @@
                             <oxy:LinearAxis Position="Bottom" MaximumPadding="0.1"/>
                         </oxy:Plot.Axes>
                         <oxy:Plot.Series>
-                            <oxy:LineSeries Items="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
+                            <oxy:LineSeries ItemsSource="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
                         </oxy:Plot.Series>
                     </oxy:Plot>
                 </Grid>

@@ -83,7 +83,7 @@ namespace OxyPlot.Avalonia
 
             // Set Items to null for consistency with WPF behaviour in Oxyplot-Contrib
             // Works around issue with BarSeriesManager throwing on empty Items collection in OxyPlot.Core 2.1
-            Items = null;
+            ItemsSource = null;
             
             ItemsView.CollectionChanged += ItemsViewOnCollectionChanged;
         }

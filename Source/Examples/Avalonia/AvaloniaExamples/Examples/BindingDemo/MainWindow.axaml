@@ -10,16 +10,16 @@
       <oxy:Plot.Series>
         <oxy:LineSeries Title="Value" DataFieldX="Time"
                         DataFieldY="Value"
-                        Items="{Binding Measurements}"
+                        ItemsSource="{Binding Measurements}"
                         StrokeThickness="2" Color="Blue" />
         <oxy:LineSeries Title="Maximum" DataFieldX="Time"
                         DataFieldY="Maximum"
-                        Items="{Binding Measurements}"
+                        ItemsSource="{Binding Measurements}"
                         LineStyle="Dash" StrokeThickness="2"
                         Color="Red" />
         <oxy:LineSeries Title="Minimum" DataFieldX="Time"
                         DataFieldY="Minimum"
-                        Items="{Binding Measurements}"
+                        ItemsSource="{Binding Measurements}"
                         LineStyle="Dot" StrokeThickness="2"
                         Color="Green" />
       </oxy:Plot.Series>

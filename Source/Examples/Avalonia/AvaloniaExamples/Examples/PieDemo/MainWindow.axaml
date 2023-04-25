@@ -16,7 +16,7 @@
                         ExplodedDistance="0"
                         Stroke="Black" StrokeThickness="1"
                         StartAngle="0" AngleSpan="360"
-                        Items="{Binding Continents}"
+                        ItemsSource="{Binding Continents}"
                         LabelField="Name" ValueField="PopulationInMillions"
 						IsExplodedField="IsExploded"
 						Foreground="BlueViolet"/>

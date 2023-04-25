@@ -23,14 +23,14 @@
       
       <!-- The OxyPlot control is binding to a PlotModel in the MainViewModel -->
       <ScrollViewer>
-        <ItemsControl Items="{Binding Categories}" Padding="0">
+        <ItemsControl ItemsSource="{Binding Categories}" Padding="0">
           <ItemsControl.DataTemplates>
             <DataTemplate DataType="exampleBrowser:Category">
               <Expander Margin="0" Focusable="False">
                 <Expander.Header>
                   <TextBlock Text="{Binding Key}" DockPanel.Dock="Top" Margin="0" />
                 </Expander.Header>
-                <ListBox Items="{Binding Examples}" SelectedItem="{Binding $parent[Grid].DataContext.Example}" Margin="0" Padding="0">
+                <ListBox ItemsSource="{Binding Examples}" SelectedItem="{Binding $parent[Grid].DataContext.Example}" Margin="0" Padding="0">
                   <ListBox.DataTemplates>
                     <DataTemplate DataType="exampleLibrary:ExampleInfo">
                       <TextBlock Text="{Binding Title}" />
