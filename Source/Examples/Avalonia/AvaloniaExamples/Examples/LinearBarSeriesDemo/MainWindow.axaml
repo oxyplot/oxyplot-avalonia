@@ -13,7 +13,7 @@
                 <oxy:DateTimeAxis IntervalType="Hours" IntervalLength="50"/>
             </oxy:Plot.Axes>
             <oxy:Plot.Series>
-                <oxy:LinearBarSeries Items="{Binding Pnls}" Title="P&amp;L" DataFieldX="Time" DataFieldY="Value" FillColor="#454CAF50" StrokeColor="#4CAF50" StrokeThickness="1" BarWidth="5"/>
+                <oxy:LinearBarSeries ItemsSource="{Binding Pnls}" Title="P&amp;L" DataFieldX="Time" DataFieldY="Value" FillColor="#454CAF50" StrokeColor="#4CAF50" StrokeThickness="1" BarWidth="5"/>
             </oxy:Plot.Series>
         </oxy:Plot>
     </DockPanel>

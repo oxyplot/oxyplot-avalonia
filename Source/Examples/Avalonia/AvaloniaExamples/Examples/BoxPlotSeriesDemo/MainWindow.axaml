@@ -27,7 +27,7 @@
                 <oxy:Plot.Series>
                     <oxy:BoxPlotSeries Title="Values"
                                        Fill="LightBlue"
-                                       Items="{Binding Items}" />
+                                       ItemsSource="{Binding Items}" />
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>

@@ -13,13 +13,13 @@
         </Grid.ColumnDefinitions>
         <oxy:Plot Title="{Binding Title}">
             <oxy:Plot.Series>
-                <oxy:LineSeries Items="{Binding Points}"/>
+                <oxy:LineSeries ItemsSource="{Binding Points}"/>
             </oxy:Plot.Series>
             <oxy:Plot.Axes>
                 <oxy:LinearAxis Position="Bottom"/>
                 <oxy:LinearAxis Position="Left"/>
             </oxy:Plot.Axes>
         </oxy:Plot>
-        <!--<ItemsControl Grid.Column="2" Items="{Binding Points}"/>-->
+        <!--<ItemsControl Grid.Column="2" ItemsSource="{Binding Points}"/>-->
     </Grid>
 </UserControl>

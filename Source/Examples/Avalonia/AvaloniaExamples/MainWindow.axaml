@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:AvaloniaExamples"
         Title="OxyPlot WPF/XAML examples" Height="800" Width="480">
     <ListBox 
-        Items="{Binding Examples}" 
+        ItemsSource="{Binding Examples}" 
         BorderThickness="0"
         Name="ListBox">
         <ListBox.ItemTemplate>

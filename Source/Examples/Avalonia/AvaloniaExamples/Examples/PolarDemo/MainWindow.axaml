@@ -16,7 +16,7 @@
                                    FormatAsFractions = "true" FractionUnit = "{Binding PI}" FractionUnitSymbol = "π"/>
                 </oxy:Plot.Axes>
                 <oxy:Plot.Series>
-                    <oxy:LineSeries Items="{Binding SpiralPoints}"/>
+                    <oxy:LineSeries ItemsSource="{Binding SpiralPoints}"/>
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>

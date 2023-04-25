@@ -9,7 +9,7 @@
         <DataTemplate DataType="{x:Type UserControlDemo:ViewModel}">
             <oxy:Plot Title="{Binding Title}">
                 <oxy:Plot.Series>
-                    <oxy:LineSeries Items="{Binding Points}"/>
+                    <oxy:LineSeries ItemsSource="{Binding Points}"/>
                 </oxy:Plot.Series>
                 <oxy:Plot.Axes>
                     <oxy:LinearAxis Position="Bottom"/>
