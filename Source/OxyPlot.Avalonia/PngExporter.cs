@@ -76,7 +76,7 @@ namespace OxyPlot.Avalonia
         /// <param name="background">The background.</param>
         /// <param name="resolution">The resolution (dpi).</param>
         /// <returns>A bitmap.</returns>
-        public static IBitmap ExportToBitmap(
+        public static Bitmap ExportToBitmap(
             IPlotModel model,
             int width,
             int height,
@@ -103,7 +103,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         /// <param name="model">The model to export.</param>
         /// <returns>A bitmap.</returns>
-        public IBitmap ExportToBitmap(IPlotModel model)
+        public Bitmap ExportToBitmap(IPlotModel model)
         {
             var scale = 96d / Resolution;
             var canvas = new Canvas { Width = Width * scale, Height = Height * scale, Background = Background.ToBrush() };
