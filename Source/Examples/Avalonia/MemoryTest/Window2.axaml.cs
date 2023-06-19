@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace MemoryTest
 {
-    public class Window2 : Window
+    public partial class Window2 : Window
     {
         public IList<PlotModel> Plots { get; private set; }
 
