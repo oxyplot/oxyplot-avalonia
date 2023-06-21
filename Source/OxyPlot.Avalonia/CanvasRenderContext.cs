@@ -48,7 +48,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// The image cache
         /// </summary>
-        private readonly Dictionary<OxyImage, IBitmap> imageCache = new Dictionary<OxyImage, IBitmap>();
+        private readonly Dictionary<OxyImage, Bitmap> imageCache = new Dictionary<OxyImage, Bitmap>();
 
         /// <summary>
         /// The brush cache.
@@ -808,7 +808,7 @@ namespace OxyPlot.Avalonia
             }
             else
             {
-                RenderOptions.SetBitmapInterpolationMode(image,  BitmapInterpolationMode.Default);
+                RenderOptions.SetBitmapInterpolationMode(image, BitmapInterpolationMode.None);
             }
         }
 
@@ -976,7 +976,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         /// <param name="image">The image.</param>
         /// <returns>The bitmap source.</returns>
-        private IBitmap GetImageSource(OxyImage image)
+        private Bitmap GetImageSource(OxyImage image)
         {
             if (image == null)
             {

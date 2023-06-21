@@ -435,7 +435,7 @@ namespace OxyPlot.Avalonia
             return new OxyMouseWheelEventArgs
             {
                 Position = e.GetPosition(relativeTo as Visual).ToScreenPoint(),
-                ModifierKeys = Keyboard.Instance.GetModifierKeys(),
+                ModifierKeys = e.KeyModifiers.ToModifierKeys(),
                 Delta = (int)(e.Delta.Y + e.Delta.X) * 120
             };
         }

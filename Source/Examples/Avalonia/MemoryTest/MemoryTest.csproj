@@ -6,8 +6,8 @@
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
     <ProjectReference Include="..\..\..\OxyPlot.Avalonia\OxyPlot.Avalonia.csproj" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.0.0-preview5" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-rc1.1" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-rc1.1" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.0.0-rc1.1" />
   </ItemGroup>
 </Project>

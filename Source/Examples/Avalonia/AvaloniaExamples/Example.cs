@@ -24,8 +24,7 @@ namespace AvaloniaExamples
             try
             {
                 var uri = new Uri("resm:AvaloniaExamples.Images." + this.ThumbnailFileName);
-                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-                var stream = assets.Open(uri);
+                var stream = AssetLoader.Open(uri);
                 this.Thumbnail = new Bitmap(stream);
             }
             catch (Exception e)
@@ -38,7 +37,7 @@ namespace AvaloniaExamples
         public string Description { get; set; }
         private Type MainWindowType { get; }
 
-        public IBitmap Thumbnail { get; set; }
+        public Bitmap Thumbnail { get; set; }
 
         public string ThumbnailFileName
         {

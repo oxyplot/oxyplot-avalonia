@@ -370,7 +370,10 @@ namespace OxyPlot.Avalonia
         /// <param name="text">The text.</param>
         public async void SetClipboardText(string text)
         {
-            await AvaloniaLocator.Current.GetService<IClipboard>().SetTextAsync(text).ConfigureAwait(true);
+            if (TopLevel.GetTopLevel(this) is { Clipboard: { } clipboard })
+            {
+                await clipboard.SetTextAsync(text).ConfigureAwait(true);
+            }
         }
 
         /// <summary>
