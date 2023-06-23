@@ -234,9 +234,6 @@ namespace OxyPlot.Avalonia
         {
             // perform update on UI thread
             var updateState = updateData ? 2 : 1;
-            
-            Interlocked.Exchange(ref isUpdateRequired, 0);
-            
             int currentState = isUpdateRequired;
 
             while (currentState < updateState)
