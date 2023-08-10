@@ -23,7 +23,7 @@ namespace AvaloniaExamples
             this.Description = description;
             try
             {
-                var uri = new Uri("resm:AvaloniaExamples.Images." + this.ThumbnailFileName);
+                var uri = new Uri($"avares://{typeof(Example).Assembly.FullName}/Images/" + this.ThumbnailFileName);
                 var stream = AssetLoader.Open(uri);
                 this.Thumbnail = new Bitmap(stream);
             }
