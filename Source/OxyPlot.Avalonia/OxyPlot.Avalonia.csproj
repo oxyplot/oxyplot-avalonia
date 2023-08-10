@@ -11,7 +11,7 @@
     <PackageTags>plotting plot charting chart</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
-    <VersionPrefix>2.1.0</VersionPrefix>
+    <VersionPrefix>2.1.2</VersionPrefix>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
@@ -27,6 +27,6 @@
   <ItemGroup>
     <EmbeddedResource Include="**\*.xaml;Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
     <PackageReference Include="Avalonia" Version="11.0.0" />
-    <PackageReference Include="OxyPlot.Core" Version="2.1.0" />
+    <PackageReference Include="OxyPlot.Core" Version="2.1.2" />
   </ItemGroup>
 </Project>
