@@ -434,8 +434,8 @@ namespace OxyPlot.Avalonia
         {
             return new OxyMouseWheelEventArgs
             {
-                Position = e.GetPosition(relativeTo).ToScreenPoint(),
-                ModifierKeys = Keyboard.Instance.GetModifierKeys(),
+                Position = e.GetPosition(relativeTo as Visual).ToScreenPoint(),
+                ModifierKeys = e.KeyModifiers.ToModifierKeys(),
                 Delta = (int)(e.Delta.Y + e.Delta.X) * 120
             };
         }
@@ -448,7 +448,7 @@ namespace OxyPlot.Avalonia
         /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseDownEventArgs ToMouseDownEventArgs(this PointerPressedEventArgs e, IInputElement relativeTo)
         {
-            var point = e.GetCurrentPoint(relativeTo);
+            var point = e.GetCurrentPoint(relativeTo as Visual);
 
             return new OxyMouseDownEventArgs
             {
@@ -456,7 +456,7 @@ namespace OxyPlot.Avalonia
 #pragma warning disable CS0618 // Type or member is obsolete
                 ClickCount = e.ClickCount,
 #pragma warning restore CS0618 // Type or member is obsolete
-                Position = e.GetPosition(relativeTo).ToScreenPoint(),
+                Position = e.GetPosition(relativeTo  as Visual).ToScreenPoint(),
                 ModifierKeys = e.KeyModifiers.ToModifierKeys()
             };
         }
@@ -471,7 +471,7 @@ namespace OxyPlot.Avalonia
         {
             return new OxyMouseEventArgs
             {
-                Position = e.GetPosition(relativeTo).ToScreenPoint(),
+                Position = e.GetPosition(relativeTo as Visual).ToScreenPoint(),
                 ModifierKeys = e.KeyModifiers.ToModifierKeys()
             };
         }
@@ -486,7 +486,7 @@ namespace OxyPlot.Avalonia
         {
             return new OxyMouseEventArgs
             {
-                Position = e.GetPosition(relativeTo).ToScreenPoint(),
+                Position = e.GetPosition(relativeTo  as Visual).ToScreenPoint(),
                 ModifierKeys = e.KeyModifiers.ToModifierKeys()
             };
         }

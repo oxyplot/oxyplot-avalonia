@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia.Reactive;
+
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia;
@@ -50,7 +52,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// The current tracker.
         /// </summary>
-        private IControl currentTracker;
+        private Control currentTracker;
 
         /// <summary>
         /// The grid.
@@ -99,7 +101,8 @@ namespace OxyPlot.Avalonia
         {
             DisconnectCanvasWhileUpdating = true;
             trackerDefinitions = new ObservableCollection<TrackerDefinition>();
-            this.GetObservable(TransformedBoundsProperty).Subscribe(bounds => OnSizeChanged(this, bounds?.Bounds.Size ?? new Size()));
+            
+            this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(OnSizeChanged));
         }
 
         /// <summary>
@@ -333,8 +336,8 @@ namespace OxyPlot.Avalonia
             if (!object.ReferenceEquals(tracker, currentTracker))
             {
                 HideTracker();
-                overlays.Children.Add(tracker.Control);
-                currentTracker = tracker.Control;
+                overlays.Children.Add(tracker.Result);
+                currentTracker = tracker.Result;
             }
 
             if (currentTracker != null)
@@ -363,7 +366,10 @@ namespace OxyPlot.Avalonia
         /// <param name="text">The text.</param>
         public async void SetClipboardText(string text)
         {
-            await AvaloniaLocator.Current.GetService<IClipboard>().SetTextAsync(text).ConfigureAwait(true);
+            if (TopLevel.GetTopLevel(this) is { Clipboard: { } clipboard })
+            {
+                await clipboard.SetTextAsync(text).ConfigureAwait(true);
+            }
         }
 
         /// <summary>
@@ -433,7 +439,7 @@ namespace OxyPlot.Avalonia
         /// <returns><c>true</c> if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
         private static bool IsUserVisible(Control element)
         {
-            return element.IsEffectivelyVisible && element.TransformedBounds.HasValue;
+            return element.IsEffectivelyVisible;
         }
 
         /// <summary>
@@ -441,7 +447,7 @@ namespace OxyPlot.Avalonia
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="size">The new size</param>
-        private void OnSizeChanged(object sender, Size size)
+        private void OnSizeChanged(Rect size)
         {
             if (size.Height > 0 && size.Width > 0)
             {
@@ -455,10 +461,10 @@ namespace OxyPlot.Avalonia
         /// <typeparam name="T">Type of the relevant parent</typeparam>
         /// <param name="obj">The object.</param>
         /// <returns>The relevant parent.</returns>
-        private Control GetRelevantParent<T>(IVisual obj)
+        private Control GetRelevantParent<T>(Visual obj)
             where T : Control
         {
-            var container = obj.VisualParent;
+            var container = obj.GetVisualParent();
 
             if (container is ContentPresenter contentPresenter)
             {

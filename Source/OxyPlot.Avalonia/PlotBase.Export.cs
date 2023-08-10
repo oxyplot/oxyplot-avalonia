@@ -57,7 +57,7 @@ namespace OxyPlot.Avalonia
         /// Renders the PlotView to a bitmap.
         /// </summary>
         /// <returns>A bitmap.</returns>
-        public IBitmap ToBitmap()
+        public Bitmap ToBitmap()
         {
             var background = ActualModel.Background.IsVisible() ? ActualModel.Background : Background.ToOxyColor();
             return PngExporter.ExportToBitmap(ActualModel, (int)Bounds.Width, (int)Bounds.Height, background);

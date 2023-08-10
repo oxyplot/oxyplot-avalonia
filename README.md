@@ -36,7 +36,7 @@ Then, you can add plots to your application, as such:
         <avalonia:AreaSeries 
             DataFieldX="Index"
             DataFieldY="Value"
-            Items="{Binding Path=Values}"
+            ItemsSource="{Binding Path=Values}"
             Color="#fd6d00" />
     </avalonia:Plot.Series>
 </avalonia:Plot>

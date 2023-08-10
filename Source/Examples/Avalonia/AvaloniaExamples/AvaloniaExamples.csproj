@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup> 
   <ItemGroup>
-    <EmbeddedResource Include="**\*.xaml;Assets\*;Images\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
-  </ItemGroup>
-  <ItemGroup>
+    <AvaloniaResource Include="Images\*" />
+    <None Remove="Examples\AlignedAxesDemo\MainWindow.xaml" />
+    <AvaloniaXaml Include="Examples\AlignedAxesDemo\MainWindow.xaml" />
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
     <ProjectReference Include="..\..\..\OxyPlot.Avalonia\OxyPlot.Avalonia.csproj" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.11" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.11" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.0.0" />
   </ItemGroup>
 </Project>

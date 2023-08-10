@@ -1,0 +1,47 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:exampleBrowser="clr-namespace:ExampleBrowser;assembly=ExampleBrowser"
+        xmlns:exampleLibrary="clr-namespace:ExampleLibrary;assembly=ExampleLibrary"
+        x:Class="ExampleBrowser.MainWindow"
+        Title="Example Browser">
+    <Window.DataContext>
+      <exampleBrowser:MainViewModel />
+    </Window.DataContext>
+  
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1*" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="2*" />
+      </Grid.ColumnDefinitions>
+      
+      <!-- The OxyPlot control is binding to a PlotModel in the MainViewModel -->
+      <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding Categories}" Padding="0">
+          <ItemsControl.DataTemplates>
+            <DataTemplate DataType="exampleBrowser:Category">
+              <Expander Margin="0" Focusable="False">
+                <Expander.Header>
+                  <TextBlock Text="{Binding Key}" DockPanel.Dock="Top" Margin="0" />
+                </Expander.Header>
+                <ListBox ItemsSource="{Binding Examples}" SelectedItem="{Binding $parent[Grid].DataContext.Example}" Margin="0" Padding="0">
+                  <ListBox.DataTemplates>
+                    <DataTemplate DataType="exampleLibrary:ExampleInfo">
+                      <TextBlock Text="{Binding Title}" />
+                    </DataTemplate>
+                  </ListBox.DataTemplates>
+                </ListBox>
+              </Expander>
+            </DataTemplate>
+          </ItemsControl.DataTemplates>
+        </ItemsControl>
+      </ScrollViewer>
+      <oxy:PlotView Model="{Binding Model}" Grid.Row="0" Grid.Column="1" />
+    </Grid>
+</Window>

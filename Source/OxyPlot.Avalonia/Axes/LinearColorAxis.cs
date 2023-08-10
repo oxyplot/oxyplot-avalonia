@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics.Contracts;
 using Avalonia;
 
 namespace OxyPlot.Avalonia

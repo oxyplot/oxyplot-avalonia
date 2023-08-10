@@ -189,9 +189,9 @@ namespace OxyPlot.Avalonia
         /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseEnter" /> attached event is raised on this element. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.</param>
-        protected override void OnPointerEnter(PointerEventArgs e)
+        protected override void OnPointerEntered(PointerEventArgs e)
         {
-            base.OnPointerEnter(e);
+            base.OnPointerEntered(e);
             if (e.Handled)
             {
                 return;
@@ -204,9 +204,9 @@ namespace OxyPlot.Avalonia
         /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseLeave" /> attached event is raised on this element. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.</param>
-        protected override void OnPointerLeave(PointerEventArgs e)
+        protected override void OnPointerExited(PointerEventArgs e)
         {
-            base.OnPointerLeave(e);
+            base.OnPointerExited(e);
             if (e.Handled)
             {
                 return;

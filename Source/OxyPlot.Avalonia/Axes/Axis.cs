@@ -1489,7 +1489,7 @@ namespace OxyPlot.Avalonia
         /// The on property changed handler.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> e)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
             if (e.Property.OwnerType == GetType() && Parent is IPlotView plot)

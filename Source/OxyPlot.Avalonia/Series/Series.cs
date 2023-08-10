@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 using Avalonia;
+using Avalonia.Utilities;
+
 
 namespace OxyPlot.Avalonia
 {
@@ -81,7 +83,9 @@ namespace OxyPlot.Avalonia
 
             // Set Items to null for consistency with WPF behaviour in Oxyplot-Contrib
             // Works around issue with BarSeriesManager throwing on empty Items collection in OxyPlot.Core 2.1
-            Items = null;
+            ItemsSource = null;
+            
+            ItemsView.CollectionChanged += ItemsViewOnCollectionChanged;
         }
 
         /// <summary>
@@ -227,17 +231,13 @@ namespace OxyPlot.Avalonia
             (this.Parent as IPlot)?.ElementDataChanged(this);
         }
 
-        /// <summary>
-        /// The on items source changed.
-        /// </summary>
-        /// <param name="e">Event args</param>
-        protected override void ItemsChanged(AvaloniaPropertyChangedEventArgs e)
+        private void ItemsViewOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            base.ItemsChanged(e);
-            SubscribeToCollectionChanged(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
+            SubscribeToCollectionChanged(e.OldItems, e.NewItems);
             OnDataChanged();
         }
-
+        
+        
         protected override void OnAttachedToLogicalTree(global::Avalonia.LogicalTree.LogicalTreeAttachmentEventArgs e)
         {
             base.OnAttachedToLogicalTree(e);
@@ -272,13 +272,13 @@ namespace OxyPlot.Avalonia
         {
             if (oldValue is INotifyCollectionChanged collection)
             {
-                WeakSubscriptionManager.Unsubscribe(collection, "CollectionChanged", eventListener);
+                WeakEvents.CollectionChanged.Unsubscribe(collection, eventListener);
             }
 
             collection = newValue as INotifyCollectionChanged;
             if (collection != null)
             {
-                WeakSubscriptionManager.Subscribe(collection, "CollectionChanged", eventListener);
+                WeakEvents.CollectionChanged.Subscribe(collection, eventListener);
             }
         }
 
@@ -295,7 +295,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Listens to and forwards any collection changed events
         /// </summary>
-        private class EventListener : IWeakSubscriber<NotifyCollectionChangedEventArgs>
+        private class EventListener : IWeakEventSubscriber<NotifyCollectionChangedEventArgs>
         {
             /// <summary>
             /// The delegate to forward to
@@ -310,8 +310,8 @@ namespace OxyPlot.Avalonia
             {
                 this.onCollectionChanged = onCollectionChanged;
             }
-
-            public void OnEvent(object sender, NotifyCollectionChangedEventArgs e)
+ 
+            public void OnEvent(object sender, WeakEvent ev, NotifyCollectionChangedEventArgs e)
             {
                 onCollectionChanged(sender, e);
             }
