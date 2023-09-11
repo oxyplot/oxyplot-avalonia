@@ -7,13 +7,19 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>OxyPlot contributors</Copyright>
     <PackageProjectUrl>http://oxyplot.org/</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/oxyplot/oxyplot/develop/Icons/OxyPlot_128.png</PackageIconUrl>
+    <PackageIcon>OxyPlot_128.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>plotting plot charting chart</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
     <VersionPrefix>2.1.2</VersionPrefix>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup Condition="$(GeneratePackageOnBuild)">
+    <None Include="$(MSBuildThisFileDirectory)../../Icons/OxyPlot_128.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)../../README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
