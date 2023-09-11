@@ -16,7 +16,6 @@ namespace OxyPlot.Avalonia
     using global::Avalonia.Controls.Presenters;
     using global::Avalonia.Controls.Primitives;
     using global::Avalonia.Input;
-    using global::Avalonia.Input.Platform;
     using global::Avalonia.Threading;
     using global::Avalonia.VisualTree;
     using System;
