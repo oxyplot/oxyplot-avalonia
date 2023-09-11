@@ -22,6 +22,9 @@ To use the library, add the following to your `App.xaml`:
       
         <!-- Add the line below to get OxyPlot UI theme applied. -->
         <StyleInclude Source="resm:OxyPlot.Avalonia.Themes.Default.xaml?assembly=OxyPlot.Avalonia"/>
+      
+        <!-- Add the line below to get OxyPlot UI theme applied in Avalonia 11. -->
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Simple/AvaloniaEdit.xaml"/>
     </Application.Styles>
 </Application>
 ```
