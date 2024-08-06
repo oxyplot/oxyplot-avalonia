@@ -15,7 +15,7 @@ namespace OxyPlot.Avalonia
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    public partial class PlotBase
+    public partial class PlotView
     {
         /// <summary>
         /// Saves the PlotView as a bitmap.
@@ -23,7 +23,7 @@ namespace OxyPlot.Avalonia
         /// <param name="stream">Stream to which to write the bitmap.</param>
         public void SaveBitmap(Stream stream)
         {
-            SaveBitmap(stream, -1, -1, ActualModel.Background);
+            this.SaveBitmap(stream, -1, -1, this.ActualModel.Background);
         }
 
         /// <summary>
@@ -37,20 +37,20 @@ namespace OxyPlot.Avalonia
         {
             if (width <= 0)
             {
-                width = (int)Bounds.Width;
+                width = (int)this.Bounds.Width;
             }
 
             if (height <= 0)
             {
-                height = (int)Bounds.Height;
+                height = (int)this.Bounds.Height;
             }
 
             if (!background.IsVisible())
             {
-                background = Background.ToOxyColor();
+                background = this.Background.ToOxyColor();
             }
 
-            PngExporter.Export(ActualModel, stream, width, height, background);
+            PngExporter.Export(this.ActualModel, stream, width, height, background);
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace OxyPlot.Avalonia
         /// <returns>A bitmap.</returns>
         public Bitmap ToBitmap()
         {
-            var background = ActualModel.Background.IsVisible() ? ActualModel.Background : Background.ToOxyColor();
-            return PngExporter.ExportToBitmap(ActualModel, (int)Bounds.Width, (int)Bounds.Height, background);
+            var background = this.ActualModel.Background.IsVisible() ? this.ActualModel.Background : this.Background.ToOxyColor();
+            return PngExporter.ExportToBitmap(this.ActualModel, (int)this.Bounds.Width, (int)this.Bounds.Height, background);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29409.12
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.Avalonia", "OxyPlot.Avalonia\OxyPlot.Avalonia.csproj", "{33F816D5-7FAA-46EC-947E-9B51CB366D9D}"
 EndProject
@@ -26,7 +26,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemoryTest", "Examples\Aval
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaExamples", "Examples\Avalonia\AvaloniaExamples\AvaloniaExamples.csproj", "{B86739B8-5DE9-406F-9418-0751BF7C166F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\Avalonia\ExampleBrowser\ExampleBrowser.csproj", "{E4993D0B-C4C6-47CE-A55E-19EFB28EC034}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleBrowser", "Examples\Avalonia\ExampleBrowser\ExampleBrowser.csproj", "{E4993D0B-C4C6-47CE-A55E-19EFB28EC034}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlot.SkiaSharp.Avalonia", "OxyPlot.SkiaSharp.Avalonia\OxyPlot.SkiaSharp.Avalonia.csproj", "{01E98C01-3F55-460E-8F28-4334C51B6A70}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "OxyPlot.Avalonia.Shared", "OxyPlot.Avalonia.Shared\OxyPlot.Avalonia.Shared.shproj", "{8F6DADFF-7073-4862-86C7-4299AE17CD68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +102,18 @@ Global
 		{E4993D0B-C4C6-47CE-A55E-19EFB28EC034}.Release|x64.Build.0 = Release|Any CPU
 		{E4993D0B-C4C6-47CE-A55E-19EFB28EC034}.Release|x86.ActiveCfg = Release|Any CPU
 		{E4993D0B-C4C6-47CE-A55E-19EFB28EC034}.Release|x86.Build.0 = Release|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Debug|x64.Build.0 = Debug|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Debug|x86.Build.0 = Debug|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Release|x64.ActiveCfg = Release|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Release|x64.Build.0 = Release|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Release|x86.ActiveCfg = Release|Any CPU
+		{01E98C01-3F55-460E-8F28-4334C51B6A70}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,5 +126,10 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {468E0F0B-9D70-4C0F-93F7-60DA5581D466}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		OxyPlot.Avalonia.Shared\OxyPlot.Avalonia.Shared.projitems*{01e98c01-3f55-460e-8f28-4334c51b6a70}*SharedItemsImports = 5
+		OxyPlot.Avalonia.Shared\OxyPlot.Avalonia.Shared.projitems*{33f816d5-7faa-46ec-947e-9b51cb366d9d}*SharedItemsImports = 5
+		OxyPlot.Avalonia.Shared\OxyPlot.Avalonia.Shared.projitems*{8f6dadff-7073-4862-86c7-4299ae17cd68}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

@@ -13,7 +13,6 @@ namespace OxyPlot.Avalonia
 {
     using global::Avalonia.Controls;
     using global::Avalonia.LogicalTree;
-    using global::Avalonia.VisualTree;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
@@ -21,7 +20,7 @@ namespace OxyPlot.Avalonia
     /// <summary>
     /// Represents a control that displays a <see cref="PlotModel" />.
     /// </summary>
-    public partial class Plot : PlotBase, IPlot
+    public partial class Plot : PlotView, IPlot
     {
         /// <summary>
         /// The internal model.
@@ -38,105 +37,63 @@ namespace OxyPlot.Avalonia
         /// </summary>
         public Plot()
         {
-            series = new ObservableCollection<Series>();
-            axes = new ObservableCollection<Axis>();
-            annotations = new ObservableCollection<Annotation>();
-            legends = new ObservableCollection<Legend>();
+            this.series = [];
+            this.axes = [];
+            this.annotations = [];
+            this.legends = [];
 
-            series.CollectionChanged += OnSeriesChanged;
-            axes.CollectionChanged += OnAxesChanged;
-            annotations.CollectionChanged += OnAnnotationsChanged;
-            legends.CollectionChanged += this.OnAnnotationsChanged;
+            this.series.CollectionChanged += this.OnSeriesChanged;
+            this.axes.CollectionChanged += this.OnAxesChanged;
+            this.annotations.CollectionChanged += this.OnAnnotationsChanged;
+            this.legends.CollectionChanged += this.OnAnnotationsChanged;
 
-            defaultController = new PlotController();
-            internalModel = new PlotModel();
-            ((IPlotModel)internalModel).AttachPlotView(this);
+            this.defaultController = new PlotController();
+            this.internalModel = new PlotModel();
+            ((IPlotModel)this.internalModel).AttachPlotView(this);
         }
 
         /// <summary>
         /// Gets the annotations.
         /// </summary>
         /// <value>The annotations.</value>
-        public ObservableCollection<Annotation> Annotations
-        {
-            get
-            {
-                return annotations;
-            }
-        }
+        public ObservableCollection<Annotation> Annotations => this.annotations;
 
         /// <summary>
         /// Gets the actual model.
         /// </summary>
         /// <value>The actual model.</value>
-        public override PlotModel ActualModel
-        {
-            get
-            {
-                return internalModel;
-            }
-        }
+        public override PlotModel ActualModel => this.internalModel;
 
         /// <summary>
         /// Gets the actual Plot controller.
         /// </summary>
         /// <value>The actual Plot controller.</value>
-        public override IPlotController ActualController
-        {
-            get
-            {
-                return defaultController;
-            }
-        }
+        public override IPlotController ActualController => this.defaultController;
 
         /// <summary>
         /// Updates the model. If Model==<c>null</c>, an internal model will be created. The ActualModel.Update will be called (updates all series data).
         /// </summary>
         /// <param name="updateData">if set to <c>true</c> , all data collections will be updated.</param>
-        protected new void UpdateModel(bool updateData = true)
+        public override void InvalidatePlot(bool updateData = true)
         {
-            SynchronizeProperties();
-            SynchronizeSeries();
-            SynchronizeAxes();
-            SynchronizeAnnotations();
-            SynchronizeLegends();
-
-            // TODO: does this achieve anything? we always call InvalidatePlot after UpdateModel
-            base.UpdateModel(updateData);
-        }
-
-        /// <summary>
-        /// Called when the visual appearance is changed.
-        /// </summary>
-        protected void OnAppearanceChanged()
-        {
-            UpdateModel(false);
-            InvalidatePlot(false);
+            base.InvalidatePlot(updateData);
+            this.SynchronizeProperties();
+            this.SynchronizeSeries();
+            this.SynchronizeAxes();
+            this.SynchronizeAnnotations();
+            this.SynchronizeLegends();
         }
 
         void IPlot.ElementAppearanceChanged(object element)
         {
             // TODO: determine type of element to perform a more fine-grained update
-            this.UpdateModel(false);
             base.InvalidatePlot(false);
         }
 
         void IPlot.ElementDataChanged(object element)
         {
             // TODO: determine type of element to perform a more fine-grained update
-            this.UpdateModel(true);
             base.InvalidatePlot(true);
-        }
-
-
-        /// <summary>
-        /// Called when the visual appearance is changed.
-        /// </summary>
-        /// <param name="d">The d.</param>
-        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void AppearanceChanged(global::Avalonia.AvaloniaObject d, global::Avalonia.AvaloniaPropertyChangedEventArgs e)
-        {
-            ((Plot)d).OnAppearanceChanged();
         }
 
         /// <summary>
@@ -146,7 +103,7 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
         private void OnAnnotationsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            SyncLogicalTree(e);
+            this.SyncLogicalTree(e);
         }
 
         /// <summary>
@@ -156,7 +113,7 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
         private void OnAxesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            SyncLogicalTree(e);
+            this.SyncLogicalTree(e);
         }
 
         /// <summary>
@@ -166,7 +123,7 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
         private void OnSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            SyncLogicalTree(e);
+            this.SyncLogicalTree(e);
         }
 
         /// <summary>
@@ -183,8 +140,9 @@ namespace OxyPlot.Avalonia
                 {
                     item.SetParent(this);
                 }
-                LogicalChildren.AddRange(e.NewItems.OfType<ILogical>());
-                VisualChildren.AddRange(e.NewItems.OfType<Visual>());
+
+                this.LogicalChildren.AddRange(e.NewItems.OfType<ILogical>());
+                this.VisualChildren.AddRange(e.NewItems.OfType<Visual>());
             }
 
             if (e.OldItems != null)
@@ -196,8 +154,8 @@ namespace OxyPlot.Avalonia
 
                 foreach (var item in e.OldItems)
                 {
-                    LogicalChildren.Remove((ILogical)item);
-                    VisualChildren.Remove((Visual)item);
+                    this.LogicalChildren.Remove((ILogical)item);
+                    this.VisualChildren.Remove((Visual)item);
                 }
             }
 
@@ -209,45 +167,45 @@ namespace OxyPlot.Avalonia
         /// </summary>
         private void SynchronizeProperties()
         {
-            var m = internalModel;
+            var m = this.internalModel;
 
-            m.PlotType = PlotType;
+            m.PlotType = this.PlotType;
 
-            m.PlotMargins = PlotMargins.ToOxyThickness();
-            m.Padding = Padding.ToOxyThickness();
-            m.TitlePadding = TitlePadding;
+            m.PlotMargins = this.PlotMargins.ToOxyThickness();
+            m.Padding = this.Padding.ToOxyThickness();
+            m.TitlePadding = this.TitlePadding;
 
-            m.Culture = Culture;
+            m.Culture = this.Culture;
 
-            m.DefaultColors = DefaultColors.Select(c => c.ToOxyColor()).ToArray();
-            m.DefaultFont = DefaultFont;
-            m.DefaultFontSize = DefaultFontSize;
+            m.DefaultColors = this.DefaultColors.Select(c => c.ToOxyColor()).ToArray();
+            m.DefaultFont = this.DefaultFont;
+            m.DefaultFontSize = this.DefaultFontSize;
 
-            m.Title = Title;
-            m.TitleColor = TitleColor.ToOxyColor();
-            m.TitleFont = TitleFont;
-            m.TitleFontSize = TitleFontSize;
-            m.TitleFontWeight = (int)TitleFontWeight;
-            m.TitleToolTip = TitleToolTip;
+            m.Title = this.Title;
+            m.TitleColor = this.TitleColor.ToOxyColor();
+            m.TitleFont = this.TitleFont;
+            m.TitleFontSize = this.TitleFontSize;
+            m.TitleFontWeight = (int)this.TitleFontWeight;
+            m.TitleToolTip = this.TitleToolTip;
 
-            m.Subtitle = Subtitle;
-            m.SubtitleColor = SubtitleColor.ToOxyColor();
-            m.SubtitleFont = SubtitleFont;
-            m.SubtitleFontSize = SubtitleFontSize;
-            m.SubtitleFontWeight = (int)SubtitleFontWeight;
+            m.Subtitle = this.Subtitle;
+            m.SubtitleColor = this.SubtitleColor.ToOxyColor();
+            m.SubtitleFont = this.SubtitleFont;
+            m.SubtitleFontSize = this.SubtitleFontSize;
+            m.SubtitleFontWeight = (int)this.SubtitleFontWeight;
 
-            m.TextColor = TextColor.ToOxyColor();
-            m.SelectionColor = SelectionColor.ToOxyColor();
+            m.TextColor = this.TextColor.ToOxyColor();
+            m.SelectionColor = this.SelectionColor.ToOxyColor();
 
-            m.RenderingDecorator = RenderingDecorator;
+            m.RenderingDecorator = this.RenderingDecorator;
 
-            m.AxisTierDistance = AxisTierDistance;
+            m.AxisTierDistance = this.AxisTierDistance;
 
-            m.IsLegendVisible = IsLegendVisible;
+            m.IsLegendVisible = this.IsLegendVisible;
 
-            m.PlotAreaBackground = PlotAreaBackground.ToOxyColor();
-            m.PlotAreaBorderColor = PlotAreaBorderColor.ToOxyColor();
-            m.PlotAreaBorderThickness = PlotAreaBorderThickness.ToOxyThickness();
+            m.PlotAreaBackground = this.PlotAreaBackground.ToOxyColor();
+            m.PlotAreaBorderColor = this.PlotAreaBorderColor.ToOxyColor();
+            m.PlotAreaBorderThickness = this.PlotAreaBorderThickness.ToOxyThickness();
         }
 
         /// <summary>
@@ -255,10 +213,10 @@ namespace OxyPlot.Avalonia
         /// </summary>
         private void SynchronizeAnnotations()
         {
-            internalModel.Annotations.Clear();
-            foreach (var a in Annotations)
+            this.internalModel.Annotations.Clear();
+            foreach (var a in this.Annotations)
             {
-                internalModel.Annotations.Add(a.CreateModel());
+                this.internalModel.Annotations.Add(a.CreateModel());
             }
         }
 
@@ -267,10 +225,10 @@ namespace OxyPlot.Avalonia
         /// </summary>
         private void SynchronizeAxes()
         {
-            internalModel.Axes.Clear();
-            foreach (var a in Axes)
+            this.internalModel.Axes.Clear();
+            foreach (var a in this.Axes)
             {
-                internalModel.Axes.Add(a.CreateModel());
+                this.internalModel.Axes.Add(a.CreateModel());
             }
         }
 
@@ -279,10 +237,10 @@ namespace OxyPlot.Avalonia
         /// </summary>
         private void SynchronizeSeries()
         {
-            internalModel.Series.Clear();
-            foreach (var s in Series)
+            this.internalModel.Series.Clear();
+            foreach (var s in this.Series)
             {
-                internalModel.Series.Add(s.CreateModel());
+                this.internalModel.Series.Add(s.CreateModel());
             }
         }
 
@@ -291,10 +249,10 @@ namespace OxyPlot.Avalonia
         /// </summary>
         private void SynchronizeLegends()
         {
-            internalModel.Legends.Clear();
-            foreach (var l in Legends)
+            this.internalModel.Legends.Clear();
+            foreach (var l in this.Legends)
             {
-                internalModel.Legends.Add(l.CreateModel());
+                this.internalModel.Legends.Add(l.CreateModel());
             }
         }
     }
