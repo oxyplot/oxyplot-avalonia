@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PlotView.cs" company="OxyPlot">
+// <copyright file="Plot.cs" company="OxyPlot">
 //   Copyright (c) 2014 OxyPlot contributors
 // </copyright>
 // <summary>
@@ -8,157 +8,130 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Threading;
+using System.Threading;
 
 namespace OxyPlot.Avalonia
 {
-    /// <summary>
-    /// Represents a control that displays a <see cref="PlotModel" />.
-    /// </summary>
-    public class PlotView : PlotBase
+    public partial class PlotView : PlotBase
     {
         /// <summary>
-        /// Identifies the <see cref="Controller"/> dependency property.
+        /// The render context
         /// </summary>
-        public static readonly StyledProperty<IPlotController> ControllerProperty = AvaloniaProperty.Register<PlotView, IPlotController>(nameof(Controller));
+        private CanvasRenderContext renderContext;
 
         /// <summary>
-        /// Identifies the <see cref="Model"/> dependency property.
+        /// The canvas.
         /// </summary>
-        public static readonly StyledProperty<PlotModel> ModelProperty = AvaloniaProperty.Register<PlotView, PlotModel>(nameof(Model), null);
+        private Canvas canvas;
 
         /// <summary>
-        /// The model lock.
+        /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
-        private readonly object modelLock = new object();
-
-        /// <summary>
-        /// The current model (synchronized with the <see cref="Model" /> property, but can be accessed from all threads.
-        /// </summary>
-        private PlotModel currentModel;
-
-        /// <summary>
-        /// The default plot controller.
-        /// </summary>
-        private IPlotController defaultController;
-
-        /// <summary>
-        /// Initializes static members of the <see cref="PlotView" /> class.
-        /// </summary>
-        static PlotView()
+        public PlotView()
         {
-            PaddingProperty.OverrideMetadata(typeof(PlotView), new StyledPropertyMetadata<Thickness>(new Thickness(8)));
-            ModelProperty.Changed.AddClassHandler<PlotView>(ModelChanged);
-            PaddingProperty.Changed.AddClassHandler<PlotView>(AppearanceChanged);
+            this.DisconnectCanvasWhileUpdating = true;
         }
 
         /// <summary>
-        /// Gets or sets the model.
+        /// Gets or sets a value indicating whether to disconnect the canvas while updating.
         /// </summary>
-        /// <value>The model.</value>
-        public PlotModel Model
+        /// <value><c>true</c> if canvas should be disconnected while updating; otherwise, <c>false</c>.</value>
+        public bool DisconnectCanvasWhileUpdating { get; set; }
+
+        /// <inheritdoc />
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            get
+            base.OnApplyTemplate(e);
+            this.canvas = new Canvas();
+            this.panel.Children.Insert(0, this.canvas);
+            this.renderContext = new CanvasRenderContext(this.canvas);
+        }
+
+        /// <inheritdoc />
+        public override void InvalidatePlot(bool updateData = true)
+        {
+            base.InvalidatePlot(updateData);
+            // do plot update on the UI Thread, but with 'Background' priority, so it doesn't block UI
+            Dispatcher.UIThread.InvokeAsync(() => 
             {
-                return GetValue(ModelProperty);
+                this.UpdatePlot();
+                this.InvalidateArrange(); 
+            }, DispatcherPriority.Background);
+        }
+
+        /// <inheritdoc />
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            var actualSize = base.ArrangeOverride(finalSize);
+            if (actualSize.Width > 0 && actualSize.Height > 0)
+            {
+                this.UpdateVisuals();
             }
 
-            set
-            {
-                SetValue(ModelProperty, value);
-            }
+            return actualSize;
         }
 
-        /// <summary>
-        /// Gets or sets the Plot controller.
-        /// </summary>
-        /// <value>The Plot controller.</value>
-        public IPlotController Controller
+        private void UpdateVisuals()
         {
-            get
+            if (this.canvas == null || this.renderContext == null)
             {
-                return GetValue(ControllerProperty);
+                return;
             }
 
-            set
+            if (!this.IsEffectivelyVisible)
             {
-                SetValue(ControllerProperty, value);
+                return;
             }
-        }
 
-        /// <summary>
-        /// Gets the actual model.
-        /// </summary>
-        /// <value>The actual model.</value>
-        public override PlotModel ActualModel
-        {
-            get
+            // Clear the canvas
+            this.canvas.Children.Clear();
+
+            if (this.ActualModel?.Background.IsVisible() == true)
             {
-                return currentModel;
+                this.canvas.Background = this.ActualModel.Background.ToBrush();
             }
-        }
-
-        /// <summary>
-        /// Gets the actual PlotView controller.
-        /// </summary>
-        /// <value>The actual PlotView controller.</value>
-        public override IPlotController ActualController
-        {
-            get
+            else
             {
-                return Controller ?? (defaultController ?? (defaultController = new PlotController()));
+                this.canvas.Background = null;
             }
-        }
 
-        /// <summary>
-        /// Called when the visual appearance is changed.
-        /// </summary>
-        protected void OnAppearanceChanged()
-        {
-            InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// Called when the visual appearance is changed.
-        /// </summary>
-        /// <param name="d">The d.</param>
-        /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void AppearanceChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
-        {
-            ((PlotView)d).OnAppearanceChanged();
-        }
-
-        /// <summary>
-        /// Called when the model is changed.
-        /// </summary>
-        /// <param name="d">The sender.</param>
-        /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs" /> instance containing the event data.</param>
-        private static void ModelChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
-        {
-            ((PlotView)d).OnModelChanged();
-        }
-
-        /// <summary>
-        /// Called when the model is changed.
-        /// </summary>
-        private void OnModelChanged()
-        {
-            lock (modelLock)
+            if (this.ActualModel is PlotModel plotModel)
             {
-                if (currentModel != null)
+                lock (plotModel.SyncRoot)
                 {
-                    ((IPlotModel)currentModel).AttachPlotView(null);
-                    currentModel = null;
-                }
+                    var updateState = Interlocked.Exchange(ref this.isUpdateRequired, 0);
 
-                if (Model != null)
-				{
-					((IPlotModel)Model).AttachPlotView(null); // detach so we can re-attach
-					((IPlotModel)Model).AttachPlotView(this);
-                    currentModel = Model;
+                    if (updateState > 0)
+                    {
+                        ((IPlotModel)plotModel).Update(updateState > 1);
+                    }
+
+                    if (this.DisconnectCanvasWhileUpdating)
+                    {
+                        // TODO: profile... not sure if this makes any difference
+                        var idx = this.panel.Children.IndexOf(this.canvas);
+                        if (idx != -1)
+                        {
+                            this.panel.Children.RemoveAt(idx);
+                        }
+
+                        ((IPlotModel)plotModel).Render(this.renderContext, new OxyRect(0, 0, this.canvas.Bounds.Width, this.canvas.Bounds.Height));
+
+                        // reinsert the canvas again
+                        if (idx != -1)
+                        {
+                            this.panel.Children.Insert(idx, this.canvas);
+                        }
+                    }
+                    else
+                    {
+                        ((IPlotModel)plotModel).Render(this.renderContext, new OxyRect(0, 0, this.canvas.Bounds.Width, this.canvas.Bounds.Height));
+                    }
                 }
             }
-
-            InvalidatePlot();
         }
     }
 }

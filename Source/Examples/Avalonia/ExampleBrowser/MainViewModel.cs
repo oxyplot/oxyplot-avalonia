@@ -11,51 +11,57 @@ namespace ExampleBrowser
 {
     using ExampleLibrary;
     using OxyPlot;
-    using OxyPlot.Series;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-
-    public class Category
-    {
-        public Category(string key, List<ExampleInfo> examples)
-        {
-            Key = key;
-            Examples = examples ?? throw new ArgumentNullException(nameof(examples));
-        }
-
-        public string Key { get; }
-        public List<ExampleInfo> Examples { get; }
-    }
 
     /// <summary>
     /// Represents the view-model for the main window.
     /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
+        private ExampleInfo example;
+        private Renderer selectedRenderer;
+        private PlotModel model;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel" /> class.
         /// </summary>
         public MainViewModel()
         {
-            Model = new PlotModel() { Title = "Example Browser", Subtitle = "Select an example from the list" };
-            Categories = Examples.GetList()
+            this.model = new PlotModel() { Title = "Example Browser", Subtitle = "Select an example from the list" };
+            this.Categories = Examples.GetList()
                 .GroupBy(e => e.Category)
                 .Select(g => new Category(g.Key, g.ToList()))
                 .OrderBy(c => c.Key)
                 .ToList();
         }
 
+        public IReadOnlyList<Renderer> Renderers { get; } = Enum.GetValues<Renderer>();
+
+        public Renderer SelectedRenderer
+        {
+            get => this.selectedRenderer;
+            set
+            {
+                if (this.selectedRenderer != value)
+                {
+                    this.selectedRenderer = value;
+                    this.CoerceSelectedRenderer();
+                    this.OnPropertyChanged(nameof(this.SelectedRenderer));
+                }
+            }
+        }
+
         public List<Category> Categories { get; }
 
-        private ExampleInfo example;
         /// <summary>
         /// Gets the plot model.
         /// </summary>
         public ExampleInfo Example
         {
-            get => example;
+            get => this.example;
             set
             {
                 if (value == null)
@@ -64,38 +70,47 @@ namespace ExampleBrowser
                     return;
                 }
 
-                if (example != value)
+                if (this.example != value)
                 {
-                    example = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Example)));
-                    Model = example?.PlotModel;
-                    Model?.InvalidatePlot(true);
+                    this.example = value;
+                    this.OnPropertyChanged(nameof(this.Example));
+                    this.CoerceExample();
                 }
             }
         }
 
-        private PlotModel model;
-        /// <summary>
-        /// Gets the plot model.
-        /// </summary>
-        public PlotModel Model
-        {
-            get => model;
-            set
-            {
-                if (model != value)
-                {
-                    model = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Model)));
-                }
-            }
-        }
+        public PlotModel CanvasModel => this.SelectedRenderer == Renderer.Canvas ? this.model : null;
+
+        public PlotModel SkiaSharpModel => this.SelectedRenderer == Renderer.SkiaSharp ? this.model : null;
+        public PlotModel SkiaSharpDoubleBufferedModel => this.SelectedRenderer == Renderer.SkiaSharpDoubleBuffered ? this.model : null;
 
         public void ChangeExample(ExampleInfo example)
         {
-            Example = example;
+            this.Example = example;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void CoerceSelectedRenderer()
+        {
+            ((IPlotModel)this.model)?.AttachPlotView(null);
+            this.OnPropertyChanged(nameof(this.CanvasModel));
+            this.OnPropertyChanged(nameof(this.SkiaSharpModel));
+            this.OnPropertyChanged(nameof(this.SkiaSharpDoubleBufferedModel));
+        }
+
+        private void CoerceExample()
+        {
+            this.model = this.example?.PlotModel;
+            this.model?.InvalidatePlot(true);
+            this.OnPropertyChanged(nameof(this.CanvasModel));
+            this.OnPropertyChanged(nameof(this.SkiaSharpModel));
+            this.OnPropertyChanged(nameof(this.SkiaSharpDoubleBufferedModel));
+        }
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

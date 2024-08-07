@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>Oxyplot.Avalonia</PackageId>
+    <TargetFrameworks>netstandard2.0;net6;net8</TargetFrameworks>
+    <PackageId>Oxyplot.SkiaSharp.Avalonia</PackageId>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Description>OxyPlot is a plotting library for .NET. This is a support library for OxyPlot to work with AvaloniaUI.</Description>
+    <Description>OxyPlot is a plotting library for .NET. This is a support library for OxyPlot to work with AvaloniaUI using the SkiaSharp renderer.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>OxyPlot contributors</Copyright>
     <PackageProjectUrl>http://oxyplot.org/</PackageProjectUrl>
@@ -15,7 +16,7 @@
     <VersionPrefix>2.1.2</VersionPrefix>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
+  
   <ItemGroup Condition="$(GeneratePackageOnBuild)">
     <None Include="$(MSBuildThisFileDirectory)../../Icons/OxyPlot_128.png" Pack="true" PackagePath="\" Visible="false" />
     <None Include="$(MSBuildThisFileDirectory)../../README.md" Pack="true" PackagePath="\" Visible="false" />
@@ -29,12 +30,15 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
   </ItemGroup>
-  
+
   <ItemGroup>
     <EmbeddedResource Include="**\*.xaml;Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="OxyPlot.Core" Version="$(OxyPlotCoreVersion)" />
+    <PackageReference Include="OxyPlot.SkiaSharp" Version="$(OxyPlotCoreVersion)" />
   </ItemGroup>
-  
+
   <Import Project="..\OxyPlot.Avalonia.Shared\OxyPlot.Avalonia.Shared.projitems" Label="Shared" />
+
 </Project>

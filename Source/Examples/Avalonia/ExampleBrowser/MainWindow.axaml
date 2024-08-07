@@ -2,7 +2,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        xmlns:oxy="http://oxyplot.org/avalonia"
+        xmlns:oxySkia="http://oxyplot.org/skiasharp/avalonia"
+        xmlns:oxySkiaDb="http://oxyplot.org/skiasharp/avalonia/doublebuffered"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         xmlns:exampleBrowser="clr-namespace:ExampleBrowser;assembly=ExampleBrowser"
         xmlns:exampleLibrary="clr-namespace:ExampleLibrary;assembly=ExampleLibrary"
@@ -11,6 +13,10 @@
     <Window.DataContext>
       <exampleBrowser:MainViewModel />
     </Window.DataContext>
+
+    <Window.Resources>
+        <exampleBrowser:NotNullBooleanConverter x:Key="NotNullBooleanConverter" />
+    </Window.Resources>
   
     <Grid>
       <Grid.RowDefinitions>
@@ -42,6 +48,18 @@
           </ItemsControl.DataTemplates>
         </ItemsControl>
       </ScrollViewer>
-      <oxy:PlotView Model="{Binding Model}" Grid.Row="0" Grid.Column="1" />
+      <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <oxy:PlotView Model="{Binding CanvasModel}" IsVisible="{Binding CanvasModel, Converter={StaticResource NotNullBooleanConverter}}" />
+        <oxySkia:PlotView Model="{Binding SkiaSharpModel}" IsVisible="{Binding SkiaSharpModel, Converter={StaticResource NotNullBooleanConverter}}" />
+        <oxySkiaDb:PlotView Model="{Binding SkiaSharpDoubleBufferedModel}" IsVisible="{Binding SkiaSharpDoubleBufferedModel, Converter={StaticResource NotNullBooleanConverter}}" />
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+          <TextBlock Text="Renderer:" VerticalAlignment="Center" Margin="5" />
+          <ComboBox ItemsSource="{Binding Renderers}" SelectedItem="{Binding SelectedRenderer}" />
+        </StackPanel>
+      </Grid>
     </Grid>
 </Window>

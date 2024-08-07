@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>8f6dadff-7073-4862-86c7-4299ae17cd68</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>OxyPlot.Avalonia.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\OxyColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ThicknessConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ConverterExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DataPointExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MoreColors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlotBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlotBase.Events.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlotBase.Properties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tracker\TrackerControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tracker\TrackerDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ConverterExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)PlotBase.Model.cs" />
+  </ItemGroup>
+</Project>
