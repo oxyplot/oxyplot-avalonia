@@ -4,5 +4,6 @@
   <Application.Styles>
       <SimpleTheme/>
       <StyleInclude Source="avares://OxyPlot.Avalonia/Themes/Default.axaml"/>
+      <StyleInclude Source="avares://OxyPlot.SkiaSharp.Avalonia/Themes/Default.axaml"/>
   </Application.Styles>
 </Application>

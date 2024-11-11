@@ -1,5 +1,8 @@
 <Styles xmlns="https://github.com/avaloniaui" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local4="http://oxyplot.org/skiasharp/avalonia/picturerecorder"
+        xmlns:local3="http://oxyplot.org/skiasharp/avalonia/doublebuffered"
+        xmlns:local2="http://oxyplot.org/skiasharp/avalonia"
         xmlns:local="http://oxyplot.org/avalonia"
         xmlns:converters="clr-namespace:OxyPlot.Avalonia.Converters">
 
@@ -17,6 +20,7 @@
         <Setter Property="CanCenterVertically" Value="true" />
         <Setter Property="IsHitTestVisible" Value="false" />
         <Setter Property="Foreground" Value="Black" />
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -38,7 +42,7 @@
         </Setter>
     </Style>
 
-    <Style Selector="local|PlotView">
+    <Style Selector="local2|PlotView">
         <Setter Property="Background" Value="White" />
         <Setter Property="DefaultTrackerTemplate">
             <Setter.Value>
@@ -69,8 +73,40 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style Selector="local|Plot">
+  
+    <Style Selector="local3|PlotView">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="DefaultTrackerTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <local:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+                        <local:TrackerControl.Content>
+                            <TextBlock Text="{Binding Text}" Margin="7" />
+                        </local:TrackerControl.Content>
+                    </local:TrackerControl>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ZoomRectangleTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeDashArray="3,1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+                        <Panel Name="PART_Panel" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>  
+  
+    <Style Selector="local4|PlotView">
         <Setter Property="Background" Value="White" />
         <Setter Property="DefaultTrackerTemplate">
             <Setter.Value>

@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Avalonia.Controls;
-
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia.Input;
@@ -34,7 +32,7 @@ namespace OxyPlot.Avalonia
             }
 
             var args = new OxyKeyEventArgs { ModifierKeys = e.KeyModifiers.ToModifierKeys(), Key = e.Key.Convert() };
-            e.Handled = ActualController.HandleKeyDown(this, args);
+            e.Handled = this.ActualController.HandleKeyDown(this, args);
         }
 
         /// <summary>
@@ -44,18 +42,18 @@ namespace OxyPlot.Avalonia
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
             base.OnPointerWheelChanged(e);
-            if (e.Handled || !IsMouseWheelEnabled)
+            if (e.Handled || !this.IsMouseWheelEnabled)
             {
                 return;
             }
 
-            e.Handled = ActualController.HandleMouseWheel(this, e.ToMouseWheelEventArgs(this));
+            e.Handled = this.ActualController.HandleMouseWheel(this, e.ToMouseWheelEventArgs(this));
         }
 
         /// <summary>
         /// Gets the dictionary of locations of touch pointers.
         /// </summary>
-        private SortedDictionary<int, ScreenPoint> TouchPositions { get; } = new SortedDictionary<int, ScreenPoint>();
+        private SortedDictionary<int, ScreenPoint> TouchPositions { get; } = [];
 
         /// <summary>
         /// Invoked when an unhandled MouseDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
@@ -69,7 +67,7 @@ namespace OxyPlot.Avalonia
                 return;
             }
 
-            Focus();
+            this.Focus();
             e.Pointer.Capture(this);
 
             if (e.Pointer.Type == PointerType.Touch)
@@ -84,19 +82,19 @@ namespace OxyPlot.Avalonia
                     DeltaScale = new ScreenVector(1, 1),
                 };
 
-                TouchPositions[e.Pointer.Id] = position;
+                this.TouchPositions[e.Pointer.Id] = position;
 
-                if (TouchPositions.Count == 1)
+                if (this.TouchPositions.Count == 1)
                 {
-                    e.Handled = ActualController.HandleTouchStarted(this, touchEventArgs);
+                    e.Handled = this.ActualController.HandleTouchStarted(this, touchEventArgs);
                 }
             }
             else
             {
                 // store the mouse down point, check it when mouse button is released to determine if the context menu should be shown
-                mouseDownPoint = e.GetPosition(this).ToScreenPoint();
+                this.mouseDownPoint = e.GetPosition(this).ToScreenPoint();
 
-                e.Handled = ActualController.HandleMouseDown(this, e.ToMouseDownEventArgs(this));
+                e.Handled = this.ActualController.HandleMouseDown(this, e.ToMouseDownEventArgs(this));
             }
         }
 
@@ -115,17 +113,17 @@ namespace OxyPlot.Avalonia
             if (e.Pointer.Type == PointerType.Touch)
             {
                 var point = e.GetPosition(this).ToScreenPoint();
-                var oldTouchPoints = TouchPositions.Values.ToArray();
-                TouchPositions[e.Pointer.Id] = point;
-                var newTouchPoints = TouchPositions.Values.ToArray();
+                var oldTouchPoints = this.TouchPositions.Values.ToArray();
+                this.TouchPositions[e.Pointer.Id] = point;
+                var newTouchPoints = this.TouchPositions.Values.ToArray();
 
                 var touchEventArgs = new OxyTouchEventArgs(newTouchPoints, oldTouchPoints);
 
-                e.Handled = ActualController.HandleTouchDelta(this, touchEventArgs);
+                e.Handled = this.ActualController.HandleTouchDelta(this, touchEventArgs);
             }
             else
             {
-                e.Handled = ActualController.HandleMouseMove(this, e.ToMouseEventArgs(this));
+                e.Handled = this.ActualController.HandleMouseMove(this, e.ToMouseEventArgs(this));
             }
         }
 
@@ -155,31 +153,31 @@ namespace OxyPlot.Avalonia
                     DeltaScale = new ScreenVector(1, 1),
                 };
 
-                TouchPositions.Remove(e.Pointer.Id);
+                this.TouchPositions.Remove(e.Pointer.Id);
 
-                if (TouchPositions.Count == 0)
+                if (this.TouchPositions.Count == 0)
                 {
-                    e.Handled = ActualController.HandleTouchCompleted(this, touchEventArgs);
+                    e.Handled = this.ActualController.HandleTouchCompleted(this, touchEventArgs);
                 }
             }
             else
             {
-                e.Handled = ActualController.HandleMouseUp(this, e.ToMouseReleasedEventArgs(this));
+                e.Handled = this.ActualController.HandleMouseUp(this, e.ToMouseReleasedEventArgs(this));
 
                 // Open the context menu
                 var p = e.GetPosition(this).ToScreenPoint();
-                var d = p.DistanceTo(mouseDownPoint);
+                var d = p.DistanceTo(this.mouseDownPoint);
 
-                if (ContextMenu != null)
+                if (this.ContextMenu != null)
                 {
                     if (Math.Abs(d) < 1e-8 && e.InitialPressMouseButton == MouseButton.Right)
                     {
-                        ContextMenu.DataContext = DataContext;
-                        ContextMenu.IsVisible = true;
+                        this.ContextMenu.DataContext = this.DataContext;
+                        this.ContextMenu.IsVisible = true;
                     }
                     else
                     {
-                        ContextMenu.IsVisible = false;
+                        this.ContextMenu.IsVisible = false;
                     }
                 }
             }
@@ -197,7 +195,7 @@ namespace OxyPlot.Avalonia
                 return;
             }
 
-            e.Handled = ActualController.HandleMouseEnter(this, e.ToMouseEventArgs(this));
+            e.Handled = this.ActualController.HandleMouseEnter(this, e.ToMouseEventArgs(this));
         }
 
         /// <summary>
@@ -212,7 +210,7 @@ namespace OxyPlot.Avalonia
                 return;
             }
 
-            e.Handled = ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(this));
+            e.Handled = this.ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(this));
         }
     }
 }

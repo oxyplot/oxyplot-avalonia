@@ -53,24 +53,13 @@ namespace OxyPlot.Avalonia
         /// </summary>
         public static readonly StyledProperty<Cursor> ZoomVerticalCursorProperty = AvaloniaProperty.Register<PlotBase, Cursor>(nameof(ZoomVerticalCursor), new Cursor(StandardCursorType.SizeNorthSouth));
 
-        static PlotBase()
-        {
-        }
-
         /// <summary>
         /// Gets or sets the default tracker template.
         /// </summary>
         public ControlTemplate DefaultTrackerTemplate
         {
-            get
-            {
-                return GetValue(DefaultTrackerTemplateProperty);
-            }
-
-            set
-            {
-                SetValue(DefaultTrackerTemplateProperty, value);
-            }
+            get => this.GetValue(DefaultTrackerTemplateProperty);
+            set => this.SetValue(DefaultTrackerTemplateProperty, value);
         }
 
         /// <summary>
@@ -78,15 +67,8 @@ namespace OxyPlot.Avalonia
         /// </summary>
         public bool IsMouseWheelEnabled
         {
-            get
-            {
-                return GetValue(IsMouseWheelEnabledProperty);
-            }
-
-            set
-            {
-                SetValue(IsMouseWheelEnabledProperty, value);
-            }
+            get => this.GetValue(IsMouseWheelEnabledProperty);
+            set => this.SetValue(IsMouseWheelEnabledProperty, value);
         }
 
         /// <summary>
@@ -95,15 +77,8 @@ namespace OxyPlot.Avalonia
         /// <value>The pan cursor.</value>
         public Cursor PanCursor
         {
-            get
-            {
-                return GetValue(PanCursorProperty);
-            }
-
-            set
-            {
-                SetValue(PanCursorProperty, value);
-            }
+            get => this.GetValue(PanCursorProperty);
+            set => this.SetValue(PanCursorProperty, value);
         }
 
         /// <summary>
@@ -112,15 +87,8 @@ namespace OxyPlot.Avalonia
         /// <value>The zoom horizontal cursor.</value>
         public Cursor ZoomHorizontalCursor
         {
-            get
-            {
-                return GetValue(ZoomHorizontalCursorProperty);
-            }
-
-            set
-            {
-                SetValue(ZoomHorizontalCursorProperty, value);
-            }
+            get => this.GetValue(ZoomHorizontalCursorProperty);
+            set => this.SetValue(ZoomHorizontalCursorProperty, value);
         }
 
         /// <summary>
@@ -129,15 +97,8 @@ namespace OxyPlot.Avalonia
         /// <value>The zoom rectangle cursor.</value>
         public Cursor ZoomRectangleCursor
         {
-            get
-            {
-                return GetValue(ZoomRectangleCursorProperty);
-            }
-
-            set
-            {
-                SetValue(ZoomRectangleCursorProperty, value);
-            }
+            get => this.GetValue(ZoomRectangleCursorProperty);
+            set => this.SetValue(ZoomRectangleCursorProperty, value);
         }
 
         /// <summary>
@@ -146,15 +107,8 @@ namespace OxyPlot.Avalonia
         /// <value>The zoom rectangle template.</value>
         public ControlTemplate ZoomRectangleTemplate
         {
-            get
-            {
-                return GetValue(ZoomRectangleTemplateProperty);
-            }
-
-            set
-            {
-                SetValue(ZoomRectangleTemplateProperty, value);
-            }
+            get => this.GetValue(ZoomRectangleTemplateProperty);
+            set => this.SetValue(ZoomRectangleTemplateProperty, value);
         }
 
         /// <summary>
@@ -163,15 +117,8 @@ namespace OxyPlot.Avalonia
         /// <value>The zoom vertical cursor.</value>
         public Cursor ZoomVerticalCursor
         {
-            get
-            {
-                return GetValue(ZoomVerticalCursorProperty);
-            }
-
-            set
-            {
-                SetValue(ZoomVerticalCursorProperty, value);
-            }
+            get => this.GetValue(ZoomVerticalCursorProperty);
+            set => this.SetValue(ZoomVerticalCursorProperty, value);
         }
     }
 }

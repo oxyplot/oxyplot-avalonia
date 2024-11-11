@@ -12,5 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.Avalonia\OxyPlot.Avalonia.csproj" />
+    <ProjectReference Include="..\..\..\OxyPlot.SkiaSharp.Avalonia\OxyPlot.SkiaSharp.Avalonia.csproj" />
   </ItemGroup>
 </Project>
