@@ -35,7 +35,7 @@ namespace AvaloniaExamples.Examples.ScatterErrorSeriesDemo
             this.PointList = this.Points.Select(p => new ScatterErrorPoint(p.V1, p.V2, p.E1, p.E2)).ToList();
             this.PointArray = this.PointList.ToArray();
 
-            this.DataContext = new { Points, PointList, PointArray };
+            this.DataContext = new Context(Points, PointList, PointArray);
         }
 
         private void InitializeComponent()
@@ -103,4 +103,6 @@ namespace AvaloniaExamples.Examples.ScatterErrorSeriesDemo
             public double E2 { get; set; }
         }
     }
+
+    internal record Context(List<MainWindow.ExamplePoint> Points, List<ScatterErrorPoint> PointList, ScatterErrorPoint[] PointArray);
 }

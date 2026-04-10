@@ -1,10 +1,12 @@
 ﻿<Window 
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:AvaloniaExamples.Examples.DataTemplateDemo"
         xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
         x:Class="AvaloniaExamples.Examples.DataTemplateDemo.PlotViewDataTemplateWindow"  
         Title="PlotView in DataTemplate"
         Height="480"
-        Width="640">
+        Width="640"
+        x:DataType="local:Context">
     <ContentControl Content="{Binding Models[0]}"/>
 </Window>

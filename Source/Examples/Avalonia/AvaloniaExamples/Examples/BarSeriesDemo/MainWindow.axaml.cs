@@ -47,7 +47,7 @@ namespace AvaloniaExamples.Examples.BarSeriesDemo
             tmp.Series.Add(new BarSeries { Title = "2011", ItemsSource = items, ValueField = "Value3" });
             tmp.Series.Add(new BarSeries { Title = "2012", ItemsSource = items, ValueField = "Value4" });
 
-            this.DataContext = new { Model1 = tmp, Items = items };
+            this.DataContext = new Context(tmp, items);
 
             this.InitializeComponent();
         }
@@ -66,4 +66,6 @@ namespace AvaloniaExamples.Examples.BarSeriesDemo
         public double Value3 { get; set; }
         public double Value4 { get; set; }
     }
+
+    internal record Context(PlotModel Model1, Collection<Item> Items);
 }

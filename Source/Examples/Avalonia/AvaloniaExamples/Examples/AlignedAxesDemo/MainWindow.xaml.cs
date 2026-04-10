@@ -30,7 +30,7 @@ namespace AvaloniaExamples.Examples.AlignedAxesDemo
         public MainWindow()
         {
             this.InitializeComponent();
-            var models = new { Model0 = CreatePlotModel(0, 10), Model1 = CreatePlotModel(0, 1e8) };
+            var models = new Context(CreatePlotModel(0, 10), CreatePlotModel(0, 1e8));
             
             // TODO: align the vertical axis size without setting PlotMargins
             models.Model0.PlotMargins = models.Model1.PlotMargins = new OxyThickness(70, 40, 20, 20);
@@ -53,4 +53,6 @@ namespace AvaloniaExamples.Examples.AlignedAxesDemo
             return model;
         }
     }
+
+    internal record Context(PlotModel Model0, PlotModel Model1);
 }

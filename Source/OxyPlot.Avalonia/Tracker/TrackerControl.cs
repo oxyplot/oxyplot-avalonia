@@ -11,6 +11,7 @@ using Avalonia;
 
 namespace OxyPlot.Avalonia
 {
+    using global::Avalonia.Collections;
     using global::Avalonia.Controls;
     using global::Avalonia.Controls.Presenters;
     using global::Avalonia.Controls.Primitives;
@@ -49,7 +50,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="LineDashArray"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<List<double>> LineDashArrayProperty = AvaloniaProperty.Register<TrackerControl, List<double>>(nameof(LineDashArray));
+        public static readonly StyledProperty<AvaloniaList<double>> LineDashArrayProperty = AvaloniaProperty.Register<TrackerControl, AvaloniaList<double>>(nameof(LineDashArray));
 
         /// <summary>
         /// Identifies the <see cref="ShowPointer"/> dependency property.
@@ -207,7 +208,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Gets or sets LineDashArray.
         /// </summary>
-        public List<double> LineDashArray
+        public AvaloniaList<double> LineDashArray
         {
             get
             {

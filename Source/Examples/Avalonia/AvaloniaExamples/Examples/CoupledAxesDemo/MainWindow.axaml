@@ -1,9 +1,11 @@
 ﻿<Window 
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:AvaloniaExamples.Examples.CoupledAxesDemo"
         xmlns:oxy="http://oxyplot.org/avalonia"
         x:Class="AvaloniaExamples.Examples.CoupledAxesDemo.MainWindow"
-        Title="CoupledAxesDemo" Height="480" Width="640">
+        Title="CoupledAxesDemo" Height="480" Width="640"
+        x:DataType="local:MainWindow">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

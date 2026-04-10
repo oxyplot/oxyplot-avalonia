@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
         xmlns:OxyPlot="clr-namespace:OxyPlot;assembly=OxyPlot"
+        xmlns:local="using:AvaloniaExamples.Examples.AnnotationDemo"
         x:Class="AvaloniaExamples.Examples.AnnotationDemo.MainWindow"
-        Title="AnnotationDemo" Height="480" Width="640">
+        Title="AnnotationDemo" Height="480" Width="640"
+        x:DataType="local:Context">
     <TabControl>
         <TabItem Header="ArrowAnnotation">
             <oxy:Plot Title="ArrowAnnotation">

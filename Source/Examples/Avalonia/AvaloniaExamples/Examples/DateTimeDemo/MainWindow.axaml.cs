@@ -45,7 +45,7 @@ namespace AvaloniaExamples.Examples.DateTimeDemo
             // SunData = CreateSunData(year, 21.30694, -157.85833, TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"));
 
 
-            this.DataContext = new { ExampleModel, ExampleModel2, Data, Data2, SunData };
+            this.DataContext = new Context(ExampleModel, ExampleModel2, Data, Data2, SunData);
         }
 
         private void InitializeComponent()
@@ -161,4 +161,6 @@ namespace AvaloniaExamples.Examples.DateTimeDemo
         public TimeSpan Sunrise { get; set; }
         public TimeSpan Sunset { get; set; }
     }
+
+    internal record Context(PlotModel ExampleModel, PlotModel ExampleModel2, Collection<DateValue> Data, Collection<TimeValue> Data2, Collection<SunItem> SunData);
 }

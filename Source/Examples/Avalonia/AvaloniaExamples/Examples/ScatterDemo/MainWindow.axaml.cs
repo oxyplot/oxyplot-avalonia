@@ -41,7 +41,7 @@ namespace AvaloniaExamples.Examples.ScatterDemo
 
             tmp.Series.Add(s1);
             this.ScatterModel = tmp;
-            DataContext = new { ScatterModel };
+            DataContext = new Context(ScatterModel);
         }
 
         private void InitializeComponent()
@@ -51,4 +51,6 @@ namespace AvaloniaExamples.Examples.ScatterDemo
 
         public PlotModel ScatterModel { get; set; }
     }
+
+    internal record Context(PlotModel ScatterModel);
 }

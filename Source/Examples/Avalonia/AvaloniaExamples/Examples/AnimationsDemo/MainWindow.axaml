@@ -2,6 +2,7 @@
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:AnimationsDemoViews="clr-namespace:AvaloniaExamples.Examples.AnimationsDemo.Views;assembly=AvaloniaExamples"
+        xmlns:local="using:AvaloniaExamples.Examples.AnimationsDemo"
         xmlns:AnimationsDemoControls="clr-namespace:AvaloniaExamples.Examples.AnimationsDemo.Controls;assembly=AvaloniaExamples"
         x:Class="AvaloniaExamples.Examples.AnimationsDemo.MainWindow"
         Title="AnimationsDemo" Height="480" Width="740">
@@ -25,7 +26,7 @@
                 <AnimationsDemoViews:AreaSeriesView />
             </TabItem>
         </TabControl>
-        <ContentControl Grid.Row="1" DataContext="{Binding ElementName=tabControl, Path=SelectedItem.Content.DataContext}" >
+        <ContentControl Grid.Row="1" DataContext="{Binding #tabControl.((TabItem)SelectedItem).((Control)Content).DataContext}" >
             <AnimationsDemoControls:AnimationSettingsControl />
         </ContentControl>
     </Grid>

@@ -25,7 +25,7 @@ namespace AvaloniaExamples.Examples.HeatMapDemo
         public MainWindow()
         {
             this.InitializeComponent();
-            this.DataContext = new { Data = this.GenerateHeatMap() };
+            this.DataContext = new Context(this.GenerateHeatMap());
         }
 
         private void InitializeComponent()
@@ -55,4 +55,6 @@ namespace AvaloniaExamples.Examples.HeatMapDemo
             return result;
         }
     }
+
+    internal record Context(double[,] Data);
 }
