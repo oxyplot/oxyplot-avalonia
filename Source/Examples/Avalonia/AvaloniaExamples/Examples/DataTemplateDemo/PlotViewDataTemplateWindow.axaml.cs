@@ -43,7 +43,6 @@ namespace AvaloniaExamples.Examples.DataTemplateDemo
         private void InitializeComponent()
         {
             Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
-            App.AttachDevTools(this);
         }
 
         private static Random r = new Random(13);

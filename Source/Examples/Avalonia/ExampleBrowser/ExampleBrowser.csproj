@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup> 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.0" />
     <PackageReference Include="OxyPlot.Core" Version="$(OxyPlotCoreVersion)" />
     <PackageReference Include="OxyPlot.ExampleLibrary" Version="$(OxyPlotCoreVersion)" />
   </ItemGroup>

@@ -19,7 +19,6 @@ namespace AvaloniaExamples
     using Avalonia;
     using Avalonia.Controls;
     using Avalonia.Markup.Xaml;
-    using Avalonia.Diagnostics;
     using Avalonia.Interactivity;
 
     /// <summary>
@@ -35,7 +34,6 @@ namespace AvaloniaExamples
             InitializeComponent();
             ListBox.ItemsSource = this.Examples = this.GetExamples(this.GetType().Assembly).OrderBy(e => e.Title).ToArray();
             this.DataContext = this;
-			DevToolsExtensions.AttachDevTools(this);
 		}
 
         private void InitializeComponent()
