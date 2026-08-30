@@ -38,7 +38,7 @@ namespace AvaloniaExamples.Examples.PerformanceDemo
                 plotModels.Add(GenerateRandomPlotModel(string.Format("Random plot '{0}'", i + 1)));
             }
 
-            this.DataContext = new { PlotModels = plotModels };
+            this.DataContext = new Context(plotModels);
         }
 
         private void InitializeComponent()
@@ -65,4 +65,6 @@ namespace AvaloniaExamples.Examples.PerformanceDemo
             return plotModel;
         }
     }
+
+    internal record Context(List<PlotModel> PlotModels);
 }

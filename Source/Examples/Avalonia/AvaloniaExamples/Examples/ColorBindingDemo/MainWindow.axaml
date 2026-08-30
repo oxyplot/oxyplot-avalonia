@@ -4,7 +4,8 @@
         xmlns:oxy="http://oxyplot.org/avalonia"
         xmlns:ColorBindingDemo="clr-namespace:AvaloniaExamples.Examples.ColorBindingDemo;assembly=AvaloniaExamples"
         x:Class="AvaloniaExamples.Examples.ColorBindingDemo.MainWindow"
-        Title="ColorBindingDemo" Height="480" Width="640">
+        Title="ColorBindingDemo" Height="480" Width="640"
+        x:DataType="ColorBindingDemo:MainViewModel">
     <Window.DataContext>
         <ColorBindingDemo:MainViewModel/>
     </Window.DataContext>

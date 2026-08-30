@@ -31,7 +31,7 @@ namespace AvaloniaExamples.Examples.DataTemplateDemo
         public PlotViewDataTemplateWindow()
         {
             this.InitializeComponent();
-            this.DataContext = new { Models = CreateModels().ToArray() };
+            this.DataContext = new Context(CreateModels().ToArray());
             this.DataTemplates.Add(new FuncDataTemplate<Model>((model, _) => new OxyPlot.Avalonia.PlotView
             {
                 [!!OxyPlot.Avalonia.PlotView.ModelProperty] = new Binding(nameof(Model.PlotModel)),
@@ -43,7 +43,6 @@ namespace AvaloniaExamples.Examples.DataTemplateDemo
         private void InitializeComponent()
         {
             Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
-            App.AttachDevTools(this);
         }
 
         private static Random r = new Random(13);
@@ -77,4 +76,6 @@ namespace AvaloniaExamples.Examples.DataTemplateDemo
         public PlotModel PlotModel { get; set; }
         public IPlotController PlotController { get; set; }
     }
+
+    internal record Context(Model[] Models);
 }

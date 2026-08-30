@@ -22,7 +22,6 @@ namespace MemoryTest
             }
 
             InitializeComponent();
-            App.AttachDevTools(this);
 
             DataContext = Plots;
         }

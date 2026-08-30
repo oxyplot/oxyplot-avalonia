@@ -29,7 +29,6 @@ namespace AvaloniaExamples.Examples.ControllerDemo
         private void InitializeComponent()
         {
             Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
-            
         }
     }
 }

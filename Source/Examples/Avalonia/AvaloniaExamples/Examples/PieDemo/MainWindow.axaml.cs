@@ -53,7 +53,7 @@ namespace AvaloniaExamples.Examples.PieDemo
             Continents.Add(new ContinentItem { Name = "Oceania", PopulationInMillions = 35, IsExploded = true });
 
             this.PieModel = plotModel;
-            this.DataContext = new { PieModel, Continents };
+            this.DataContext = new Context(PieModel, Continents);
         }
 
         private void InitializeComponent()
@@ -74,4 +74,6 @@ namespace AvaloniaExamples.Examples.PieDemo
 
         public bool IsExploded { get; set; }
     }
+
+    internal record Context(PlotModel PieModel, ObservableCollection<ContinentItem> Continents);
 }

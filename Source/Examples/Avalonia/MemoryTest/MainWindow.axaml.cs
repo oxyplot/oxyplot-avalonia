@@ -8,7 +8,6 @@ namespace MemoryTest
         public MainWindow()
         {
             this.InitializeComponent();
-            App.AttachDevTools(this);
         }
 
         private void InitializeComponent()

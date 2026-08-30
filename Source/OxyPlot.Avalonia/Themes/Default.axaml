@@ -1,7 +1,9 @@
-<Styles xmlns="https://github.com/avaloniaui" 
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="http://oxyplot.org/avalonia"
-        xmlns:converters="clr-namespace:OxyPlot.Avalonia.Converters">
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:OxyPlot.Avalonia.Converters"
+    xmlns:local="http://oxyplot.org/avalonia"
+    xmlns:oxy="clr-namespace:OxyPlot;assembly=OxyPlot">
 
     <Style Selector="local|TrackerControl">
         <Setter Property="Background" Value="#E0FFFFA0" />
@@ -19,17 +21,31 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="False">
-                        <Line Name="PART_HorizontalLine" IsVisible="{TemplateBinding HorizontalLineVisibility}"
-                  Stroke="{TemplateBinding LineStroke}"
-                  StrokeDashArray="{TemplateBinding LineDashArray}" />
-                        <Line Name="PART_VerticalLine" IsVisible="{TemplateBinding VerticalLineVisibility}"
-                  Stroke="{TemplateBinding LineStroke}"
-                  StrokeDashArray="{TemplateBinding LineDashArray}" />
+                    <Canvas
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ClipToBounds="False">
+                        <Line
+                            Name="PART_HorizontalLine"
+                            IsVisible="{TemplateBinding HorizontalLineVisibility}"
+                            Stroke="{TemplateBinding LineStroke}"
+                            StrokeDashArray="{TemplateBinding LineDashArray}" />
+                        <Line
+                            Name="PART_VerticalLine"
+                            IsVisible="{TemplateBinding VerticalLineVisibility}"
+                            Stroke="{TemplateBinding LineStroke}"
+                            StrokeDashArray="{TemplateBinding LineDashArray}" />
                         <Panel Name="PART_ContentContainer" ClipToBounds="False">
-                            <Path Name="PART_Path" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}"
-                    StrokeThickness="{TemplateBinding BorderThickness, Converter={x:Static converters:ThicknessConverter.Instance}}" />
-                            <ContentPresenter Name="PART_Content" Content="{TemplateBinding Content}" HorizontalAlignment="Center" />
+                            <Path
+                                Name="PART_Path"
+                                Fill="{TemplateBinding Background}"
+                                Stroke="{TemplateBinding BorderBrush}"
+                                StrokeThickness="{TemplateBinding BorderThickness,
+                                                                  Converter={x:Static converters:ThicknessConverter.Instance}}" />
+                            <ContentPresenter
+                                Name="PART_Content"
+                                HorizontalAlignment="Center"
+                                Content="{TemplateBinding Content}" />
                         </Panel>
                     </Canvas>
                 </ControlTemplate>
@@ -41,10 +57,10 @@
         <Setter Property="Background" Value="White" />
         <Setter Property="DefaultTrackerTemplate">
             <Setter.Value>
-                <ControlTemplate>
-                    <local:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+                <ControlTemplate x:DataType="oxy:TrackerHitResult">
+                    <local:TrackerControl LineExtents="{Binding PlotModel.PlotArea}" Position="{Binding Position}">
                         <local:TrackerControl.Content>
-                            <TextBlock Text="{Binding Text}" Margin="7" />
+                            <TextBlock Margin="7" Text="{Binding Text}" />
                         </local:TrackerControl.Content>
                     </local:TrackerControl>
                 </ControlTemplate>
@@ -53,15 +69,20 @@
         <Setter Property="ZoomRectangleTemplate">
             <Setter.Value>
                 <ControlTemplate>
-                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeDashArray="3,1" />
+                    <Rectangle
+                        Fill="#40FFFF00"
+                        Stroke="Black"
+                        StrokeDashArray="3,1" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
                         <Panel Name="PART_Panel" />
                     </Border>
                 </ControlTemplate>
@@ -73,10 +94,10 @@
         <Setter Property="Background" Value="White" />
         <Setter Property="DefaultTrackerTemplate">
             <Setter.Value>
-                <ControlTemplate>
-                    <local:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+                <ControlTemplate x:DataType="oxy:TrackerHitResult">
+                    <local:TrackerControl LineExtents="{Binding PlotModel.PlotArea}" Position="{Binding Position}">
                         <local:TrackerControl.Content>
-                            <TextBlock Text="{Binding Text}" Margin="7" />
+                            <TextBlock Margin="7" Text="{Binding Text}" />
                         </local:TrackerControl.Content>
                     </local:TrackerControl>
                 </ControlTemplate>
@@ -85,15 +106,20 @@
         <Setter Property="ZoomRectangleTemplate">
             <Setter.Value>
                 <ControlTemplate>
-                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeDashArray="3,1" />
+                    <Rectangle
+                        Fill="#40FFFF00"
+                        Stroke="Black"
+                        StrokeDashArray="3,1" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
                         <Panel Name="PART_Panel" />
                     </Border>
                 </ControlTemplate>

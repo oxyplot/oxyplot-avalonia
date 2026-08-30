@@ -29,7 +29,7 @@ namespace AvaloniaExamples.Examples.AnnotationDemo
             {
                 new DataPoint(10, 10), new DataPoint(80, 30), new DataPoint(60, 70)
             };
-            this.DataContext = new { Points };
+            this.DataContext = new Context(Points);
         }
 
         private void InitializeComponent()
@@ -42,4 +42,6 @@ namespace AvaloniaExamples.Examples.AnnotationDemo
         /// </summary>
         public IList<DataPoint> Points { get; private set; }
     }
+
+    internal record Context(IList<DataPoint> Points);
 }
