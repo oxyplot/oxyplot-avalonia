@@ -192,7 +192,6 @@ namespace OxyPlot.Avalonia
 
         static TwoColorAreaSeries()
         {
-            FillProperty.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
             Fill2Property.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
             MarkerFill2Property.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
             MarkerStroke2Property.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
