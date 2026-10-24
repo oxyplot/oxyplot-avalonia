@@ -12,7 +12,6 @@ using Avalonia;
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia.Media;
-    using System.Linq;
 
     /// <summary>
     /// This is a Avalonia wrapper of OxyPlot.BoxPlotSeries
@@ -268,7 +267,7 @@ namespace OxyPlot.Avalonia
             s.MedianThickness = MedianThickness;
             s.OutlierSize = OutlierSize;
             s.OutlierType = OutlierType;
-            s.OutlierOutline = (OutlierOutline ?? Enumerable.Empty<Point>()).Select(point => point.ToScreenPoint()).ToArray();
+            s.OutlierOutline = OutlierOutline.ToScreenPointArray();
             s.ShowBox = ShowBox;
             s.ShowMedianAsDot = ShowMedianAsDot;
             s.Stroke = Stroke.ToOxyColor();

@@ -15,7 +15,6 @@ namespace OxyPlot.Avalonia
     using OxyPlot.Series;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// This is a Avalonia wrapper of OxyPlot.LineSeries
@@ -502,7 +501,7 @@ namespace OxyPlot.Avalonia
             s.Dashes = Dashes;
             s.LineJoin = LineJoin;
             s.MarkerFill = MarkerFill.ToOxyColor();
-            s.MarkerOutline = (MarkerOutline ?? Enumerable.Empty<Point>()).Select(point => point.ToScreenPoint()).ToArray();
+            s.MarkerOutline = MarkerOutline.ToScreenPointArray();
             s.MinimumSegmentLength = MinimumSegmentLength;
             s.LabelFormatString = LabelFormatString;
             s.LabelMargin = LabelMargin;
