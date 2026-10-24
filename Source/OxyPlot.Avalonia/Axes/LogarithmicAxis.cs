@@ -33,7 +33,6 @@ namespace OxyPlot.Avalonia
         public LogarithmicAxis()
         {
             InternalAxis = new Axes.LogarithmicAxis();
-            FilterMinValue = 0;
         }
 
         /// <summary>
@@ -91,6 +90,9 @@ namespace OxyPlot.Avalonia
 
         static LogarithmicAxis()
         {
+            // A default value instead of an assignment in the constructor: a local value would override styles
+            FilterMinValueProperty.OverrideDefaultValue<LogarithmicAxis>(0.0);
+
             BaseProperty.Changed.AddClassHandler<LogarithmicAxis>(DataChanged);
             PowerPaddingProperty.Changed.AddClassHandler<LogarithmicAxis>(DataChanged);
         }
