@@ -123,6 +123,7 @@ namespace OxyPlot.Avalonia
             CanTrackerInterpolatePointsProperty.Changed.AddClassHandler<DataPointSeries>(AppearanceChanged);
             DataFieldXProperty.Changed.AddClassHandler<DataPointSeries>(DataChanged);
             DataFieldYProperty.Changed.AddClassHandler<DataPointSeries>(DataChanged);
+            MappingProperty.Changed.AddClassHandler<DataPointSeries>(DataChanged);
         }
     }
 }

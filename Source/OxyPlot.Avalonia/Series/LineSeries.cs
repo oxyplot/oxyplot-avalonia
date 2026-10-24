@@ -144,7 +144,12 @@ namespace OxyPlot.Avalonia
             MarkerTypeProperty.Changed.AddClassHandler<LineSeries>(AppearanceChanged);
             MinimumSegmentLengthProperty.Changed.AddClassHandler<LineSeries>(AppearanceChanged);
             StrokeThicknessProperty.Changed.AddClassHandler<LineSeries>(AppearanceChanged);
-            CanTrackerInterpolatePointsProperty.Changed.AddClassHandler<LineSeries>(AppearanceChanged);
+            LabelFormatStringProperty.Changed.AddClassHandler<LineSeries>(AppearanceChanged);
+            LabelMarginProperty.Changed.AddClassHandler<LineSeries>(AppearanceChanged);
+            LineLegendPositionProperty.Changed.AddClassHandler<LineSeries>(AppearanceChanged);
+
+            // The core recalculates the smoothed points only when the data is updated
+            InterpolationAlgorithmProperty.Changed.AddClassHandler<LineSeries>(DataChanged);
         }
 
         /// <summary>
