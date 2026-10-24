@@ -48,7 +48,8 @@
                 <ControlTemplate x:DataType="oxy:TrackerHitResult">
                     <local:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
                         <local:TrackerControl.Content>
-                            <TextBlock Text="{Binding Text}" Margin="7" />
+                            <!-- The tracker background is always light, so the text color is set explicitly, otherwise it is white in a dark theme -->
+                            <TextBlock Text="{Binding Text}" Margin="7" Foreground="Black" />
                         </local:TrackerControl.Content>
                     </local:TrackerControl>
                 </ControlTemplate>
@@ -81,7 +82,8 @@
                 <ControlTemplate x:DataType="oxy:TrackerHitResult">
                     <local:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
                         <local:TrackerControl.Content>
-                            <TextBlock Text="{Binding Text}" Margin="7" />
+                            <!-- The tracker background is always light, so the text color is set explicitly, otherwise it is white in a dark theme -->
+                            <TextBlock Text="{Binding Text}" Margin="7" Foreground="Black" />
                         </local:TrackerControl.Content>
                     </local:TrackerControl>
                 </ControlTemplate>
