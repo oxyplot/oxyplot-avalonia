@@ -64,7 +64,9 @@ namespace OxyPlot.Avalonia
         /// </summary>
         static Series()
         {
-            IsVisibleProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
+            // The core loads the data and computes the axis ranges only for visible series and only
+            // when the data is updated. Therefore showing and hiding a series is a data change.
+            IsVisibleProperty.Changed.AddClassHandler<Series>(DataChanged);
             BackgroundProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
             ColorProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
             TitleProperty.Changed.AddClassHandler<Series>(AppearanceChanged);

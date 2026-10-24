@@ -48,6 +48,8 @@ namespace OxyPlot.Avalonia
             TextVerticalAlignmentProperty.Changed.AddClassHandler<FunctionAnnotation>(AppearanceChanged);
 
             TypeProperty.Changed.AddClassHandler<FunctionAnnotation>(DataChanged);
+            EquationProperty.Changed.AddClassHandler<FunctionAnnotation>(DataChanged);
+            ResolutionProperty.Changed.AddClassHandler<FunctionAnnotation>(DataChanged);
         }
 
         /// <summary>

@@ -85,15 +85,17 @@ namespace OxyPlot.Avalonia
         static BarSeriesBase()
         {
             TrackerFormatStringProperty.OverrideMetadata(typeof(BarSeriesBase), new StyledPropertyMetadata<string>(OxyPlot.Series.BarSeries.DefaultTrackerFormatString));
-            BaseValueProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
+            // BaseValue, IsStacked and StackGroup change the range of values, which the core
+            // recalculates only when the data is updated
+            BaseValueProperty.Changed.AddClassHandler<BarSeriesBase>(DataChanged);
             ColorFieldProperty.Changed.AddClassHandler<BarSeriesBase>(DataChanged);
             FillColorProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
-            IsStackedProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
+            IsStackedProperty.Changed.AddClassHandler<BarSeriesBase>(DataChanged);
             LabelFormatStringProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
             LabelMarginProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
             LabelPlacementProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
             NegativeFillColorProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
-            StackGroupProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
+            StackGroupProperty.Changed.AddClassHandler<BarSeriesBase>(DataChanged);
             StrokeColorProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
             StrokeThicknessProperty.Changed.AddClassHandler<BarSeriesBase>(AppearanceChanged);
             ValueFieldProperty.Changed.AddClassHandler<BarSeriesBase>(DataChanged);
