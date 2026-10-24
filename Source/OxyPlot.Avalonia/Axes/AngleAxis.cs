@@ -35,7 +35,8 @@ namespace OxyPlot.Avalonia
         {
             MajorGridlineStyleProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<LineStyle>(LineStyle.Solid));
             MinorGridlineStyleProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<LineStyle>(LineStyle.Solid));
-            PositionProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<AxisPosition>(AxisPosition.None));
+            // Same as in the core: with None the axis does not reserve margins and the angle labels are clipped
+            PositionProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<AxisPosition>(AxisPosition.All));
             TickStyleProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<TickStyle>(TickStyle.None));
             IsPanEnabledProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<bool>(false));
             IsZoomEnabledProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<bool>(false));
