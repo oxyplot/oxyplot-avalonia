@@ -103,7 +103,12 @@ namespace OxyPlot.Avalonia
         /// Exports the specified plot model to a bitmap.
         /// </summary>
         /// <param name="model">The model to export.</param>
-        /// <returns>A bitmap.</returns>
+        /// <returns>A bitmap. The caller must dispose it.</returns>
+        /// <remarks>
+        /// The model is updated and rendered for the export size. If it is shown in a control,
+        /// it must be redrawn after the export (InvalidatePlot), otherwise the tracker and zooming
+        /// work with the geometry of the export. The SaveBitmap and ToBitmap methods of the control do this themselves.
+        /// </remarks>
         public Bitmap ExportToBitmap(IPlotModel model)
         {
             var scale = 96d / Resolution;
