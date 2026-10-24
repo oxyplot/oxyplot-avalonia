@@ -1599,6 +1599,8 @@ namespace OxyPlot.Avalonia
             FontWeightProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             IntervalLengthProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             IsAxisVisibleProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
+            IsPanEnabledProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
+            IsZoomEnabledProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             KeyProperty.Changed.AddClassHandler<Axis>(DataChanged);
             LabelFormatterProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             LayerProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
