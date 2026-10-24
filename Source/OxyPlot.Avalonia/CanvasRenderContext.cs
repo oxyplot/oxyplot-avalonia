@@ -689,7 +689,9 @@ namespace OxyPlot.Avalonia
 
             if (maxSize != null || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Top)
             {
-                tb.Measure(new Size(1000, 1000));
+                // Measure without a limit: the hard-coded 1000x1000 clipped long labels.
+                // The required truncation is done by the block below according to maxSize.
+                tb.Measure(Size.Infinity);
                 var size = tb.DesiredSize;
                 if (maxSize != null)
                 {
@@ -781,7 +783,8 @@ namespace OxyPlot.Avalonia
                 tb.FontWeight = GetFontWeight(fontWeight);
             }
 
-            tb.Measure(new Size(1000, 1000));
+            // Measure without a limit: the hard-coded 1000x1000 understated the size of long labels.
+            tb.Measure(Size.Infinity);
 
             return new OxySize(tb.DesiredSize.Width, tb.DesiredSize.Height);
         }
