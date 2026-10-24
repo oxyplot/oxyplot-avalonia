@@ -11,8 +11,6 @@ using Avalonia;
 
 namespace OxyPlot.Avalonia
 {
-    using global::Avalonia.Media;
-
     /// <summary>
     /// HeatMapSeries Avalonia wrapper
     /// </summary>
@@ -49,16 +47,6 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<string> ColorAxisKeyProperty = AvaloniaProperty.Register<HeatMapSeries, string>(nameof(ColorAxisKey), default);
 
         /// <summary>
-        /// Identifies this <see cref="LowColorProperty"/> dependency property.
-        /// </summary>
-        public static readonly StyledProperty<Color> LowColorProperty = AvaloniaProperty.Register<HeatMapSeries, Color>(nameof(LowColor), default);
-
-        /// <summary>
-        /// Identifies this <see cref="HighColorProperty"/> dependency property.
-        /// </summary>
-        public static readonly StyledProperty<Color> HighColorProperty = AvaloniaProperty.Register<HeatMapSeries, Color>(nameof(HighColor), default);
-
-        /// <summary>
         /// Initializes static members of the <see cref="HeatMapSeries"/> class.
         /// </summary>
         static HeatMapSeries()
@@ -82,38 +70,6 @@ namespace OxyPlot.Avalonia
         {
             Data = new double[0, 0];
             InternalSeries = new OxyPlot.Series.HeatMapSeries { Data = Data };
-        }
-
-        /// <summary>
-        /// Gets or sets LowColor
-        /// </summary>
-        public Color LowColor
-        {
-            get
-            {
-                return GetValue(LowColorProperty);
-            }
-
-            set
-            {
-                SetValue(LowColorProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets HighColor
-        /// </summary>
-        public Color HighColor
-        {
-            get
-            {
-                return GetValue(LowColorProperty);
-            }
-
-            set
-            {
-                SetValue(LowColorProperty, value);
-            }
         }
 
         /// <summary>
@@ -240,6 +196,7 @@ namespace OxyPlot.Avalonia
             s.X1 = X1;
             s.Y0 = Y0;
             s.Y1 = Y1;
+            s.ColorAxisKey = ColorAxisKey;
         }
     }
 }
