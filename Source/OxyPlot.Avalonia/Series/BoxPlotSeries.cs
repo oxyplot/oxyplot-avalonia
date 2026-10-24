@@ -275,12 +275,14 @@ namespace OxyPlot.Avalonia
             s.StrokeThickness = StrokeThickness;
             s.WhiskerWidth = WhiskerWidth;
 
-            if (Items != null)
+            s.Items.Clear();
+
+            // Items can contain foreign objects if ItemsSource is set
+            foreach (var item in Items)
             {
-                s.Items.Clear();
-                foreach (var item in Items)
+                if (item is OxyPlot.Series.BoxPlotItem boxItem)
                 {
-                    s.Items.Add((OxyPlot.Series.BoxPlotItem)item);
+                    s.Items.Add(boxItem);
                 }
             }
         }
