@@ -53,6 +53,7 @@ namespace OxyPlot.Avalonia
             MinimumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new StyledPropertyMetadata<double>(0.0));
             MaximumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new StyledPropertyMetadata<double>(0.0));
             MajorStepProperty.OverrideMetadata(typeof(CategoryAxis), new StyledPropertyMetadata<double>(1.0));
+            GapWidthProperty.Changed.AddClassHandler<CategoryAxis>(DataChanged);
             IsTickCenteredProperty.Changed.AddClassHandler<CategoryAxis>(DataChanged);
             ItemsProperty.Changed.AddClassHandler<CategoryAxis>(DataChanged);
             LabelFieldProperty.Changed.AddClassHandler<CategoryAxis>(DataChanged);

@@ -65,11 +65,14 @@ namespace OxyPlot.Avalonia
         {
             TrackerFormatStringProperty.OverrideMetadata(typeof(HeatMapSeries), new StyledPropertyMetadata<string>(OxyPlot.Series.HeatMapSeries.DefaultTrackerFormatString));
             DataProperty.Changed.AddClassHandler<HeatMapSeries>(DataChanged);
-            X0Property.Changed.AddClassHandler<HeatMapSeries>(AppearanceChanged);
-            X1Property.Changed.AddClassHandler<HeatMapSeries>(AppearanceChanged);
-            Y0Property.Changed.AddClassHandler<HeatMapSeries>(AppearanceChanged);
-            Y1Property.Changed.AddClassHandler<HeatMapSeries>(AppearanceChanged);
-            TrackerFormatStringProperty.Changed.AddClassHandler<HeatMapSeries>(AppearanceChanged);
+
+            // The core computes the series bounds in UpdateMaxMin, that is, only when the data is updated:
+            // otherwise the axes are not rescaled to the new coordinates.
+            X0Property.Changed.AddClassHandler<HeatMapSeries>(DataChanged);
+            X1Property.Changed.AddClassHandler<HeatMapSeries>(DataChanged);
+            Y0Property.Changed.AddClassHandler<HeatMapSeries>(DataChanged);
+            Y1Property.Changed.AddClassHandler<HeatMapSeries>(DataChanged);
+            ColorAxisKeyProperty.Changed.AddClassHandler<HeatMapSeries>(AppearanceChanged);
         }
 
         /// <summary>
