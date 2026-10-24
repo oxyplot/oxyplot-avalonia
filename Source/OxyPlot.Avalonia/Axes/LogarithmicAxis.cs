@@ -20,7 +20,7 @@ namespace OxyPlot.Avalonia
         /// Identifies the <see cref="Base"/> dependency property.
         /// </summary>
         /// <value>The logarithmic base.</value>
-        public static readonly StyledProperty<double> BaseProperty = AvaloniaProperty.Register<LogarithmicAxis, double>(nameof(Base), 10.0);
+        public static readonly StyledProperty<double> BaseProperty = AvaloniaProperty.Register<LogarithmicAxis, double>(nameof(Base), 10.0, validate: ValidateBase);
 
         /// <summary>
         /// Identifies the <see cref="PowerPadding"/> dependency property.
@@ -86,6 +86,17 @@ namespace OxyPlot.Avalonia
             var a = (Axes.LogarithmicAxis)InternalAxis;
             a.Base = Base;
             a.PowerPadding = PowerPadding;
+        }
+
+        /// <summary>
+        /// Validates the logarithm base. With a base that is not greater than one or is not a number
+        /// the core cannot compute the axis ticks and rendering hangs.
+        /// </summary>
+        /// <param name="value">The base.</param>
+        /// <returns><c>true</c> if the value is valid.</returns>
+        private static bool ValidateBase(double value)
+        {
+            return double.IsFinite(value) && value > 1;
         }
 
         static LogarithmicAxis()
