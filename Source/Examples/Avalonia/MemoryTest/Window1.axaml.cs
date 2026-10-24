@@ -18,7 +18,6 @@ namespace MemoryTest
 
             InitializeComponent();
 
-            App.AttachDevTools(this);
         }
 
         private void InitializeComponent()

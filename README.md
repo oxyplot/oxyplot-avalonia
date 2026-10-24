@@ -8,6 +8,8 @@
 dotnet add package OxyPlot.Avalonia
 ```
 
+The package targets Avalonia 12 and requires .NET 8 or later.
+
 ### Usage
 
 To use the library, add the following to your `App.xaml`:
@@ -23,7 +25,7 @@ To use the library, add the following to your `App.xaml`:
         <!-- Add the line below to get OxyPlot UI theme applied. -->
         <StyleInclude Source="resm:OxyPlot.Avalonia.Themes.Default.xaml?assembly=OxyPlot.Avalonia"/>
       
-        <!-- Add the line below to get OxyPlot UI theme applied in Avalonia 11. -->
+        <!-- Add the line below to get OxyPlot UI theme applied in Avalonia 11 and 12. -->
         <StyleInclude Source="avares://OxyPlot.Avalonia/Themes/Default.axaml"/>
     </Application.Styles>
 </Application>

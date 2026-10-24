@@ -24,7 +24,6 @@ namespace AvaloniaExamples.Examples.UserControlDemo
         {
             this.InitializeComponent();
             this.DataContext = new { Models = new List<ViewModel> { new ViewModel { Title = "Plot1" }, new ViewModel { Title = "Plot2" } } };
-            App.AttachDevTools(this);
         }
 
         private void InitializeComponent()

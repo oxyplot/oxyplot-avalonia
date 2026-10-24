@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Avalonia.Input.Platform;
 using Avalonia.Reactive;
 
 namespace OxyPlot.Avalonia

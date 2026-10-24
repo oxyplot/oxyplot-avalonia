@@ -51,7 +51,6 @@ namespace AvaloniaExamples.Examples.BarSeriesDemo
 
             this.InitializeComponent();
 
-            App.AttachDevTools(this);
         }
 
         private void InitializeComponent()

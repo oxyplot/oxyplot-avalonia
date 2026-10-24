@@ -39,11 +39,5 @@ namespace MemoryTest
                 .StartWithClassicDesktopLifetime(args);
         }
 
-        public static void AttachDevTools(Window window)
-        {
-#if DEBUG
-			DevToolsExtensions.AttachDevTools(window);
-#endif
-        }
     }
 }
