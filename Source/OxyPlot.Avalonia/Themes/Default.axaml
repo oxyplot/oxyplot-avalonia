@@ -58,7 +58,8 @@
         <Setter Property="ZoomRectangleTemplate">
             <Setter.Value>
                 <ControlTemplate>
-                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeDashArray="3,1" />
+                    <!-- The stroke thickness of a Rectangle in Avalonia is 0 by default, without it the border is not visible -->
+                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeThickness="1" StrokeDashArray="3,1" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -92,7 +93,8 @@
         <Setter Property="ZoomRectangleTemplate">
             <Setter.Value>
                 <ControlTemplate>
-                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeDashArray="3,1" />
+                    <!-- The stroke thickness of a Rectangle in Avalonia is 0 by default, without it the border is not visible -->
+                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeThickness="1" StrokeDashArray="3,1" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
