@@ -32,7 +32,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<IList<DataPoint>> PointsProperty = AvaloniaProperty.Register<PolylineAnnotation, IList<DataPoint>>(nameof(Points), new List<DataPoint>());
+        public static readonly StyledProperty<IList<DataPoint>> PointsProperty = AvaloniaProperty.Register<PolylineAnnotation, IList<DataPoint>>(nameof(Points));
 
         /// <summary>
         /// Initializes static members of the <see cref="PolylineAnnotation"/> class.
@@ -56,6 +56,9 @@ namespace OxyPlot.Avalonia
         public PolylineAnnotation()
         {
             this.InternalAnnotation = new Annotations.PolylineAnnotation();
+
+            // Every instance has its own list of points, otherwise points leak between annotations
+            SetCurrentValue(PointsProperty, new List<DataPoint>());
         }
 
         /// <summary>
@@ -116,7 +119,11 @@ namespace OxyPlot.Avalonia
 
             var a = (Annotations.PolylineAnnotation)this.InternalAnnotation;
             a.Points.Clear();
-            a.Points.AddRange(this.Points);
+            if (this.Points != null)
+            {
+                a.Points.AddRange(this.Points);
+            }
+
             a.InterpolationAlgorithm = this.InterpolationAlgorithm;
             a.MinimumSegmentLength = this.MinimumSegmentLength;
         }
