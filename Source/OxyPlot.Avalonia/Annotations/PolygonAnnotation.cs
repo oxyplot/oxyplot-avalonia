@@ -39,7 +39,6 @@ namespace OxyPlot.Avalonia
         static PolygonAnnotation()
         {
             TextColorProperty.OverrideDefaultValue<PolygonAnnotation>(MoreColors.Automatic);
-            TextColorProperty.Changed.AddClassHandler<PolygonAnnotation>(AppearanceChanged);
 
             LineJoinProperty.Changed.AddClassHandler<PolygonAnnotation>(AppearanceChanged);
             LineStyleProperty.Changed.AddClassHandler<PolygonAnnotation>(AppearanceChanged);

@@ -41,8 +41,6 @@ namespace OxyPlot.Avalonia
             IsZoomEnabledProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<bool>(false));
             StartAngleProperty.Changed.AddClassHandler<AngleAxis>(AppearanceChanged);
             EndAngleProperty.Changed.AddClassHandler<AngleAxis>(AppearanceChanged);
-            PositionProperty.Changed.AddClassHandler<AngleAxis>(AppearanceChanged);
-            TickStyleProperty.Changed.AddClassHandler<AngleAxis>(AppearanceChanged);
         }
 
         /// <summary>

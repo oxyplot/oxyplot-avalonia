@@ -42,7 +42,6 @@ namespace OxyPlot.Avalonia
         static RectangleAnnotation()
         {
             TextColorProperty.OverrideDefaultValue<RectangleAnnotation>(MoreColors.Automatic);
-            TextColorProperty.Changed.AddClassHandler<RectangleAnnotation>(AppearanceChanged);
 
             MaximumXProperty.Changed.AddClassHandler<RectangleAnnotation>(DataChanged);
             MaximumYProperty.Changed.AddClassHandler<RectangleAnnotation>(DataChanged);

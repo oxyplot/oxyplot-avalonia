@@ -25,7 +25,6 @@ namespace OxyPlot.Avalonia
             MajorGridlineStyleProperty.OverrideDefaultValue<MagnitudeAxis>(LineStyle.Solid);
             MinorGridlineStyleProperty.OverrideDefaultValue<MagnitudeAxis>(LineStyle.Solid);
             PositionProperty.OverrideDefaultValue<MagnitudeAxis>(AxisPosition.None);
-            PositionProperty.Changed.AddClassHandler<MagnitudeAxis>(AppearanceChanged);
             IsPanEnabledProperty.OverrideDefaultValue<MagnitudeAxis>(false);
             IsZoomEnabledProperty.OverrideDefaultValue<MagnitudeAxis>(false);
         }

@@ -34,7 +34,6 @@ namespace OxyPlot.Avalonia
             TrackerFormatStringProperty.OverrideMetadata(typeof(XYAxisSeries), new StyledPropertyMetadata<string>(OxyPlot.Series.XYAxisSeries.DefaultTrackerFormatString));
             XAxisKeyProperty.Changed.AddClassHandler<XYAxisSeries>(AppearanceChanged);
             YAxisKeyProperty.Changed.AddClassHandler<XYAxisSeries>(AppearanceChanged);
-            TrackerFormatStringProperty.Changed.AddClassHandler<XYAxisSeries>(AppearanceChanged);
         }
 
         /// <summary>
