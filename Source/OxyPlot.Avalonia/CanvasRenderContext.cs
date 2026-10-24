@@ -1088,9 +1088,13 @@ namespace OxyPlot.Avalonia
             double lineLength = 0;
             var dashPatternLength = (dashArray != null) ? dashArray.Sum() : 0;
             var last = new Point();
+
+            // The anti-aliasing mode does not depend on the point index, while the check walks the whole list,
+            // so it is computed once before the loop. Inside the loop it gave quadratic complexity.
+            var aliased = !this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points);
+
             for (int i = 0; i < n; i++)
             {
-                bool aliased = !this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points);
                 var p = aliased ? ToPixelAlignedPoint(points[i]) : ToPoint(points[i]);
                 pc.Add(p);
 
