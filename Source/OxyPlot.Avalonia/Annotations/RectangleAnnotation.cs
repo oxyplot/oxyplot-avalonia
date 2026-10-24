@@ -19,22 +19,22 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="MaximumX"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> MaximumXProperty = AvaloniaProperty.Register<RectangleAnnotation, double>(nameof(MaximumX), double.MaxValue);
+        public static readonly StyledProperty<double> MaximumXProperty = AvaloniaProperty.Register<RectangleAnnotation, double>(nameof(MaximumX), double.PositiveInfinity);
 
         /// <summary>
         /// Identifies the <see cref="MaximumY"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> MaximumYProperty = AvaloniaProperty.Register<RectangleAnnotation, double>(nameof(MaximumY), double.MaxValue);
+        public static readonly StyledProperty<double> MaximumYProperty = AvaloniaProperty.Register<RectangleAnnotation, double>(nameof(MaximumY), double.PositiveInfinity);
 
         /// <summary>
         /// Identifies the <see cref="MinimumX"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> MinimumXProperty = AvaloniaProperty.Register<RectangleAnnotation, double>(nameof(MinimumX), double.MinValue);
+        public static readonly StyledProperty<double> MinimumXProperty = AvaloniaProperty.Register<RectangleAnnotation, double>(nameof(MinimumX), double.NegativeInfinity);
 
         /// <summary>
         /// Identifies the <see cref="MinimumY"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> MinimumYProperty = AvaloniaProperty.Register<RectangleAnnotation, double>(nameof(MinimumY), double.MinValue);
+        public static readonly StyledProperty<double> MinimumYProperty = AvaloniaProperty.Register<RectangleAnnotation, double>(nameof(MinimumY), double.NegativeInfinity);
 
         /// <summary>
         /// Initializes static members of the <see cref="RectangleAnnotation"/> class.
@@ -140,10 +140,13 @@ namespace OxyPlot.Avalonia
             base.SynchronizeProperties();
             var a = (Annotations.RectangleAnnotation)InternalAnnotation;
 
-            a.MinimumX = MinimumX;
-            a.MaximumX = MaximumX;
-            a.MinimumY = MinimumY;
-            a.MaximumY = MaximumY;
+            // OxyPlot core 2.2.0 treats a bound as open only when it is infinite or NaN.
+            // The previous defaults double.MinValue/MaxValue are converted to infinity,
+            // otherwise the rectangle ends up in infinite screen coordinates.
+            a.MinimumX = MinimumX <= double.MinValue ? double.NegativeInfinity : MinimumX;
+            a.MaximumX = MaximumX >= double.MaxValue ? double.PositiveInfinity : MaximumX;
+            a.MinimumY = MinimumY <= double.MinValue ? double.NegativeInfinity : MinimumY;
+            a.MaximumY = MaximumY >= double.MaxValue ? double.PositiveInfinity : MaximumY;
         }
     }
 }
