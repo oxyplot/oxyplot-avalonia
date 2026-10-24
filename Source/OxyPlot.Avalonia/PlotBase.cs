@@ -398,7 +398,20 @@ namespace OxyPlot.Avalonia
         /// <param name="updateData">The update Data.</param>
         protected void UpdateModel(bool updateData = true)
         {
-            if (Width <= 0 || Height <= 0 || ActualModel == null)
+            if (ActualModel == null)
+            {
+                // The model was removed: the old plot is erased by UpdateVisuals, but it is only called by
+                // the layout pass triggered by the isPlotInvalidated flag. Without the flag the picture would stay on the screen.
+                isUpdateRequired = 0;
+                if (Interlocked.CompareExchange(ref isPlotInvalidated, 1, 0) == 0)
+                {
+                    BeginInvoke(InvalidateArrange);
+                }
+
+                return;
+            }
+
+            if (Width <= 0 || Height <= 0)
             {
                 isUpdateRequired = 0;
                 return;
