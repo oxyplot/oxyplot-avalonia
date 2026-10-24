@@ -140,7 +140,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="TitleHorizontalAlignment"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<TitleHorizontalAlignment> TitleAlignmentProperty = AvaloniaProperty.Register<Plot, TitleHorizontalAlignment>(nameof(TitleHorizontalAlignment), TitleHorizontalAlignment.CenteredWithinPlotArea);
+        public static readonly StyledProperty<TitleHorizontalAlignment> TitleHorizontalAlignmentProperty = AvaloniaProperty.Register<Plot, TitleHorizontalAlignment>(nameof(TitleHorizontalAlignment), TitleHorizontalAlignment.CenteredWithinPlotArea);
 
         /// <summary>
         /// Identifies the <see cref="TitleFont"/> dependency property.
@@ -204,7 +204,7 @@ namespace OxyPlot.Avalonia
             SubtitleFontWeightProperty.Changed.AddClassHandler<Plot>(AppearanceChanged);
             SubtitleProperty.Changed.AddClassHandler<Plot>(AppearanceChanged);
             TextColorProperty.Changed.AddClassHandler<Plot>(AppearanceChanged);
-            TitleAlignmentProperty.Changed.AddClassHandler<Plot>(AppearanceChanged);
+            TitleHorizontalAlignmentProperty.Changed.AddClassHandler<Plot>(AppearanceChanged);
             TitleFontProperty.Changed.AddClassHandler<Plot>(AppearanceChanged);
             TitleFontSizeProperty.Changed.AddClassHandler<Plot>(AppearanceChanged);
             TitleFontWeightProperty.Changed.AddClassHandler<Plot>(AppearanceChanged);
@@ -640,12 +640,12 @@ namespace OxyPlot.Avalonia
         {
             get
             {
-                return GetValue(TitleAlignmentProperty);
+                return GetValue(TitleHorizontalAlignmentProperty);
             }
 
             set
             {
-                SetValue(TitleAlignmentProperty, value);
+                SetValue(TitleHorizontalAlignmentProperty, value);
             }
         }
 
