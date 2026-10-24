@@ -552,15 +552,17 @@ namespace OxyPlot.Avalonia
         /// Invokes the specified action on the dispatcher, if necessary.
         /// </summary>
         /// <param name="action">The action.</param>
-        private static void BeginInvoke(Action action)
+        private void BeginInvoke(Action action)
         {
-            if (Dispatcher.UIThread.CheckAccess())
+            // The dispatcher of the control, not Dispatcher.UIThread: in Avalonia 12 a control can live
+            // in a window on another UI thread, and then the main thread has no access to it.
+            if (CheckAccess())
             {
                 action?.Invoke();
             }
             else
             {
-                Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Loaded);
+                Dispatcher.InvokeAsync(action, DispatcherPriority.Loaded);
             }
         }
     }
