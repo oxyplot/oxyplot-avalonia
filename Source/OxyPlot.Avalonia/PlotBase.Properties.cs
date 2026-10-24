@@ -55,6 +55,11 @@ namespace OxyPlot.Avalonia
 
         static PlotBase()
         {
+            // Without this the control does not take focus, and the keyboard commands of the plot do not work.
+            FocusableProperty.OverrideDefaultValue<PlotBase>(true);
+
+            // The plot must not be part of the Tab order, it takes focus only by a click.
+            IsTabStopProperty.OverrideDefaultValue<PlotBase>(false);
         }
 
         /// <summary>
