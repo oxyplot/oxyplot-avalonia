@@ -304,6 +304,7 @@ namespace OxyPlot.Avalonia
             m.TitleFontSize = TitleFontSize;
             m.TitleFontWeight = (int)TitleFontWeight;
             m.TitleToolTip = TitleToolTip;
+            m.TitleHorizontalAlignment = TitleHorizontalAlignment;
 
             m.Subtitle = Subtitle;
             m.SubtitleColor = SubtitleColor.ToOxyColor();
