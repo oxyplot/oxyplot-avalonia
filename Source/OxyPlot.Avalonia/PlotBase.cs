@@ -85,16 +85,6 @@ namespace OxyPlot.Avalonia
         private ContentControl zoomControl;
 
         /// <summary>
-        /// The is visible to user cache.
-        /// </summary>
-        private bool isVisibleToUserCache;
-
-        /// <summary>
-        /// The cached parent.
-        /// </summary>
-        private Control containerCache;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
         protected PlotBase()
