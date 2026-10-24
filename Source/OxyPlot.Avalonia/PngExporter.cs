@@ -75,7 +75,7 @@ namespace OxyPlot.Avalonia
         /// <param name="height">The height.</param>
         /// <param name="background">The background.</param>
         /// <param name="resolution">The resolution (dpi).</param>
-        /// <returns>A bitmap.</returns>
+        /// <returns>A bitmap. The caller must dispose it.</returns>
         public static Bitmap ExportToBitmap(
             IPlotModel model,
             int width,
@@ -94,8 +94,9 @@ namespace OxyPlot.Avalonia
         /// <param name="stream">The output stream.</param>
         public void Export(IPlotModel model, Stream stream)
         {
-            var bmp = ExportToBitmap(model);
-            bmp.Save(stream);
+            // The bitmap holds a native surface, so it is disposed right after writing.
+            using var bmp = ExportToBitmap(model);
+            bmp.Save(stream, PngBitmapEncoderOptions.Default);
         }
 
         /// <summary>
