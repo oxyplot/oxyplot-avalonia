@@ -51,9 +51,9 @@ namespace OxyPlot.Avalonia
         /// </summary>
         public AngleAxis()
         {
+            // The gridline styles are set by OverrideMetadata above. An assignment here would become a local
+            // value and would override the style setters.
             InternalAxis = new Axes.AngleAxis();
-            MajorGridlineStyle = LineStyle.Solid;
-            MinorGridlineStyle = LineStyle.Solid;
         }
 
         /// <summary>
