@@ -49,7 +49,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="LegendFontSize"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> LegendFontSizeProperty = AvaloniaProperty.Register<Legend, double>(nameof(LegendFontSize), 12.0);
+        public static readonly StyledProperty<double> LegendFontSizeProperty = AvaloniaProperty.Register<Legend, double>(nameof(LegendFontSize), double.NaN);
 
         /// <summary>
         /// Identifies the <see cref="LegendFontWeight"/> dependency property.
@@ -154,7 +154,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="LegendTitleFontSize"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> LegendTitleFontSizeProperty = AvaloniaProperty.Register<Legend, double>(nameof(LegendTitleFontSize), 12.0);
+        public static readonly StyledProperty<double> LegendTitleFontSizeProperty = AvaloniaProperty.Register<Legend, double>(nameof(LegendTitleFontSize), double.NaN);
 
         /// <summary>
         /// Identifies the <see cref="LegendTitleFontWeight"/> dependency property.
