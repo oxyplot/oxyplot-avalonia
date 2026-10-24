@@ -54,7 +54,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="Mapping"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<Func<object, ScatterPoint>> MappingProperty = AvaloniaProperty.Register<ScatterSeries<T>, Func<object, ScatterPoint>>(nameof(Mapping), null);
+        public static readonly StyledProperty<Func<object, T>> MappingProperty = AvaloniaProperty.Register<ScatterSeries<T>, Func<object, T>>(nameof(Mapping), null);
 
         /// <summary>
         /// Identifies the <see cref="MarkerFill"/> dependency property.
@@ -85,6 +85,11 @@ namespace OxyPlot.Avalonia
         /// Identifies the <see cref="MarkerType"/> dependency property.
         /// </summary>
         public static readonly StyledProperty<MarkerType> MarkerTypeProperty = AvaloniaProperty.Register<ScatterSeries<T>, MarkerType>(nameof(MarkerType), MarkerType.Square);
+
+        /// <summary>
+        /// Identifies the <see cref="ColorAxisKey"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<string> ColorAxisKeyProperty = AvaloniaProperty.Register<ScatterSeries<T>, string>(nameof(ColorAxisKey), null);
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "ScatterSeries{T}" /> class.
@@ -197,7 +202,7 @@ namespace OxyPlot.Avalonia
         {
             get
             {
-                return (Func<object, T>)GetValue(MappingProperty);
+                return GetValue(MappingProperty);
             }
 
             set
@@ -306,7 +311,18 @@ namespace OxyPlot.Avalonia
         /// Gets or sets the color axis key.
         /// </summary>
         /// <value>The color axis key.</value>
-        public string ColorAxisKey { get; set; }
+        public string ColorAxisKey
+        {
+            get
+            {
+                return GetValue(ColorAxisKeyProperty);
+            }
+
+            set
+            {
+                SetValue(ColorAxisKeyProperty, value);
+            }
+        }
 
         /// <summary>
         /// Creates the internal series.
@@ -358,6 +374,7 @@ namespace OxyPlot.Avalonia
             MarkerStrokeProperty.Changed.AddClassHandler<ScatterSeries<T>>(AppearanceChanged);
             MarkerStrokeThicknessProperty.Changed.AddClassHandler<ScatterSeries<T>>(AppearanceChanged);
             MarkerTypeProperty.Changed.AddClassHandler<ScatterSeries<T>>(AppearanceChanged);
+            ColorAxisKeyProperty.Changed.AddClassHandler<ScatterSeries<T>>(AppearanceChanged);
         }
     }
 }
