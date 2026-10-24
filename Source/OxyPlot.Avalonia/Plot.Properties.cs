@@ -95,7 +95,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="PlotAreaBackground"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<Brush> PlotAreaBackgroundProperty = AvaloniaProperty.Register<Plot, Brush>(nameof(PlotAreaBackground), null);
+        public static readonly StyledProperty<IBrush> PlotAreaBackgroundProperty = AvaloniaProperty.Register<Plot, IBrush>(nameof(PlotAreaBackground), null);
 
         /// <summary>
         /// Identifies the <see cref="PlotAreaBorderColor"/> dependency property.
@@ -426,7 +426,7 @@ namespace OxyPlot.Avalonia
         /// Gets or sets the background brush of the Plot area.
         /// </summary>
         /// <value>The brush.</value>
-        public Brush PlotAreaBackground
+        public IBrush PlotAreaBackground
         {
             get
             {

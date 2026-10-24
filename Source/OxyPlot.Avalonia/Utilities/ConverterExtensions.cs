@@ -120,7 +120,7 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
-        /// Converts a <see cref="Brush" /> to an <see cref="OxyColor" />.
+        /// Converts an <see cref="IBrush" /> to an <see cref="OxyColor" />.
         /// </summary>
         /// <param name="brush">The brush.</param>
         /// <returns>An <see cref="OxyColor" />.</returns>
