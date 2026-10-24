@@ -75,6 +75,16 @@ namespace OxyPlot.Avalonia
         private ScreenPoint mouseDownPoint;
 
         /// <summary>
+        /// Indicates that the press point has been filled in at least once.
+        /// </summary>
+        private bool hasMouseDownPoint;
+
+        /// <summary>
+        /// The type of the pointer that made the last press.
+        /// </summary>
+        private PointerType mouseDownPointerType;
+
+        /// <summary>
         /// The overlays.
         /// </summary>
         private Canvas overlays;
@@ -91,8 +101,9 @@ namespace OxyPlot.Avalonia
         {
             DisconnectCanvasWhileUpdating = true;
             trackerDefinitions = new ObservableCollection<TrackerDefinition>();
-            
+
             this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(OnSizeChanged));
+            AddHandler(ContextRequestedEvent, OnPlotContextRequested);
         }
 
         /// <summary>
