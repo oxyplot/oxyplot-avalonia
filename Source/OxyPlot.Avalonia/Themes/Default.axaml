@@ -5,7 +5,9 @@
     xmlns:local="http://oxyplot.org/avalonia"
     xmlns:oxy="clr-namespace:OxyPlot;assembly=OxyPlot">
 
-    <Style Selector="local|TrackerControl">
+    <!-- :is() selectors so that subclasses of the controls get the template too: a type selector
+         matches only the exact type. -->
+    <Style Selector=":is(local|TrackerControl)">
         <Setter Property="Background" Value="#E0FFFFA0" />
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="1" />
@@ -53,7 +55,7 @@
         </Setter>
     </Style>
 
-    <Style Selector="local|PlotView">
+    <Style Selector=":is(local|PlotView)">
         <Setter Property="Background" Value="White" />
         <Setter Property="DefaultTrackerTemplate">
             <Setter.Value>
@@ -90,7 +92,7 @@
         </Setter>
     </Style>
 
-    <Style Selector="local|Plot">
+    <Style Selector=":is(local|Plot)">
         <Setter Property="Background" Value="White" />
         <Setter Property="DefaultTrackerTemplate">
             <Setter.Value>
