@@ -14,6 +14,7 @@ namespace OxyPlot.Avalonia
     using global::Avalonia.Controls;
     using global::Avalonia.LogicalTree;
     using global::Avalonia.VisualTree;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
@@ -173,6 +174,19 @@ namespace OxyPlot.Avalonia
         /// <param name="e">The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
         private void SyncLogicalTree(NotifyCollectionChangedEventArgs e)
         {
+            // Reset (which is Clear) does not provide OldItems, while Move and Replace send
+            // the same element in both NewItems and OldItems. In these cases the per-item logic
+            // below leaves garbage in the tree, clears the parent or fails on re-adding,
+            // so the tree is rebuilt completely.
+            if (e.Action == NotifyCollectionChangedAction.Reset
+                || e.Action == NotifyCollectionChangedAction.Move
+                || e.Action == NotifyCollectionChangedAction.Replace)
+            {
+                RebuildTreeChildren();
+                OnElementsChanged();
+                return;
+            }
+
             // In order to get DataContext and binding to work with the series, axes and annotations
             // we add the items to the logical tree
             if (e.NewItems != null)
@@ -199,7 +213,70 @@ namespace OxyPlot.Avalonia
                 }
             }
 
-            this.OnAppearanceChanged();
+            OnElementsChanged();
+        }
+
+        /// <summary>
+        /// Updates the model after the set of series, axes, annotations or legends has changed.
+        /// This is a data update: the core loads the series points and computes the axis ranges
+        /// only during it, otherwise an added series stays empty and the axes have no range.
+        /// </summary>
+        private void OnElementsChanged()
+        {
+            InvalidatePlot(true);
+        }
+
+        /// <summary>
+        /// Brings the logical and visual trees in line with the collections of the plot.
+        /// Elements of the control template are not touched: they are also in the visual tree,
+        /// and removing them would break rendering permanently.
+        /// </summary>
+        private void RebuildTreeChildren()
+        {
+            var expected = new HashSet<object>(
+                series.Cast<object>().Concat(axes).Concat(annotations).Concat(legends));
+
+            foreach (var child in LogicalChildren.ToArray())
+            {
+                if (IsPlotPart(child) && !expected.Contains(child))
+                {
+                    (child as ISetLogicalParent)?.SetParent(null);
+                    LogicalChildren.Remove(child);
+                }
+            }
+
+            foreach (var child in VisualChildren.ToArray())
+            {
+                if (IsPlotPart(child) && !expected.Contains(child))
+                {
+                    VisualChildren.Remove(child);
+                }
+            }
+
+            foreach (var item in expected)
+            {
+                if (item is ILogical logical && !LogicalChildren.Contains(logical))
+                {
+                    (item as ISetLogicalParent)?.SetParent(this);
+                    LogicalChildren.Add(logical);
+                }
+
+                if (item is Visual visual && !VisualChildren.Contains(visual))
+                {
+                    VisualChildren.Add(visual);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines whether a tree element belongs to the collections of the plot,
+        /// and not to the control template.
+        /// </summary>
+        /// <param name="child">The tree element.</param>
+        /// <returns><c>true</c> if this is a series, an axis, an annotation or a legend.</returns>
+        private static bool IsPlotPart(object child)
+        {
+            return child is Series || child is Axis || child is Annotation || child is Legend;
         }
 
         /// <summary>
