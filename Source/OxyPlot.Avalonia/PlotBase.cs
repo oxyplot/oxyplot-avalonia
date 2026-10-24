@@ -356,9 +356,20 @@ namespace OxyPlot.Avalonia
         /// <param name="text">The text.</param>
         public async void SetClipboardText(string text)
         {
-            if (TopLevel.GetTopLevel(this) is { Clipboard: { } clipboard })
+            // The method is declared as void in IPlotView, so there is nobody to catch an exception from here.
+            // Without try/catch an unavailable or busy clipboard would crash the whole application.
+            try
             {
-                await clipboard.SetTextAsync(text).ConfigureAwait(true);
+                if (TopLevel.GetTopLevel(this) is { Clipboard: { } clipboard })
+                {
+                    await clipboard.SetTextAsync(text).ConfigureAwait(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                global::Avalonia.Logging.Logger
+                    .TryGet(global::Avalonia.Logging.LogEventLevel.Warning, global::Avalonia.Logging.LogArea.Control)
+                    ?.Log(this, "Failed to write text to the clipboard: {0}", ex.Message);
             }
         }
 
