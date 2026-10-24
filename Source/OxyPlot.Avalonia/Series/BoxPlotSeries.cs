@@ -261,9 +261,11 @@ namespace OxyPlot.Avalonia
             base.SynchronizeProperties(series);
 
             var s = (OxyPlot.Series.BoxPlotSeries)series;
+            s.BoxWidth = BoxWidth;
             s.Fill = Fill.ToOxyColor();
             s.LineStyle = LineStyle;
             s.MedianPointSize = MedianPointSize;
+            s.MedianThickness = MedianThickness;
             s.OutlierSize = OutlierSize;
             s.OutlierType = OutlierType;
             s.OutlierOutline = (OutlierOutline ?? Enumerable.Empty<Point>()).Select(point => point.ToScreenPoint()).ToArray();
