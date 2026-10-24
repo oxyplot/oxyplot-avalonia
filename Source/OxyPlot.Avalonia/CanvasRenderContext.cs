@@ -102,6 +102,11 @@ namespace OxyPlot.Avalonia
             double thickness,
             EdgeRenderingMode edgeRenderingMode)
         {
+            if (!IsFinite(rect))
+            {
+                return;
+            }
+
             var path = CreateAndAdd<Path>();
             SetStroke(path, stroke, thickness, edgeRenderingMode);
             if (!fill.IsUndefined())
@@ -136,6 +141,11 @@ namespace OxyPlot.Avalonia
 
             foreach (var rect in rects)
             {
+                if (!IsFinite(rect))
+                {
+                    continue;
+                }
+
                 if (path == null)
                 {
                     path = CreateAndAdd<Path>();
@@ -220,6 +230,12 @@ namespace OxyPlot.Avalonia
             double[] dashArray,
             LineJoin lineJoin)
         {
+            points = FiniteOnly(points);
+            if (points.Count == 0)
+            {
+                return;
+            }
+
             if (thickness < BalancedLineDrawingThicknessLimit)
             {
                 DrawLineBalanced(points, stroke, thickness, edgeRenderingMode, dashArray, lineJoin);
@@ -260,6 +276,11 @@ namespace OxyPlot.Avalonia
 
             for (int i = 0; i + 1 < points.Count; i += 2)
             {
+                if (!IsFinite(points[i]) || !IsFinite(points[i + 1]))
+                {
+                    continue;
+                }
+
                 if (streamGeometry == null)
                 {
                     streamGeometry = new StreamGeometry();
@@ -325,6 +346,11 @@ namespace OxyPlot.Avalonia
 
             for (int i = 0; i + 1 < points.Count; i += 2)
             {
+                if (!IsFinite(points[i]) || !IsFinite(points[i + 1]))
+                {
+                    continue;
+                }
+
                 if (path == null)
                 {
                     path = CreateAndAdd<Path>();
@@ -365,6 +391,11 @@ namespace OxyPlot.Avalonia
             double[] dashArray,
             LineJoin lineJoin)
         {
+            if (!IsFinite(points))
+            {
+                return;
+            }
+
             var e = CreateAndAdd<Polygon>();
             SetStroke(e, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
 
@@ -410,6 +441,11 @@ namespace OxyPlot.Avalonia
 
             foreach (var polygon in polygons)
             {
+                if (!IsFinite(polygon))
+                {
+                    continue;
+                }
+
                 if (path == null)
                 {
                     path = CreateAndAdd<Path>();
@@ -498,6 +534,11 @@ namespace OxyPlot.Avalonia
 
             foreach (var polygon in polygons)
             {
+                if (!IsFinite(polygon))
+                {
+                    continue;
+                }
+
                 if (path == null)
                 {
                     path = CreateAndAdd<Path>();
@@ -563,6 +604,11 @@ namespace OxyPlot.Avalonia
             double thickness,
             EdgeRenderingMode edgeRenderingMode)
         {
+            if (!IsFinite(rect))
+            {
+                return;
+            }
+
             var path = CreateAndAdd<Path>();
             SetStroke(path, stroke, thickness, edgeRenderingMode);
             if (!fill.IsUndefined())
@@ -615,6 +661,11 @@ namespace OxyPlot.Avalonia
             VerticalAlignment valign,
             OxySize? maxSize)
         {
+            if (!IsFinite(p))
+            {
+                return;
+            }
+
             var tb = CreateAndAdd<TextBlock>();
             tb.Text = text;
             tb.Foreground = GetCachedBrush(fill);
@@ -1103,6 +1154,58 @@ namespace OxyPlot.Avalonia
         private static Rect ToRect(OxyRect r)
         {
             return new Rect(r.Left, r.Top, r.Width, r.Height);
+        }
+
+        // A shape with NaN or infinite coordinates breaks the whole Canvas layout pass
+        // (InvalidOperationException from Measure), not just itself. The core produces such
+        // coordinates for annotations that are not fully configured, so these shapes are not drawn.
+
+        /// <summary>
+        /// Checks that all coordinates of the rectangle are finite.
+        /// </summary>
+        /// <param name="r">The rectangle.</param>
+        /// <returns><c>true</c> if the shape can be drawn.</returns>
+        private static bool IsFinite(OxyRect r)
+        {
+            return double.IsFinite(r.Left) && double.IsFinite(r.Top) && double.IsFinite(r.Width) && double.IsFinite(r.Height);
+        }
+
+        /// <summary>
+        /// Checks that both coordinates of the point are finite.
+        /// </summary>
+        /// <param name="p">The point.</param>
+        /// <returns><c>true</c> if the point can be drawn.</returns>
+        private static bool IsFinite(ScreenPoint p)
+        {
+            return double.IsFinite(p.X) && double.IsFinite(p.Y);
+        }
+
+        /// <summary>
+        /// Checks that the coordinates of all points are finite.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <returns><c>true</c> if the shape can be drawn.</returns>
+        private static bool IsFinite(IList<ScreenPoint> points)
+        {
+            for (var i = 0; i < points.Count; i++)
+            {
+                if (!IsFinite(points[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes points with non-finite coordinates from a line. If there are none, returns the same list.
+        /// </summary>
+        /// <param name="points">The points of the line.</param>
+        /// <returns>The points with finite coordinates.</returns>
+        private static IList<ScreenPoint> FiniteOnly(IList<ScreenPoint> points)
+        {
+            return IsFinite(points) ? points : points.Where(IsFinite).ToList();
         }
 
         /// <summary>
