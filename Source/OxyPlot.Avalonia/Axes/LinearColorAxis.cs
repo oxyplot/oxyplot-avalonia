@@ -7,7 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Diagnostics.Contracts;
 using Avalonia;
 
 namespace OxyPlot.Avalonia
@@ -45,12 +44,20 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<int> PaletteSizeProperty = AvaloniaProperty.Register<LinearColorAxis, int>(nameof(PaletteSize), 20, validate: ValidatePaletteSize);
 
         /// <summary>
+        /// The default palette of the core. It is returned when there are no gradient stops.
+        /// </summary>
+        private readonly OxyPalette defaultPalette;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="LinearColorAxis"/> class.
         /// </summary>
         public LinearColorAxis()
         {
             InternalAxis = new Axes.LinearColorAxis();
-            GradientStops = new List<GradientStop>();
+            defaultPalette = ((Axes.LinearColorAxis)InternalAxis).Palette;
+
+            // The value is set as the current one so that it does not override style setters.
+            SetCurrentValue(GradientStopsProperty, new List<GradientStop>());
         }
 
         /// <summary>
@@ -136,13 +143,25 @@ namespace OxyPlot.Avalonia
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var axis = InternalAxis as Axes.LinearColorAxis;
-            Contract.Requires<InvalidOperationException>(axis != null);
-            if (GradientStops != null)
+            if (InternalAxis is not Axes.LinearColorAxis axis)
             {
-                axis.Palette = GradientStops.Count > 2
-                                   ? Interpolate(GradientStops.ToList(), PaletteSize)
-                                   : new OxyPalette();
+                throw new InvalidOperationException("The internal axis must be of type LinearColorAxis.");
+            }
+
+            if (GradientStops != null && GradientStops.Count >= 2)
+            {
+                axis.Palette = Interpolate(GradientStops.ToList(), PaletteSize);
+            }
+            else if (GradientStops != null && GradientStops.Count == 1)
+            {
+                // A single stop: a palette of one color, but of the requested size.
+                axis.Palette = new OxyPalette(
+                    Enumerable.Repeat(GradientStops[0].Color.ToOxyColor(), Math.Max(1, PaletteSize)).ToList());
+            }
+            else
+            {
+                // No stops: return the palette of the core, otherwise the map would become monochrome.
+                axis.Palette = defaultPalette;
             }
 
             axis.HighColor = HighColor.ToOxyColor();
@@ -168,26 +187,39 @@ namespace OxyPlot.Avalonia
             Debug.Assert(stops.Count >= 2, "Can't interpolate less than 2 gradient stops.");
             Debug.Assert(paletteSize > 0, "Palette size must be non-zero positive number.");
 
-            var palette = new List<OxyColor>();
             stops.Sort((x1, x2) => x1.Offset.CompareTo(x2.Offset));
 
-            var palettePositions = stops[0].Offset;
-            var step = (double)stops.Count / paletteSize;
+            var first = stops[0].Offset;
+            var last = stops[stops.Count - 1].Offset;
+            var range = last - first;
 
-            for (int i = 0; i < stops.Count - 1; i++)
+            // All stops are at one point or a single color is needed: there is nothing to interpolate,
+            // but the requested palette size must still be honored.
+            if (range <= 0 || paletteSize < 2)
             {
-                var start = stops[i];
-                var end = stops[i + 1];
+                return new OxyPalette(
+                    Enumerable.Repeat(stops[0].Color.ToOxyColor(), Math.Max(1, paletteSize)).ToList());
+            }
 
-                while (palettePositions <= end.Offset)
+            var palette = new List<OxyColor>(paletteSize);
+            var segment = 0;
+
+            for (int i = 0; i < paletteSize; i++)
+            {
+                var position = first + (range * i / (paletteSize - 1));
+
+                while (segment < stops.Count - 2 && position > stops[segment + 1].Offset)
                 {
-                    palette.Add(
-                        OxyColor.Interpolate(
-                            start.Color.ToOxyColor(),
-                            end.Color.ToOxyColor(),
-                            (palettePositions - start.Offset) / (end.Offset - start.Offset)));
-                    palettePositions += step;
+                    segment++;
                 }
+
+                var start = stops[segment];
+                var end = stops[segment + 1];
+                var span = end.Offset - start.Offset;
+                // Stops with the same offset: take the start color, no division by zero.
+                var t = span > 0 ? (position - start.Offset) / span : 0.0;
+
+                palette.Add(OxyColor.Interpolate(start.Color.ToOxyColor(), end.Color.ToOxyColor(), t));
             }
 
             return new OxyPalette(palette);
