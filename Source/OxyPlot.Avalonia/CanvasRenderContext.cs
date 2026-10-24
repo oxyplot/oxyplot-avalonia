@@ -825,24 +825,32 @@ namespace OxyPlot.Avalonia
             double opacity,
             bool interpolate)
         {
-            if (destWidth <= 0 || destHeight <= 0 || srcWidth <= 0 || srcHeight <= 0)
+            if (!(destWidth > 0) || !(destHeight > 0) || !(srcWidth > 0) || !(srcHeight > 0)
+                || !double.IsFinite(destX) || !double.IsFinite(destY)
+                || !double.IsFinite(destWidth) || !double.IsFinite(destHeight))
+            {
+                return;
+            }
+
+            var bitmap = GetImageSource(source);
+            if (bitmap == null)
+            {
+                return;
+            }
+
+            // The part of the source is cropped by whole pixels within the bitmap. Clip is not suitable here:
+            // it is specified in the coordinates of the element, not of the source, and overrides the clipping to the plot area.
+            var left = Math.Max(0, (int)Math.Floor(srcX));
+            var top = Math.Max(0, (int)Math.Floor(srcY));
+            var right = Math.Min(bitmap.PixelSize.Width, (int)Math.Ceiling(srcX + srcWidth));
+            var bottom = Math.Min(bitmap.PixelSize.Height, (int)Math.Ceiling(srcY + srcHeight));
+            if (right <= left || bottom <= top)
             {
                 return;
             }
 
             var image = CreateAndAdd<Image>(destX, destY);
-            var bitmapChain = GetImageSource(source);
-
-            // ReSharper disable CompareOfFloatsByEqualityOperator
-            if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelSize.Width && srcHeight == bitmapChain.PixelSize.Height)
-            // ReSharper restore CompareOfFloatsByEqualityOperator
-            {
-                // do not crop
-            }
-            else
-            {
-                image.Clip = new RectangleGeometry(new Rect(srcX, srcY, srcWidth, srcHeight));
-            }
+            var isWholeBitmap = left == 0 && top == 0 && right == bitmap.PixelSize.Width && bottom == bitmap.PixelSize.Height;
 
             image.Opacity = opacity;
             image.Width = destWidth;
@@ -854,7 +862,9 @@ namespace OxyPlot.Avalonia
             Canvas.SetTop(image, destY);
             //// alternative: image.RenderTransform = new TranslateTransform(destX, destY);
 
-            image.Source = bitmapChain;
+            image.Source = isWholeBitmap
+                ? bitmap
+                : new CroppedBitmap(bitmap, new PixelRect(left, top, right - left, bottom - top));
 
             if (interpolate)
             {
