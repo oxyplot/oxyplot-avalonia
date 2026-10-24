@@ -159,7 +159,6 @@ namespace OxyPlot.Avalonia
             ValueFieldProperty.Changed.AddClassHandler<PieSeries>(DataChanged);
             ColorFieldProperty.Changed.AddClassHandler<PieSeries>(DataChanged);
             IsExplodedFieldProperty.Changed.AddClassHandler<PieSeries>(DataChanged);
-            TrackerFormatStringProperty.Changed.AddClassHandler<PieSeries>(AppearanceChanged);
         }
 
         /// <summary>

@@ -50,11 +50,8 @@ namespace OxyPlot.Avalonia
         static TextAnnotation()
         {
             TextColorProperty.OverrideDefaultValue<TextAnnotation>(MoreColors.Automatic);
-            TextColorProperty.Changed.AddClassHandler<TextAnnotation>(AppearanceChanged);
             TextHorizontalAlignmentProperty.OverrideDefaultValue<TextAnnotation>(HorizontalAlignment.Right);
-            TextHorizontalAlignmentProperty.Changed.AddClassHandler<TextAnnotation>(AppearanceChanged);
             TextVerticalAlignmentProperty.OverrideDefaultValue<TextAnnotation>(VerticalAlignment.Top);
-            TextVerticalAlignmentProperty.Changed.AddClassHandler<TextAnnotation>(AppearanceChanged);
 
             BackgroundProperty.Changed.AddClassHandler<TextAnnotation>(AppearanceChanged);
             OffsetProperty.Changed.AddClassHandler<TextAnnotation>(AppearanceChanged);

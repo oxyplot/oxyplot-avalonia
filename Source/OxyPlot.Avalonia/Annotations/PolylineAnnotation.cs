@@ -40,11 +40,8 @@ namespace OxyPlot.Avalonia
         static PolylineAnnotation()
         {
             TextColorProperty.OverrideDefaultValue<PolylineAnnotation>(MoreColors.Automatic);
-            TextColorProperty.Changed.AddClassHandler<PolylineAnnotation>(AppearanceChanged);
             TextHorizontalAlignmentProperty.OverrideDefaultValue<PolylineAnnotation>(HorizontalAlignment.Right);
-            TextHorizontalAlignmentProperty.Changed.AddClassHandler<PolylineAnnotation>(AppearanceChanged);
             TextVerticalAlignmentProperty.OverrideDefaultValue<PolylineAnnotation>(VerticalAlignment.Top);
-            TextVerticalAlignmentProperty.Changed.AddClassHandler<PolylineAnnotation>(AppearanceChanged);
 
             InterpolationAlgorithmProperty.Changed.AddClassHandler<PolylineAnnotation>(DataChanged);
             MinimumSegmentLengthProperty.Changed.AddClassHandler<PolylineAnnotation>(DataChanged);

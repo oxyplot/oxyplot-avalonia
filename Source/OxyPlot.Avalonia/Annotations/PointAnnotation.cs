@@ -49,9 +49,7 @@ namespace OxyPlot.Avalonia
         static PointAnnotation()
         {
             TextColorProperty.OverrideDefaultValue<PointAnnotation>(MoreColors.Automatic);
-            TextColorProperty.Changed.AddClassHandler<PointAnnotation>(AppearanceChanged);
             TextVerticalAlignmentProperty.OverrideDefaultValue<PointAnnotation>(VerticalAlignment.Top);
-            TextVerticalAlignmentProperty.Changed.AddClassHandler<PointAnnotation>(AppearanceChanged);
 
             XProperty.Changed.AddClassHandler<PointAnnotation>(DataChanged);
             YProperty.Changed.AddClassHandler<PointAnnotation>(DataChanged);

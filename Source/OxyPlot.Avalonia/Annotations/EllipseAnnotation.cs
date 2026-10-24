@@ -32,7 +32,6 @@ namespace OxyPlot.Avalonia
         static EllipseAnnotation()
         {
             TextColorProperty.OverrideDefaultValue<EllipseAnnotation>(MoreColors.Automatic);
-            TextColorProperty.Changed.AddClassHandler<EllipseAnnotation>(AppearanceChanged);
 
             XProperty.Changed.AddClassHandler<EllipseAnnotation>(DataChanged);
             YProperty.Changed.AddClassHandler<EllipseAnnotation>(DataChanged);
