@@ -21,7 +21,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="Color2"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<Color> Color2Property = AvaloniaProperty.Register<Series, Color>(nameof(Color2), MoreColors.Automatic);
+        public static readonly StyledProperty<Color> Color2Property = AvaloniaProperty.Register<AreaSeries, Color>(nameof(Color2), MoreColors.Automatic);
 
         /// <summary>
         /// Identifies the <see cref="ConstantY2"/> dependency property.

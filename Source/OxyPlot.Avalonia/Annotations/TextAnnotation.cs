@@ -168,11 +168,9 @@ namespace OxyPlot.Avalonia
         {
             base.SynchronizeProperties();
             var a = (Annotations.TextAnnotation)InternalAnnotation;
-            a.TextHorizontalAlignment = HorizontalAlignment.ToHorizontalAlignment();
             a.Background = Background.ToOxyColor();
 
             a.Offset = Offset.ToScreenVector();
-            a.TextVerticalAlignment = VerticalAlignment.ToVerticalAlignment();
             a.Padding = Padding.ToOxyThickness();
 
             a.Stroke = Stroke.ToOxyColor();
