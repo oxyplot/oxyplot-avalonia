@@ -192,11 +192,11 @@ namespace OxyPlot.Avalonia
 
         static TwoColorAreaSeries()
         {
-            FillProperty.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
             Fill2Property.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
             MarkerFill2Property.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
             MarkerStroke2Property.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
-            LimitProperty.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
+            // The core splits the points into the parts above and below the limit in UpdateData, not while rendering
+            LimitProperty.Changed.AddClassHandler<TwoColorAreaSeries>(DataChanged);
             Dashes2Property.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
             LineStyle2Property.Changed.AddClassHandler<TwoColorAreaSeries>(AppearanceChanged);
         }

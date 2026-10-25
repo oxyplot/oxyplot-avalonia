@@ -64,8 +64,12 @@ namespace OxyPlot.Avalonia
         /// </summary>
         static Series()
         {
-            IsVisibleProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
+            // The core loads the data and computes the axis ranges only for visible series and only
+            // when the data is updated. Therefore showing and hiding a series is a data change.
+            IsVisibleProperty.Changed.AddClassHandler<Series>(DataChanged);
             BackgroundProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
+            ForegroundProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
+            FontFamilyProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
             ColorProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
             TitleProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
             RenderInLegendProperty.Changed.AddClassHandler<Series>(AppearanceChanged);
@@ -258,8 +262,12 @@ namespace OxyPlot.Avalonia
             s.TrackerKey = TrackerKey;
             s.TrackerFormatString = TrackerFormatString;
             s.IsVisible = IsVisible;
-            s.Font = FontFamily.ToString();
-            s.TextColor = Foreground.ToOxyColor();
+
+            // Foreground and FontFamily are inherited from the window and the theme. They are copied only if
+            // they are set on the series itself, otherwise the labels follow Plot.TextColor and Plot.DefaultFont,
+            // like those of the axes, and do not turn white on a white background in a dark theme.
+            s.Font = IsSet(FontFamilyProperty) ? FontFamily.ToString() : null;
+            s.TextColor = IsSet(ForegroundProperty) ? Foreground.ToOxyColor() : OxyColors.Automatic;
             s.EdgeRenderingMode = EdgeRenderingMode;
         }
 

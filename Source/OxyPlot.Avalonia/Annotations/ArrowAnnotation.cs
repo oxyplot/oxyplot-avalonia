@@ -74,7 +74,6 @@ namespace OxyPlot.Avalonia
         static ArrowAnnotation()
         {
             TextColorProperty.OverrideDefaultValue<ArrowAnnotation>(MoreColors.Automatic);
-            TextColorProperty.Changed.AddClassHandler<ArrowAnnotation>(AppearanceChanged);
 
             ArrowDirectionProperty.Changed.AddClassHandler<ArrowAnnotation>(DataChanged);
             ColorProperty.Changed.AddClassHandler<ArrowAnnotation>(AppearanceChanged);

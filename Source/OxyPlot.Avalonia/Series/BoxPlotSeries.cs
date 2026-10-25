@@ -103,7 +103,6 @@ namespace OxyPlot.Avalonia
             StrokeProperty.Changed.AddClassHandler<BoxPlotSeries>(AppearanceChanged);
             StrokeThicknessProperty.Changed.AddClassHandler<BoxPlotSeries>(AppearanceChanged);
             WhiskerWidthProperty.Changed.AddClassHandler<BoxPlotSeries>(AppearanceChanged);
-            TrackerFormatStringProperty.Changed.AddClassHandler<BoxPlotSeries>(AppearanceChanged);
         }
 
         /// <summary>
