@@ -102,6 +102,11 @@ namespace OxyPlot.Avalonia
             double thickness,
             EdgeRenderingMode edgeRenderingMode)
         {
+            if (!IsFinite(rect))
+            {
+                return;
+            }
+
             var path = CreateAndAdd<Path>();
             SetStroke(path, stroke, thickness, edgeRenderingMode);
             if (!fill.IsUndefined())
@@ -136,6 +141,11 @@ namespace OxyPlot.Avalonia
 
             foreach (var rect in rects)
             {
+                if (!IsFinite(rect))
+                {
+                    continue;
+                }
+
                 if (path == null)
                 {
                     path = CreateAndAdd<Path>();
@@ -220,6 +230,12 @@ namespace OxyPlot.Avalonia
             double[] dashArray,
             LineJoin lineJoin)
         {
+            points = FiniteOnly(points);
+            if (points.Count == 0)
+            {
+                return;
+            }
+
             if (thickness < BalancedLineDrawingThicknessLimit)
             {
                 DrawLineBalanced(points, stroke, thickness, edgeRenderingMode, dashArray, lineJoin);
@@ -260,6 +276,11 @@ namespace OxyPlot.Avalonia
 
             for (int i = 0; i + 1 < points.Count; i += 2)
             {
+                if (!IsFinite(points[i]) || !IsFinite(points[i + 1]))
+                {
+                    continue;
+                }
+
                 if (streamGeometry == null)
                 {
                     streamGeometry = new StreamGeometry();
@@ -325,6 +346,11 @@ namespace OxyPlot.Avalonia
 
             for (int i = 0; i + 1 < points.Count; i += 2)
             {
+                if (!IsFinite(points[i]) || !IsFinite(points[i + 1]))
+                {
+                    continue;
+                }
+
                 if (path == null)
                 {
                     path = CreateAndAdd<Path>();
@@ -365,6 +391,11 @@ namespace OxyPlot.Avalonia
             double[] dashArray,
             LineJoin lineJoin)
         {
+            if (!IsFinite(points))
+            {
+                return;
+            }
+
             var e = CreateAndAdd<Polygon>();
             SetStroke(e, stroke, thickness, edgeRenderingMode, lineJoin, dashArray, 0);
 
@@ -410,6 +441,11 @@ namespace OxyPlot.Avalonia
 
             foreach (var polygon in polygons)
             {
+                if (!IsFinite(polygon))
+                {
+                    continue;
+                }
+
                 if (path == null)
                 {
                     path = CreateAndAdd<Path>();
@@ -498,6 +534,11 @@ namespace OxyPlot.Avalonia
 
             foreach (var polygon in polygons)
             {
+                if (!IsFinite(polygon))
+                {
+                    continue;
+                }
+
                 if (path == null)
                 {
                     path = CreateAndAdd<Path>();
@@ -563,6 +604,11 @@ namespace OxyPlot.Avalonia
             double thickness,
             EdgeRenderingMode edgeRenderingMode)
         {
+            if (!IsFinite(rect))
+            {
+                return;
+            }
+
             var path = CreateAndAdd<Path>();
             SetStroke(path, stroke, thickness, edgeRenderingMode);
             if (!fill.IsUndefined())
@@ -615,6 +661,11 @@ namespace OxyPlot.Avalonia
             VerticalAlignment valign,
             OxySize? maxSize)
         {
+            if (!IsFinite(p))
+            {
+                return;
+            }
+
             var tb = CreateAndAdd<TextBlock>();
             tb.Text = text;
             tb.Foreground = GetCachedBrush(fill);
@@ -638,7 +689,9 @@ namespace OxyPlot.Avalonia
 
             if (maxSize != null || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Top)
             {
-                tb.Measure(new Size(1000, 1000));
+                // Measure without a limit: the hard-coded 1000x1000 clipped long labels.
+                // The required truncation is done by the block below according to maxSize.
+                tb.Measure(Size.Infinity);
                 var size = tb.DesiredSize;
                 if (maxSize != null)
                 {
@@ -730,7 +783,8 @@ namespace OxyPlot.Avalonia
                 tb.FontWeight = GetFontWeight(fontWeight);
             }
 
-            tb.Measure(new Size(1000, 1000));
+            // Measure without a limit: the hard-coded 1000x1000 understated the size of long labels.
+            tb.Measure(Size.Infinity);
 
             return new OxySize(tb.DesiredSize.Width, tb.DesiredSize.Height);
         }
@@ -771,24 +825,32 @@ namespace OxyPlot.Avalonia
             double opacity,
             bool interpolate)
         {
-            if (destWidth <= 0 || destHeight <= 0 || srcWidth <= 0 || srcHeight <= 0)
+            if (!(destWidth > 0) || !(destHeight > 0) || !(srcWidth > 0) || !(srcHeight > 0)
+                || !double.IsFinite(destX) || !double.IsFinite(destY)
+                || !double.IsFinite(destWidth) || !double.IsFinite(destHeight))
+            {
+                return;
+            }
+
+            var bitmap = GetImageSource(source);
+            if (bitmap == null)
+            {
+                return;
+            }
+
+            // The part of the source is cropped by whole pixels within the bitmap. Clip is not suitable here:
+            // it is specified in the coordinates of the element, not of the source, and overrides the clipping to the plot area.
+            var left = Math.Max(0, (int)Math.Floor(srcX));
+            var top = Math.Max(0, (int)Math.Floor(srcY));
+            var right = Math.Min(bitmap.PixelSize.Width, (int)Math.Ceiling(srcX + srcWidth));
+            var bottom = Math.Min(bitmap.PixelSize.Height, (int)Math.Ceiling(srcY + srcHeight));
+            if (right <= left || bottom <= top)
             {
                 return;
             }
 
             var image = CreateAndAdd<Image>(destX, destY);
-            var bitmapChain = GetImageSource(source);
-
-            // ReSharper disable CompareOfFloatsByEqualityOperator
-            if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelSize.Width && srcHeight == bitmapChain.PixelSize.Height)
-            // ReSharper restore CompareOfFloatsByEqualityOperator
-            {
-                // do not crop
-            }
-            else
-            {
-                image.Clip = new RectangleGeometry(new Rect(srcX, srcY, srcWidth, srcHeight));
-            }
+            var isWholeBitmap = left == 0 && top == 0 && right == bitmap.PixelSize.Width && bottom == bitmap.PixelSize.Height;
 
             image.Opacity = opacity;
             image.Width = destWidth;
@@ -800,7 +862,9 @@ namespace OxyPlot.Avalonia
             Canvas.SetTop(image, destY);
             //// alternative: image.RenderTransform = new TranslateTransform(destX, destY);
 
-            image.Source = bitmapChain;
+            image.Source = isWholeBitmap
+                ? bitmap
+                : new CroppedBitmap(bitmap, new PixelRect(left, top, right - left, bottom - top));
 
             if (interpolate)
             {
@@ -1024,9 +1088,13 @@ namespace OxyPlot.Avalonia
             double lineLength = 0;
             var dashPatternLength = (dashArray != null) ? dashArray.Sum() : 0;
             var last = new Point();
+
+            // The anti-aliasing mode does not depend on the point index, while the check walks the whole list,
+            // so it is computed once before the loop. Inside the loop it gave quadratic complexity.
+            var aliased = !this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points);
+
             for (int i = 0; i < n; i++)
             {
-                bool aliased = !this.ShouldUseAntiAliasingForLine(edgeRenderingMode, points);
                 var p = aliased ? ToPixelAlignedPoint(points[i]) : ToPoint(points[i]);
                 pc.Add(p);
 
@@ -1103,6 +1171,58 @@ namespace OxyPlot.Avalonia
         private static Rect ToRect(OxyRect r)
         {
             return new Rect(r.Left, r.Top, r.Width, r.Height);
+        }
+
+        // A shape with NaN or infinite coordinates breaks the whole Canvas layout pass
+        // (InvalidOperationException from Measure), not just itself. The core produces such
+        // coordinates for annotations that are not fully configured, so these shapes are not drawn.
+
+        /// <summary>
+        /// Checks that all coordinates of the rectangle are finite.
+        /// </summary>
+        /// <param name="r">The rectangle.</param>
+        /// <returns><c>true</c> if the shape can be drawn.</returns>
+        private static bool IsFinite(OxyRect r)
+        {
+            return double.IsFinite(r.Left) && double.IsFinite(r.Top) && double.IsFinite(r.Width) && double.IsFinite(r.Height);
+        }
+
+        /// <summary>
+        /// Checks that both coordinates of the point are finite.
+        /// </summary>
+        /// <param name="p">The point.</param>
+        /// <returns><c>true</c> if the point can be drawn.</returns>
+        private static bool IsFinite(ScreenPoint p)
+        {
+            return double.IsFinite(p.X) && double.IsFinite(p.Y);
+        }
+
+        /// <summary>
+        /// Checks that the coordinates of all points are finite.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <returns><c>true</c> if the shape can be drawn.</returns>
+        private static bool IsFinite(IList<ScreenPoint> points)
+        {
+            for (var i = 0; i < points.Count; i++)
+            {
+                if (!IsFinite(points[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes points with non-finite coordinates from a line. If there are none, returns the same list.
+        /// </summary>
+        /// <param name="points">The points of the line.</param>
+        /// <returns>The points with finite coordinates.</returns>
+        private static IList<ScreenPoint> FiniteOnly(IList<ScreenPoint> points)
+        {
+            return IsFinite(points) ? points : points.Where(IsFinite).ToList();
         }
 
         /// <summary>
