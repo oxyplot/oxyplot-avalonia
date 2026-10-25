@@ -432,11 +432,16 @@ namespace OxyPlot.Avalonia
         /// <returns>A <see cref="OxyMouseWheelEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseWheelEventArgs ToMouseWheelEventArgs(this PointerWheelEventArgs e, IInputElement relativeTo)
         {
+            // Delta is a fraction of a wheel step, and for a touchpad it is less than one.
+            // Casting to int before the multiplication zeroed such scrolling, so the rounding is done afterwards.
+            // The horizontal delta is used only when the vertical one is zero, otherwise a diagonal gesture doubled the step.
+            var wheel = e.Delta.Y != 0 ? e.Delta.Y : e.Delta.X;
+
             return new OxyMouseWheelEventArgs
             {
                 Position = e.GetPosition(relativeTo as Visual).ToScreenPoint(),
                 ModifierKeys = e.KeyModifiers.ToModifierKeys(),
-                Delta = (int)(e.Delta.Y + e.Delta.X) * 120
+                Delta = (int)Math.Round(wheel * 120, MidpointRounding.AwayFromZero)
             };
         }
 

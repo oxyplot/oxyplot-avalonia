@@ -75,6 +75,16 @@ namespace OxyPlot.Avalonia
         private ScreenPoint mouseDownPoint;
 
         /// <summary>
+        /// Indicates that the press point has been filled in at least once.
+        /// </summary>
+        private bool hasMouseDownPoint;
+
+        /// <summary>
+        /// The type of the pointer that made the last press.
+        /// </summary>
+        private PointerType mouseDownPointerType;
+
+        /// <summary>
         /// The overlays.
         /// </summary>
         private Canvas overlays;
@@ -85,24 +95,15 @@ namespace OxyPlot.Avalonia
         private ContentControl zoomControl;
 
         /// <summary>
-        /// The is visible to user cache.
-        /// </summary>
-        private bool isVisibleToUserCache;
-
-        /// <summary>
-        /// The cached parent.
-        /// </summary>
-        private Control containerCache;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PlotBase" /> class.
         /// </summary>
         protected PlotBase()
         {
             DisconnectCanvasWhileUpdating = true;
             trackerDefinitions = new ObservableCollection<TrackerDefinition>();
-            
+
             this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(OnSizeChanged));
+            AddHandler(ContextRequestedEvent, OnPlotContextRequested);
         }
 
         /// <summary>
@@ -366,9 +367,20 @@ namespace OxyPlot.Avalonia
         /// <param name="text">The text.</param>
         public async void SetClipboardText(string text)
         {
-            if (TopLevel.GetTopLevel(this) is { Clipboard: { } clipboard })
+            // The method is declared as void in IPlotView, so there is nobody to catch an exception from here.
+            // Without try/catch an unavailable or busy clipboard would crash the whole application.
+            try
             {
-                await clipboard.SetTextAsync(text).ConfigureAwait(true);
+                if (TopLevel.GetTopLevel(this) is { Clipboard: { } clipboard })
+                {
+                    await clipboard.SetTextAsync(text).ConfigureAwait(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                global::Avalonia.Logging.Logger
+                    .TryGet(global::Avalonia.Logging.LogEventLevel.Warning, global::Avalonia.Logging.LogArea.Control)
+                    ?.Log(this, "Failed to write text to the clipboard: {0}", ex.Message);
             }
         }
 
@@ -397,7 +409,20 @@ namespace OxyPlot.Avalonia
         /// <param name="updateData">The update Data.</param>
         protected void UpdateModel(bool updateData = true)
         {
-            if (Width <= 0 || Height <= 0 || ActualModel == null)
+            if (ActualModel == null)
+            {
+                // The model was removed: the old plot is erased by UpdateVisuals, but it is only called by
+                // the layout pass triggered by the isPlotInvalidated flag. Without the flag the picture would stay on the screen.
+                isUpdateRequired = 0;
+                if (Interlocked.CompareExchange(ref isPlotInvalidated, 1, 0) == 0)
+                {
+                    BeginInvoke(InvalidateArrange);
+                }
+
+                return;
+            }
+
+            if (Width <= 0 || Height <= 0)
             {
                 isUpdateRequired = 0;
                 return;
@@ -551,15 +576,17 @@ namespace OxyPlot.Avalonia
         /// Invokes the specified action on the dispatcher, if necessary.
         /// </summary>
         /// <param name="action">The action.</param>
-        private static void BeginInvoke(Action action)
+        private void BeginInvoke(Action action)
         {
-            if (Dispatcher.UIThread.CheckAccess())
+            // The dispatcher of the control, not Dispatcher.UIThread: in Avalonia 12 a control can live
+            // in a window on another UI thread, and then the main thread has no access to it.
+            if (CheckAccess())
             {
                 action?.Invoke();
             }
             else
             {
-                Dispatcher.UIThread.InvokeAsync(action, DispatcherPriority.Loaded);
+                Dispatcher.InvokeAsync(action, DispatcherPriority.Loaded);
             }
         }
     }
