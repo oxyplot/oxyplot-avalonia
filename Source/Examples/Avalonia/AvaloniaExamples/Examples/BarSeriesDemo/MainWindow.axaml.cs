@@ -50,8 +50,6 @@ namespace AvaloniaExamples.Examples.BarSeriesDemo
             this.DataContext = new { Model1 = tmp, Items = items };
 
             this.InitializeComponent();
-
-            App.AttachDevTools(this);
         }
 
         private void InitializeComponent()

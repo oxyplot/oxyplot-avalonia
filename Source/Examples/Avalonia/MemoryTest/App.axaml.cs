@@ -13,37 +13,38 @@ namespace MemoryTest
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
-            base.Initialize();
+#if DEBUG
+    this.AttachDeveloperTools();
+#endif
         }
 
         public override void OnFrameworkInitializationCompleted()
         {
-            if (!(ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop))
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                throw new PlatformNotSupportedException();
+                desktop.MainWindow = new MainWindow();
             }
-
-            desktop.MainWindow = new MainWindow();
 
             base.OnFrameworkInitializationCompleted();
         }
+    }
 
-        static void Main(string[] args)
+    public class Program
+    {
+        public static AppBuilder BuildAvaloniaApp()
         {
             OxyPlotModule.EnsureLoaded();
-            AppBuilder.Configure<App>()
-                .UsePlatformDetect()
+            var builder = AppBuilder.Configure<App>()
+                .UsePlatformDetect();
 #if DEBUG
-                .LogToTrace()
+            builder.LogToTrace();
 #endif
-                .StartWithClassicDesktopLifetime(args);
+            return builder;
         }
 
-        public static void AttachDevTools(Window window)
+        public static void Main(string[] args)
         {
-#if DEBUG
-			DevToolsExtensions.AttachDevTools(window);
-#endif
+            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
     }
 }

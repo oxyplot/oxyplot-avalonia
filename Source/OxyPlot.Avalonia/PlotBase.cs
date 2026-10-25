@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Avalonia.Reactive;
+using Avalonia.Input.Platform;
 
 namespace OxyPlot.Avalonia
 {

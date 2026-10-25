@@ -17,8 +17,6 @@ namespace MemoryTest
             DataContext = Model;
 
             InitializeComponent();
-
-            App.AttachDevTools(this);
         }
 
         private void InitializeComponent()

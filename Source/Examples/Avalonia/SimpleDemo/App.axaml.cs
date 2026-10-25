@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using OxyPlot.Avalonia;
@@ -8,35 +9,37 @@ namespace SimpleDemo
 {
     class App : Application
     {
-        public App()
-        {
-            RegisterServices();
-        }
-
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
-            base.Initialize();
+#if DEBUG
+            this.AttachDeveloperTools();
+#endif
         }
 
         public override void OnFrameworkInitializationCompleted()
         {
-            if (!(ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop))
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                throw new PlatformNotSupportedException();
+                desktop.MainWindow = new MainWindow();
             }
 
-            desktop.MainWindow = new MainWindow();
-
             base.OnFrameworkInitializationCompleted();
+        }
+    }
+
+    public class Program
+    {
+        public static AppBuilder BuildAvaloniaApp()
+        {
+            OxyPlotModule.EnsureLoaded();
+            return AppBuilder.Configure<App>()
+                .UsePlatformDetect();
         }
 
         public static void Main(string[] args)
         {
-            OxyPlotModule.EnsureLoaded();
-            AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .StartWithClassicDesktopLifetime(args);
+            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
     }
 }

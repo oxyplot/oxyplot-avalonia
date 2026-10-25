@@ -22,7 +22,6 @@ namespace AvaloniaExamples.Examples.AnimationsDemo
         public MainWindow()
         {
             this.InitializeComponent();
-            App.AttachDevTools(this);
         }
 
         private void InitializeComponent()
