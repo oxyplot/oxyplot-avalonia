@@ -33,7 +33,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="Resolution"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<int> ResolutionProperty = AvaloniaProperty.Register<FunctionAnnotation, int>(nameof(Resolution), 400);
+        public static readonly StyledProperty<int> ResolutionProperty = AvaloniaProperty.Register<FunctionAnnotation, int>(nameof(Resolution), 400, validate: ValidateResolution);
 
         /// <summary>
         /// Initializes static members of the <see cref="FunctionAnnotation"/> class.
@@ -56,6 +56,17 @@ namespace OxyPlot.Avalonia
         public FunctionAnnotation()
         {
             InternalAnnotation = new Annotations.FunctionAnnotation();
+        }
+
+        /// <summary>
+        /// Validates the number of points of the function. The core divides the range by this number and steps
+        /// to the bound: with zero or a negative value the loop never ends.
+        /// </summary>
+        /// <param name="value">The number of points.</param>
+        /// <returns><c>true</c> if the value is valid.</returns>
+        private static bool ValidateResolution(int value)
+        {
+            return value >= 1;
         }
 
         /// <summary>
