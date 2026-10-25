@@ -32,6 +32,16 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<string> FractionUnitSymbolProperty = AvaloniaProperty.Register<LinearAxis, string>(nameof(FractionUnitSymbol));
 
         /// <summary>
+        /// Initializes static members of the <see cref="LinearAxis" /> class.
+        /// </summary>
+        static LinearAxis()
+        {
+            FormatAsFractionsProperty.Changed.AddClassHandler<LinearAxis>(AppearanceChanged);
+            FractionUnitProperty.Changed.AddClassHandler<LinearAxis>(AppearanceChanged);
+            FractionUnitSymbolProperty.Changed.AddClassHandler<LinearAxis>(AppearanceChanged);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref = "LinearAxis" /> class.
         /// </summary>
         public LinearAxis()

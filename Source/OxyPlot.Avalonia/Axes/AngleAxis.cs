@@ -35,14 +35,13 @@ namespace OxyPlot.Avalonia
         {
             MajorGridlineStyleProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<LineStyle>(LineStyle.Solid));
             MinorGridlineStyleProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<LineStyle>(LineStyle.Solid));
-            PositionProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<AxisPosition>(AxisPosition.None));
+            // Same as in the core: with None the axis does not reserve margins and the angle labels are clipped
+            PositionProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<AxisPosition>(AxisPosition.All));
             TickStyleProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<TickStyle>(TickStyle.None));
             IsPanEnabledProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<bool>(false));
             IsZoomEnabledProperty.OverrideMetadata(typeof(AngleAxis), new StyledPropertyMetadata<bool>(false));
             StartAngleProperty.Changed.AddClassHandler<AngleAxis>(AppearanceChanged);
             EndAngleProperty.Changed.AddClassHandler<AngleAxis>(AppearanceChanged);
-            PositionProperty.Changed.AddClassHandler<AngleAxis>(AppearanceChanged);
-            TickStyleProperty.Changed.AddClassHandler<AngleAxis>(AppearanceChanged);
         }
 
         /// <summary>
@@ -50,9 +49,9 @@ namespace OxyPlot.Avalonia
         /// </summary>
         public AngleAxis()
         {
+            // The gridline styles are set by OverrideMetadata above. An assignment here would become a local
+            // value and would override the style setters.
             InternalAxis = new Axes.AngleAxis();
-            MajorGridlineStyle = LineStyle.Solid;
-            MinorGridlineStyle = LineStyle.Solid;
         }
 
         /// <summary>

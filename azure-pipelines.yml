@@ -42,3 +42,4 @@ jobs:
     buildConfiguration: 'Release'
   steps:
   - script: cd ./Source && dotnet build --configuration $(buildConfiguration)
+  - script: cd ./Source && dotnet test --configuration $(buildConfiguration)

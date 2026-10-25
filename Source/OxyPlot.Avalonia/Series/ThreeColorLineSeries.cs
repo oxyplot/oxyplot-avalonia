@@ -164,6 +164,8 @@ namespace OxyPlot.Avalonia
             s.ColorLo = ColorLo.ToOxyColor();
             s.LimitHi = LimitHi;
             s.ColorHi = ColorHi.ToOxyColor();
+            s.LineStyleLo = LineStyleLo;
+            s.LineStyleHi = LineStyleHi;
         }
 
         static ThreeColorLineSeries()

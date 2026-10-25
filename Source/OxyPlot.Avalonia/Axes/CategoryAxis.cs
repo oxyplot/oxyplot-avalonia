@@ -42,7 +42,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="Labels"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<IList<string>> LabelsProperty = AvaloniaProperty.Register<CategoryAxis, IList<string>>(nameof(Labels), new List<string>());
+        public static readonly StyledProperty<IList<string>> LabelsProperty = AvaloniaProperty.Register<CategoryAxis, IList<string>>(nameof(Labels));
 
         /// <summary>
         /// Initializes static members of the <see cref="CategoryAxis" /> class.
@@ -53,6 +53,7 @@ namespace OxyPlot.Avalonia
             MinimumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new StyledPropertyMetadata<double>(0.0));
             MaximumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new StyledPropertyMetadata<double>(0.0));
             MajorStepProperty.OverrideMetadata(typeof(CategoryAxis), new StyledPropertyMetadata<double>(1.0));
+            GapWidthProperty.Changed.AddClassHandler<CategoryAxis>(DataChanged);
             IsTickCenteredProperty.Changed.AddClassHandler<CategoryAxis>(DataChanged);
             ItemsProperty.Changed.AddClassHandler<CategoryAxis>(DataChanged);
             LabelFieldProperty.Changed.AddClassHandler<CategoryAxis>(DataChanged);
@@ -69,6 +70,9 @@ namespace OxyPlot.Avalonia
         public CategoryAxis()
         {
             InternalAxis = new Axes.CategoryAxis();
+
+            // The list is created per instance: the default value in Avalonia is shared by all axes.
+            SetCurrentValue(LabelsProperty, new List<string>());
         }
 
         /// <summary>

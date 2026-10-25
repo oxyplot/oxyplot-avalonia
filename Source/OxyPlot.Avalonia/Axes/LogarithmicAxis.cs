@@ -20,7 +20,7 @@ namespace OxyPlot.Avalonia
         /// Identifies the <see cref="Base"/> dependency property.
         /// </summary>
         /// <value>The logarithmic base.</value>
-        public static readonly StyledProperty<double> BaseProperty = AvaloniaProperty.Register<LogarithmicAxis, double>(nameof(Base), 10.0);
+        public static readonly StyledProperty<double> BaseProperty = AvaloniaProperty.Register<LogarithmicAxis, double>(nameof(Base), 10.0, validate: ValidateBase);
 
         /// <summary>
         /// Identifies the <see cref="PowerPadding"/> dependency property.
@@ -33,7 +33,6 @@ namespace OxyPlot.Avalonia
         public LogarithmicAxis()
         {
             InternalAxis = new Axes.LogarithmicAxis();
-            FilterMinValue = 0;
         }
 
         /// <summary>
@@ -89,8 +88,22 @@ namespace OxyPlot.Avalonia
             a.PowerPadding = PowerPadding;
         }
 
+        /// <summary>
+        /// Validates the logarithm base. With a base that is not greater than one or is not a number
+        /// the core cannot compute the axis ticks and rendering hangs.
+        /// </summary>
+        /// <param name="value">The base.</param>
+        /// <returns><c>true</c> if the value is valid.</returns>
+        private static bool ValidateBase(double value)
+        {
+            return double.IsFinite(value) && value > 1;
+        }
+
         static LogarithmicAxis()
         {
+            // A default value instead of an assignment in the constructor: a local value would override styles
+            FilterMinValueProperty.OverrideDefaultValue<LogarithmicAxis>(0.0);
+
             BaseProperty.Changed.AddClassHandler<LogarithmicAxis>(DataChanged);
             PowerPaddingProperty.Changed.AddClassHandler<LogarithmicAxis>(DataChanged);
         }

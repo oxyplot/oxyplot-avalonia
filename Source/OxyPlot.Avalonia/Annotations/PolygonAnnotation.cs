@@ -31,7 +31,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<IList<DataPoint>> PointsProperty = AvaloniaProperty.Register<PolygonAnnotation, IList<DataPoint>>(nameof(Points), new List<DataPoint>());
+        public static readonly StyledProperty<IList<DataPoint>> PointsProperty = AvaloniaProperty.Register<PolygonAnnotation, IList<DataPoint>>(nameof(Points));
 
         /// <summary>
         /// Initializes static members of the <see cref="PolygonAnnotation"/> class.
@@ -39,7 +39,6 @@ namespace OxyPlot.Avalonia
         static PolygonAnnotation()
         {
             TextColorProperty.OverrideDefaultValue<PolygonAnnotation>(MoreColors.Automatic);
-            TextColorProperty.Changed.AddClassHandler<PolygonAnnotation>(AppearanceChanged);
 
             LineJoinProperty.Changed.AddClassHandler<PolygonAnnotation>(AppearanceChanged);
             LineStyleProperty.Changed.AddClassHandler<PolygonAnnotation>(AppearanceChanged);
@@ -52,6 +51,9 @@ namespace OxyPlot.Avalonia
         public PolygonAnnotation()
         {
             InternalAnnotation = new Annotations.PolygonAnnotation();
+
+            // Every instance has its own list of points, otherwise points leak between annotations
+            SetCurrentValue(PointsProperty, new List<DataPoint>());
         }
 
         /// <summary>
@@ -121,7 +123,10 @@ namespace OxyPlot.Avalonia
             base.SynchronizeProperties();
             var a = (Annotations.PolygonAnnotation)InternalAnnotation;
             a.Points.Clear();
-            a.Points.AddRange(Points);
+            if (Points != null)
+            {
+                a.Points.AddRange(Points);
+            }
 
             a.LineStyle = LineStyle;
             a.LineJoin = LineJoin;

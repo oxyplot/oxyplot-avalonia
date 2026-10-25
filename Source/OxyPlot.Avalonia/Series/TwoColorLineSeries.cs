@@ -99,6 +99,7 @@ namespace OxyPlot.Avalonia
             var s = (OxyPlot.Series.TwoColorLineSeries)series;
             s.Limit = Limit;
             s.Color2 = Color2.ToOxyColor();
+            s.LineStyle2 = LineStyle2;
         }
 
         static TwoColorLineSeries()

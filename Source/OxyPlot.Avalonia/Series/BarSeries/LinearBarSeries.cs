@@ -21,7 +21,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="BarWidth" /> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> BarWidthProperty = AvaloniaProperty.Register<LinearBarSeries, double>(nameof(BarWidth), 1.0);
+        public static readonly StyledProperty<double> BarWidthProperty = AvaloniaProperty.Register<LinearBarSeries, double>(nameof(BarWidth), 5.0);
 
         /// <summary>
         /// Identifies the <see cref="FillColor"/> dependency property.
@@ -36,7 +36,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> StrokeThicknessProperty = AvaloniaProperty.Register<LinearBarSeries, double>(nameof(StrokeThickness), 1.0);
+        public static readonly StyledProperty<double> StrokeThicknessProperty = AvaloniaProperty.Register<LinearBarSeries, double>(nameof(StrokeThickness), 0.0);
 
         /// <summary>
         /// Identifies the <see cref="NegativeFillColor"/> dependency property.

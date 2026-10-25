@@ -56,10 +56,12 @@ namespace OxyPlot.Avalonia
         static DateTimeAxis()
         {
             PositionProperty.OverrideDefaultValue<DateTimeAxis>(AxisPosition.Bottom);
-            PositionProperty.Changed.AddClassHandler<DateTimeAxis>(AppearanceChanged);
             CalendarWeekRuleProperty.Changed.AddClassHandler<DateTimeAxis>(DataChanged);
             FirstDayOfWeekProperty.Changed.AddClassHandler<DateTimeAxis>(DataChanged);
             MinorIntervalTypeProperty.Changed.AddClassHandler<DateTimeAxis>(DataChanged);
+            IntervalTypeProperty.Changed.AddClassHandler<DateTimeAxis>(DataChanged);
+            FirstDateTimeProperty.Changed.AddClassHandler<DateTimeAxis>(DataChanged);
+            LastDateTimeProperty.Changed.AddClassHandler<DateTimeAxis>(DataChanged);
         }
 
         /// <summary>

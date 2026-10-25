@@ -12,7 +12,6 @@ using Avalonia;
 namespace OxyPlot.Avalonia
 {
     using global::Avalonia.Media;
-    using System.Linq;
 
     /// <summary>
     /// This is a Avalonia wrapper of OxyPlot.BoxPlotSeries
@@ -103,7 +102,6 @@ namespace OxyPlot.Avalonia
             StrokeProperty.Changed.AddClassHandler<BoxPlotSeries>(AppearanceChanged);
             StrokeThicknessProperty.Changed.AddClassHandler<BoxPlotSeries>(AppearanceChanged);
             WhiskerWidthProperty.Changed.AddClassHandler<BoxPlotSeries>(AppearanceChanged);
-            TrackerFormatStringProperty.Changed.AddClassHandler<BoxPlotSeries>(AppearanceChanged);
         }
 
         /// <summary>
@@ -262,24 +260,28 @@ namespace OxyPlot.Avalonia
             base.SynchronizeProperties(series);
 
             var s = (OxyPlot.Series.BoxPlotSeries)series;
+            s.BoxWidth = BoxWidth;
             s.Fill = Fill.ToOxyColor();
             s.LineStyle = LineStyle;
             s.MedianPointSize = MedianPointSize;
+            s.MedianThickness = MedianThickness;
             s.OutlierSize = OutlierSize;
             s.OutlierType = OutlierType;
-            s.OutlierOutline = (OutlierOutline ?? Enumerable.Empty<Point>()).Select(point => point.ToScreenPoint()).ToArray();
+            s.OutlierOutline = OutlierOutline.ToScreenPointArray();
             s.ShowBox = ShowBox;
             s.ShowMedianAsDot = ShowMedianAsDot;
             s.Stroke = Stroke.ToOxyColor();
             s.StrokeThickness = StrokeThickness;
             s.WhiskerWidth = WhiskerWidth;
 
-            if (Items != null)
+            s.Items.Clear();
+
+            // Items can contain foreign objects if ItemsSource is set
+            foreach (var item in Items)
             {
-                s.Items.Clear();
-                foreach (var item in Items)
+                if (item is OxyPlot.Series.BoxPlotItem boxItem)
                 {
-                    s.Items.Add((OxyPlot.Series.BoxPlotItem)item);
+                    s.Items.Add(boxItem);
                 }
             }
         }

@@ -93,7 +93,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="ExtraGridlines"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double[]> ExtraGridlinesProperty = AvaloniaProperty.Register<Axis, double[]>("ExtraGridLines", null);
+        public static readonly StyledProperty<double[]> ExtraGridlinesProperty = AvaloniaProperty.Register<Axis, double[]>(nameof(ExtraGridlines), null);
 
         /// <summary>
         /// Identifies the <see cref="FilterFunction"/> dependency property.
@@ -589,7 +589,7 @@ namespace OxyPlot.Avalonia
         }
 
         /// <summary>
-        /// Gets or sets ExtraGridLines.
+        /// Gets or sets ExtraGridlines.
         /// </summary>
         public double[] ExtraGridlines
         {
@@ -1548,7 +1548,7 @@ namespace OxyPlot.Avalonia
             a.MinimumPadding = MinimumPadding;
             a.MaximumPadding = MaximumPadding;
             a.MinimumMargin = MinimumMargin;
-            a.MaximumMargin = MinimumMargin;
+            a.MaximumMargin = MaximumMargin;
             a.MinimumDataMargin = MinimumDataMargin;
             a.MaximumDataMargin = MaximumDataMargin;
             a.Position = Position;
@@ -1599,6 +1599,8 @@ namespace OxyPlot.Avalonia
             FontWeightProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             IntervalLengthProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             IsAxisVisibleProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
+            IsPanEnabledProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
+            IsZoomEnabledProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             KeyProperty.Changed.AddClassHandler<Axis>(DataChanged);
             LabelFormatterProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);
             LayerProperty.Changed.AddClassHandler<Axis>(AppearanceChanged);

@@ -19,6 +19,7 @@ namespace OxyPlot.Avalonia
     using global::Avalonia.Layout;
     using global::Avalonia.Media;
     using global::Avalonia.VisualTree;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -60,7 +61,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="CornerRadius"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<double> CornerRadiusProperty = AvaloniaProperty.Register<TrackerControl, double>(nameof(CornerRadius), 0.0);
+        public static new readonly StyledProperty<double> CornerRadiusProperty = AvaloniaProperty.Register<TrackerControl, double>(nameof(CornerRadius), 0.0);
 
         /// <summary>
         /// Identifies the <see cref="Distance"/> dependency property.
@@ -139,6 +140,11 @@ namespace OxyPlot.Avalonia
         {
             ClipToBoundsProperty.OverrideDefaultValue<TrackerControl>(false);
             PositionProperty.Changed.AddClassHandler<TrackerControl>(PositionChanged);
+
+            // The border is built by UpdatePositionAndBorder, so it must be rebuilt when the shape changes too
+            CornerRadiusProperty.Changed.AddClassHandler<TrackerControl>(PositionChanged);
+            ShowPointerProperty.Changed.AddClassHandler<TrackerControl>(PositionChanged);
+            DistanceProperty.Changed.AddClassHandler<TrackerControl>(PositionChanged);
         }
 
         /// <summary>
@@ -240,7 +246,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Gets or sets the corner radius (only used when ShowPoint=<c>false</c>).
         /// </summary>
-        public double CornerRadius
+        public new double CornerRadius
         {
             get
             {
@@ -488,7 +494,9 @@ namespace OxyPlot.Avalonia
                 va == VerticalAlignment.Top ? m : 0,
                 ha == HorizontalAlignment.Right ? m : 0,
                 va == VerticalAlignment.Bottom ? m : 0);
-            return new RectangleGeometry(rect)/* { RadiusX = this.CornerRadius, RadiusY = this.CornerRadius }*/;
+            // The radius is at most half of the smaller side, otherwise the rounded corners overlap
+            var radius = Math.Max(0, Math.Min(CornerRadius, Math.Min(width, height) / 2));
+            return new RectangleGeometry(rect, radius, radius);
         }
 
         /// <summary>

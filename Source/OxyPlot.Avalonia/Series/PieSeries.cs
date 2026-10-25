@@ -154,11 +154,11 @@ namespace OxyPlot.Avalonia
             TickRadialLengthProperty.Changed.AddClassHandler<PieSeries>(AppearanceChanged);
             TickHorizontalLengthProperty.Changed.AddClassHandler<PieSeries>(AppearanceChanged);
             TickLabelDistanceProperty.Changed.AddClassHandler<PieSeries>(AppearanceChanged);
+            ExplodedDistanceProperty.Changed.AddClassHandler<PieSeries>(AppearanceChanged);
             LabelFieldProperty.Changed.AddClassHandler<PieSeries>(DataChanged);
             ValueFieldProperty.Changed.AddClassHandler<PieSeries>(DataChanged);
             ColorFieldProperty.Changed.AddClassHandler<PieSeries>(DataChanged);
             IsExplodedFieldProperty.Changed.AddClassHandler<PieSeries>(DataChanged);
-            TrackerFormatStringProperty.Changed.AddClassHandler<PieSeries>(AppearanceChanged);
         }
 
         /// <summary>
