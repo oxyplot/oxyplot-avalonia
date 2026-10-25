@@ -1,10 +1,12 @@
 ﻿<Window 
         xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:AvaloniaExamples.Examples.BindingObservableCollectionDemo" 
         xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
         x:Class="AvaloniaExamples.Examples.BindingObservableCollectionDemo.MainWindow"
         Title="BindingDemo" Width="640"
-        Height="480">
+        Height="480"
+        x:DataType="local:MainViewModel">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />

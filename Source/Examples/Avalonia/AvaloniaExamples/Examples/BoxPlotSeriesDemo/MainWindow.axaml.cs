@@ -54,7 +54,7 @@ namespace AvaloniaExamples.Examples.BoxPlotSeriesDemo
             // Add the series, note that the BarSeries are using the same ItemsSource as the CategoryAxis.
             tmp.Series.Add(new BoxPlotSeries { Title = "Values", ItemsSource = items, Fill = Colors.LightBlue.ToOxyColor() });
             
-            this.DataContext = new { Model1 = tmp, Items = items };
+            this.DataContext = new Context(tmp, items);
         }
 
         private void InitializeComponent()
@@ -62,4 +62,6 @@ namespace AvaloniaExamples.Examples.BoxPlotSeriesDemo
             Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
         }
     }
+
+    internal record Context(PlotModel Model1, Collection<BoxPlotItem> Items);
 }

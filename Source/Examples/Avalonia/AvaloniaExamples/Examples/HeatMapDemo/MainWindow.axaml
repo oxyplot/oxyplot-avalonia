@@ -1,9 +1,11 @@
 ﻿<Window 
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:AvaloniaExamples.Examples.HeatMapDemo"
         xmlns:oxy="http://oxyplot.org/avalonia"
         x:Class="AvaloniaExamples.Examples.HeatMapDemo.MainWindow"
-        Title="HeatMapDemo" Height="480" Width="640">
+        Title="HeatMapDemo" Height="480" Width="640"
+        x:DataType="local:Context">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

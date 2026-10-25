@@ -4,7 +4,8 @@
         xmlns:UserControlDemo="clr-namespace:AvaloniaExamples.Examples.UserControlDemo;assembly=AvaloniaExamples"
         xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
         x:Class="AvaloniaExamples.Examples.UserControlDemo.MainWindow3"
-        Title="Plot in DataTemplate" Height="480" Width="640">
+        Title="Plot in DataTemplate" Height="480" Width="640"
+        x:DataType="UserControlDemo:ViewModel">
     <Window.DataTemplates>
         <DataTemplate DataType="{x:Type UserControlDemo:ViewModel}">
             <oxy:Plot Title="{Binding Title}">

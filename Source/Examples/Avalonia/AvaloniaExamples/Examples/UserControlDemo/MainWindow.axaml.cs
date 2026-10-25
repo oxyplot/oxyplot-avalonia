@@ -9,8 +9,6 @@
 
 namespace AvaloniaExamples.Examples.UserControlDemo
 {
-    using System.Windows;
-
     using AvaloniaExamples;
 
     /// <summary>
@@ -22,7 +20,7 @@ namespace AvaloniaExamples.Examples.UserControlDemo
         public MainWindow()
         {
             this.InitializeComponent();
-            this.DataContext = new { Model1 = new ViewModel { Title = "Plot1" }, Model2 = new ViewModel { Title = "Plot2" } };
+            this.DataContext = new Context(new ViewModel { Title = "Plot1" }, new ViewModel { Title = "Plot2" });
         }
 
         private void InitializeComponent()
@@ -31,4 +29,6 @@ namespace AvaloniaExamples.Examples.UserControlDemo
         }
         
     }
+
+    internal record Context(ViewModel Model1, ViewModel Model2);
 }

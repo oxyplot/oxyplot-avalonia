@@ -22,7 +22,7 @@ namespace AvaloniaExamples.Examples.BindingObservableCollectionDemo
         public MainWindow()
         {
             this.InitializeComponent();
-            var vm = new BindingObservableCollectionDemo.MainViewModel();
+            var vm = new MainViewModel();
             this.DataContext = vm;
         }
 

@@ -38,7 +38,7 @@ namespace AvaloniaExamples.Examples.PolarDemo
             this.PI = Math.PI;
             this.MyModel = this.CreateModel();
             this.SpiralPoints = ((FunctionSeries)this.MyModel.Series[0]).Points;
-            this.DataContext = new { MaxAngle, MajorStep, MinorStep, PI, MyModel, SpiralPoints };
+            this.DataContext = new Context(MaxAngle, MajorStep, MinorStep, PI, MyModel, SpiralPoints);
         }
         
         private void InitializeComponent()
@@ -106,4 +106,6 @@ namespace AvaloniaExamples.Examples.PolarDemo
         }
 
     }
+
+    internal record Context(double MaxAngle, double MajorStep, double MinorStep, double PI, PlotModel MyModel, IList<DataPoint> SpiralPoints);
 }

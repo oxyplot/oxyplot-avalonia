@@ -30,7 +30,7 @@ namespace AvaloniaExamples.Examples.ScrollViewerDemo
             plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             
-            this.DataContext = new { Plot = plotModel };
+            this.DataContext = new Context(plotModel);
         }
 
         private void InitializeComponent()
@@ -38,4 +38,6 @@ namespace AvaloniaExamples.Examples.ScrollViewerDemo
             Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
         }
     }
+
+    internal record Context(PlotModel Plot);
 }

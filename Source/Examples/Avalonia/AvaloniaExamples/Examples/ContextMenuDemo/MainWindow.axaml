@@ -1,9 +1,11 @@
 ﻿<Window 
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:AvaloniaExamples.Examples.ContextMenuDemo"
         xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia" 
         x:Class="AvaloniaExamples.Examples.ContextMenuDemo.MainWindow"
-        Title="ContextMenuDemo" Height="480" Width="640">
+        Title="ContextMenuDemo" Height="480" Width="640"
+        x:DataType="local:MainWindow">
     <oxy:PlotView Model="{Binding Model}">
         <oxy:PlotView.ContextMenu>
             <ContextMenu>
